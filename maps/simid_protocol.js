@@ -2,6 +2,7 @@
  * Contains logic for sending mesages between the SIMID creative and the player.
  * Note: Some browsers do not support promises and a more complete implementation
  *       should consider using a polyfill.
+ * Note: File originally from https://github.com/InteractiveAdvertisingBureau/SIMID/tree/master/examples
  */
 class SimidProtocol {
 
