@@ -37,8 +37,7 @@
 
   <build>
     <plugins>
-      <!-- Provides `mvn package appengine:run` for local testing
-           and `mvn package appengine:deploy` for deploying. -->
+
       <plugin>
         <groupId>com.google.cloud.tools</groupId>
         <artifactId>appengine-maven-plugin</artifactId>
