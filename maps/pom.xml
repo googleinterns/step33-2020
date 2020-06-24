@@ -44,6 +44,7 @@
         <artifactId>appengine-maven-plugin</artifactId>
         <version>2.2.0</version>
         <configuration>
+        <!-- TODO(https://githubIssueLink/#6): Update this id -->
           <deploy.projectId>kaleabg-step-2020</deploy.projectId>
           <deploy.version>1</deploy.version>
         </configuration>
