@@ -66,7 +66,6 @@ export default class BaseSimidCreative {
   }
 
   ready() {
-    console.log("READY CALLED");
     this.simidProtocol.createSession();
   }
 
