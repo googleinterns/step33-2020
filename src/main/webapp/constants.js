@@ -1,5 +1,9 @@
 /** Contains all constants common across SIMID */
 
+/**
+ * Messages from the media element.
+ * @enum {string}
+ */
 export const MediaMessage = {
   DURATION_CHANGE: 'Media:durationchange',
   ENDED: 'Media:ended',
@@ -13,6 +17,10 @@ export const MediaMessage = {
   VOLUME_CHANGE: 'Media:volumechange',
 };
 
+/**
+ * Messages from the player.
+ * @enum {string}
+ */
 export const PlayerMessage = {
   RESIZE: 'Player:resize',
   INIT: 'Player:init',
@@ -22,7 +30,10 @@ export const PlayerMessage = {
   FATAL_ERROR: 'Player:fatalError',
 };
 
-/** Messages from the creative */
+/**
+ * Messages from the creative.
+ * @enum {string}
+ */
 export const CreativeMessage = {
   CLICK_THRU: 'Creative:clickThru',
   FATAL_ERROR: 'Creative:fatalError',
@@ -39,7 +50,10 @@ export const CreativeMessage = {
 };
 
 
-// A list of reasons a player could stop the ad.
+/**
+ * A list of reasons a player could stop the ad.
+ * @enum {number}
+ */
 export const StopCode = {
   UNSPECIFIED: 0,
   USER_INITIATED: 1,
@@ -48,7 +62,10 @@ export const StopCode = {
   CREATIVE_INITIATED: 4,
 };
 
-// A list of errors the player might send to the creative.
+/**
+ * A list of errors the player might send to the creative.
+ * @enum {number}
+ */
 export const PlayerErrorCode = {
   UNSPECIFIED: 1200,
   WRONG_VERSION: 1201,
@@ -64,7 +81,10 @@ export const PlayerErrorCode = {
   SPEC_NOT_FOLLOWED_ON_MESSAGES: 1211,
 };
 
-// A list of errors the creative might send to the player.
+/**
+ * A list of errors the creative might send to the player.
+ * @enum {number}
+ */
 export const CreativeErrorCode = {
   UNSPECIFIED: 1100,
   CANNOT_LOAD_RESOURCE: 1101,

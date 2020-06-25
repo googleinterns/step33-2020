@@ -86,7 +86,7 @@ export default class BaseSimidCreative {
       muted: this.environmentData.muted,
       paused: false,
       volume: this.environmentData.volume,
-      fullscreen: false //TODO add this to environment data in spec
+      fullscreen: false,
     }
     this.simidProtocol.resolve(eventData, {});
   }
@@ -119,7 +119,7 @@ export default class BaseSimidCreative {
     this.simidProtocol.resolve(eventData, {});
   }
 
-  /** 
+  /**
    * Opens the click through url and lets the player know about it.
    */
   clickThru() {
