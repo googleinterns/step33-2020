@@ -1,3 +1,7 @@
+
+const SimidProtocol = require('../simid_protocol');
+const {MediaMessage, PlayerMessage, CreativeMessage} = require('../constants');
+
 /*
  * A subclass of a SIMID ad that implements functionality that will
  * be the same for all simid ads.
@@ -174,3 +178,5 @@ class BaseSimidCreative {
     this.videoState.volume = data.args.volume;
   }
 }
+
+module.exports = BaseSimidCreative;
