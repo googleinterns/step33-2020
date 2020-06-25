@@ -1,5 +1,5 @@
 
-const BaseSimidCreative = require('./base_simid_creative');
+import BaseSimidCreative from './base_simid_creative.js';
 
 test('testOnInitSetsVideoState', () => {
   const baseCreative = new BaseSimidCreative();

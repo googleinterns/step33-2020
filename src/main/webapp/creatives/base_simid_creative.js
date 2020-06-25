@@ -1,13 +1,13 @@
 
-const SimidProtocol = require('../simid_protocol');
-const {MediaMessage, PlayerMessage, CreativeMessage} = require('../constants');
+import SimidProtocol from '../simid_protocol.js';
+import {MediaMessage, PlayerMessage, CreativeMessage} from '../constants.js';
 
 /*
  * A subclass of a SIMID ad that implements functionality that will
  * be the same for all simid ads.
  * Note: File originally from https://github.com/InteractiveAdvertisingBureau/SIMID/blob/master/examples/creatives/base_simid_creative.js
  */
-class BaseSimidCreative {
+export default class BaseSimidCreative {
   constructor() {
     /**
      * Data about the creative, not known until after init.
@@ -66,6 +66,7 @@ class BaseSimidCreative {
   }
 
   ready() {
+    console.log("READY CALLED");
     this.simidProtocol.createSession();
   }
 
@@ -178,5 +179,3 @@ class BaseSimidCreative {
     this.videoState.volume = data.args.volume;
   }
 }
-
-module.exports = BaseSimidCreative;

@@ -1,6 +1,6 @@
 /** Contains all constants common across SIMID */
 
-const MediaMessage = {
+export const MediaMessage = {
   DURATION_CHANGE: 'Media:durationchange',
   ENDED: 'Media:ended',
   ERROR: 'Media:error',
@@ -13,7 +13,7 @@ const MediaMessage = {
   VOLUME_CHANGE: 'Media:volumechange',
 };
 
-const PlayerMessage = {
+export const PlayerMessage = {
   RESIZE: 'Player:resize',
   INIT: 'Player:init',
   START_CREATIVE: 'Player:startCreative',
@@ -23,7 +23,7 @@ const PlayerMessage = {
 };
 
 /** Messages from the creative */
-const CreativeMessage = {
+export const CreativeMessage = {
   CLICK_THRU: 'Creative:clickThru',
   FATAL_ERROR: 'Creative:fatalError',
   GET_MEDIA_STATE: 'Creative:getMediaState',
@@ -40,7 +40,7 @@ const CreativeMessage = {
 
 
 // A list of reasons a player could stop the ad.
-const StopCode = {
+export const StopCode = {
   UNSPECIFIED: 0,
   USER_INITIATED: 1,
   MEDIA_PLAYBACK_COMPLETE: 2,
@@ -49,7 +49,7 @@ const StopCode = {
 };
 
 // A list of errors the player might send to the creative.
-const PlayerErrorCode = {
+export const PlayerErrorCode = {
   UNSPECIFIED: 1200,
   WRONG_VERSION: 1201,
   UNSUPPORTED_TIME: 1202,
@@ -65,7 +65,7 @@ const PlayerErrorCode = {
 };
 
 // A list of errors the creative might send to the player.
-const CreativeErrorCode = {
+export const CreativeErrorCode = {
   UNSPECIFIED: 1100,
   CANNOT_LOAD_RESOURCE: 1101,
   PLAYBACK_AREA_UNUSABLE: 1102,
@@ -79,12 +79,3 @@ const CreativeErrorCode = {
   MESSAGES_NOT_FOLLOWING_SPEC: 1110,
   PLAYER_RESPONSE_TIMEOUT: 1111,
 };
-
-module.exports = {
-  CreativeErrorCode,
-  PlayerErrorCode,
-  StopCode,
-  CreativeMessage,
-  PlayerMessage,
-  MediaMessage,
-}

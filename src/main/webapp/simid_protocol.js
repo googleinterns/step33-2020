@@ -5,9 +5,9 @@
  * Note: File originally from https://github.com/InteractiveAdvertisingBureau/SIMID/tree/master/examples
  */
 
-const {PlayerMessage, CreativeMessage} = require('./constants');
+import {PlayerMessage, CreativeMessage} from './constants.js';
 
-class SimidProtocol {
+export default class SimidProtocol {
 
   constructor() {
     /*
@@ -308,5 +308,3 @@ const EventsThatRequireResponse = [
   PlayerMessage.FATAL_ERROR,
   ProtocolMessage.CREATE_SESSION,
 ];
-
-module.exports = SimidProtocol
