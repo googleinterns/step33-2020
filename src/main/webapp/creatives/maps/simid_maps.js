@@ -17,16 +17,16 @@ class SimidMapCreative extends BaseSimidCreative {
   onStart(eventData){
     super.onStart(eventData);
     const adParams = this.creativeData.adParameters;
-    var buttonLabel = JSON.parse(adParams)[AdParamKeys.BUTTON_LABEL]; 
+    const buttonLabel = JSON.parse(adParams)[AdParamKeys.BUTTON_LABEL]; 
     if (buttonLabel == undefined) {
       buttonLabel = DEFAULT_BUTTON_LABEL;
     }
     else {
       buttonLabel = JSON.parse(adParams)[AdParamKeys.BUTTON_LABEL];
     }
-    var searchQuery = JSON.parse(adParams)[AdParamKeys.SEARCH_QUERY];
+    let searchQuery = JSON.parse(adParams)[AdParamKeys.SEARCH_QUERY];
     //ToDo(juliareichel@): handle case where searchQuery is undefined
-    var marker = JSON.parse(adParams)[AdParamKeys.MARKER];;
+    const marker = JSON.parse(adParams)[AdParamKeys.MARKER];;
     this.specifyButtonFeatures_(buttonLabel);
   }
  
