@@ -19,7 +19,25 @@ public class GrantLocationServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
-    //TODO - implement the rest of this function (@Kaleab)
+    String correlator = request.getParameter("correlator");
+
+    //TODO: find a more graceful way to handle this
+    if (correlator == null){
+      throw new IOException();
+    }
+    
+    Filter correlatorFilter =  new FilterPredicate("correlator", FilterOperator.EQUAL, correlator);
+    Query impressionQuery = new Query("Impressions").setFilter(correlatorFilter);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery filteredImpression = datastore.prepare(impressionQuery);
+
+    //only runs once
+    for (Entity impression : filteredImpression.asIterable()) {
+      impression.setProperty("grantsLocation", true);
+      datastore.put(impression);  //override the existing entity
+    }
+
     response.setStatus(HttpServletResponse.SC_OK); 
   }
 }

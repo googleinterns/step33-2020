@@ -46,7 +46,6 @@ public class FindLocationServlet extends HttpServlet {
       datastore.put(impression);  //override the existing entity
     }
 
-    //TODO - implement the rest of this function (@Kaleab)
     response.setStatus(HttpServletResponse.SC_OK); 
   }
 }
