@@ -1,5 +1,5 @@
 
-import SimidProtocol from '../simid_protocol.js';
+import SimidProtocol from './simid_protocol.js';
 import {MediaMessage, PlayerMessage, CreativeMessage} from '../constants.js';
 
 /*
