@@ -14,10 +14,4 @@ public class ReturnToAdServlet extends HttpServlet {
     response.setContentType("text/html;");
     response.getWriter().println("<h1>Return to Ad</h1>");
   }
-
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-    response.sendRedirect("/return-to-ad");
-  }
 }

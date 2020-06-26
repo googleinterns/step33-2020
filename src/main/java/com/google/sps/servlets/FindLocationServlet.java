@@ -14,10 +14,4 @@ public class FindLocationServlet extends HttpServlet {
     response.setContentType("text/html;");
     response.getWriter().println("<h1>Find Location</h1>");
   }
-
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-    response.sendRedirect("/find-location");
-  }
 }
