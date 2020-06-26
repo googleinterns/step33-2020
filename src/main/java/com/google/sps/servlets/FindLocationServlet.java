@@ -5,8 +5,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 
@@ -31,7 +35,7 @@ public class FindLocationServlet extends HttpServlet {
     }
     
     Filter correlatorFilter =  new FilterPredicate("correlator", FilterOperator.EQUAL, correlator);
-    Query impressionQuery = new Query("Impressions").setFilter(keyFilter);
+    Query impressionQuery = new Query("Impressions").setFilter(correlatorFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery filteredImpression = datastore.prepare(impressionQuery);
