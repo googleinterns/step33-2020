@@ -1,6 +1,6 @@
 
 import SimidProtocol from './simid_protocol.js';
-import {MediaMessage, PlayerMessage, CreativeMessage} from '../constants.js';
+import {MediaMessage, PlayerMessage, CreativeMessage} from './constants.js';
 
 /*
  * A subclass of a SIMID ad that implements functionality that will
