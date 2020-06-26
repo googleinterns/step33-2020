@@ -3,7 +3,7 @@
 import BaseSimidCreative from './base_simid_creative.js';
 import SimidProtocol from './simid_protocol.js';
 
-jest.mock('../simid_protocol.js');
+jest.mock('./simid_protocol.js');
 
 let baseCreative;
 
