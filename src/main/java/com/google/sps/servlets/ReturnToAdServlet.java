@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/returnToAd")
+@WebServlet("/return-to-ad")
 public class ReturnToAdServlet extends HttpServlet {
 
   @Override
@@ -18,6 +18,6 @@ public class ReturnToAdServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    response.sendRedirect("/returnToAd");
+    response.sendRedirect("/return-to-ad");
   }
 }

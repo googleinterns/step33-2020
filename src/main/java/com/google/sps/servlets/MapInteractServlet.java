@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/mapInteract")
+@WebServlet("/map-interact")
 public class MapInteractServlet extends HttpServlet {
 
   @Override
@@ -18,6 +18,6 @@ public class MapInteractServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    response.sendRedirect("/mapInteract");
+    response.sendRedirect("/map-interact");
   }
 }

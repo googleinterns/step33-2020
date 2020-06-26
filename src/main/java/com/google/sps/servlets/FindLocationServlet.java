@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/findLocation")
+@WebServlet("/find-location")
 public class FindLocationServlet extends HttpServlet {
 
   @Override
@@ -18,6 +18,6 @@ public class FindLocationServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    response.sendRedirect("/findLocation");
+    response.sendRedirect("/find-location");
   }
 }
