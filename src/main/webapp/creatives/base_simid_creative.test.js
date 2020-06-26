@@ -1,3 +1,4 @@
+/** Examples tests showing how Jest works */
 
 import BaseSimidCreative from './base_simid_creative.js';
 import SimidProtocol from '../simid_protocol.js';
