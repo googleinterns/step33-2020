@@ -20,7 +20,24 @@ public class InitializeServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-    //TODO - implement the rest of this function (@Kaleab)
+    String correlator = request.getParameter("correlator");
+
+    //TODO: find a more graceful way to handle this
+    if (correlator == null){
+      throw new IOException();
+    }
+
+    Entity impressions = new Entity("Impressions");
+    impressions.setProperty("correlator", correlator);
+    impressions.setProperty("clicksFindNearestLocation", false);
+    impressions.setProperty("grantsLocation", false);
+    impressions.setProperty("interactsWithMap", false);
+    impressions.setProperty("clicksSkipToContent", false);
+    impressions.setProperty("clicksReturnToAd", false);
+
+    DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
+    dataStore.put(impressions);
+
     response.setStatus(HttpServletResponse.SC_OK); 
   }
 }
