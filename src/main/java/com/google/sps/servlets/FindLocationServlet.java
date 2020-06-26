@@ -5,6 +5,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 @WebServlet("/find-location")
 public class FindLocationServlet extends HttpServlet {
@@ -19,6 +23,24 @@ public class FindLocationServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
+    String correlator = request.getParameter("correlator");
+
+    //TODO: find a more graceful way to handle this
+    if (correlator == null){
+      throw new IOException();
+    }
+    
+    Filter correlatorFilter =  new FilterPredicate("correlator", FilterOperator.EQUAL, correlator);
+    Query impressionQuery = new Query("Impressions").setFilter(keyFilter);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery filteredImpression = datastore.prepare(impressionQuery);
+
+    //only runs once
+    for (Entity impression : filteredImpression.asIterable()) {
+      impressions.setProperty("clicksFindNearestLocation", true);
+    }
+
     //TODO - implement the rest of this function (@Kaleab)
     response.setStatus(HttpServletResponse.SC_OK); 
   }
