@@ -42,7 +42,7 @@ public class FindLocationServlet extends HttpServlet {
 
     //only runs once
     for (Entity impression : filteredImpression.asIterable()) {
-      impressions.setProperty("clicksFindNearestLocation", true);
+      impression.setProperty("clicksFindNearestLocation", true);
     }
 
     //TODO - implement the rest of this function (@Kaleab)
