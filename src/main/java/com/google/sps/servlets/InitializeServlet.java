@@ -11,15 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 public class InitializeServlet extends HttpServlet {
 
  /**
-  * Given the correlator, this will create an entry in the database with default values.
+  * Given the correlator, this will create an entry in the database with default
+  * values.
   *
-  * @param  request  This includes a correlator for the current user.
-  * @param  response An empty 200 response 
+  * request - This includes a correlator of type String for the current user.
+  * response - An empty 200 response 
   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-    //TODO - change default response
+    //TODO - implement the rest of this function (@Kaleab)
     response.setStatus(HttpServletResponse.SC_OK); 
   }
 }
