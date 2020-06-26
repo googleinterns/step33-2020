@@ -1,9 +1,13 @@
+
+import SimidProtocol from '../simid_protocol.js';
+import {MediaMessage, PlayerMessage, CreativeMessage} from '../constants.js';
+
 /*
  * A subclass of a SIMID ad that implements functionality that will
  * be the same for all simid ads.
  * Note: File originally from https://github.com/InteractiveAdvertisingBureau/SIMID/blob/master/examples/creatives/base_simid_creative.js
  */
-class BaseSimidCreative {
+export default class BaseSimidCreative {
   constructor() {
     /**
      * Data about the creative, not known until after init.
@@ -82,7 +86,7 @@ class BaseSimidCreative {
       muted: this.environmentData.muted,
       paused: false,
       volume: this.environmentData.volume,
-      fullscreen: false //TODO add this to environment data in spec
+      fullscreen: false,
     }
     this.simidProtocol.resolve(eventData, {});
   }
@@ -115,7 +119,7 @@ class BaseSimidCreative {
     this.simidProtocol.resolve(eventData, {});
   }
 
-  /** 
+  /**
    * Opens the click through url and lets the player know about it.
    */
   clickThru() {
