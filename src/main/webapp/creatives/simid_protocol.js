@@ -5,7 +5,7 @@
  * Note: File originally from https://github.com/InteractiveAdvertisingBureau/SIMID/tree/master/examples
  */
 
-import {PlayerMessage, CreativeMessage} from './constants.js';
+import {PlayerMessage, CreativeMessage} from '../constants.js';
 
 export default class SimidProtocol {
 
