@@ -43,6 +43,7 @@ public class FindLocationServlet extends HttpServlet {
     //only runs once
     for (Entity impression : filteredImpression.asIterable()) {
       impression.setProperty("clicksFindNearestLocation", true);
+      datastore.put(impression);  //override the existing entity
     }
 
     //TODO - implement the rest of this function (@Kaleab)
