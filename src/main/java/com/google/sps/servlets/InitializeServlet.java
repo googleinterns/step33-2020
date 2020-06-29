@@ -32,12 +32,12 @@ public class InitializeServlet extends HttpServlet {
     }
 
     Entity impressions = new Entity("Impressions");
-    impressions.setProperty("correlator", correlator);
-    impressions.setProperty("clicksFindNearestLocation", false);
-    impressions.setProperty("grantsLocation", false);
-    impressions.setProperty("interactsWithMap", false);
-    impressions.setProperty("clicksSkipToContent", false);
-    impressions.setProperty("clicksReturnToAd", false);
+    impressions.setProperty(Shared.CORRELATOR, correlator);
+    impressions.setProperty(Shared.FIND_NEAREST_LOCATION, false);
+    impressions.setProperty(Shared.GRANTS_LOCATION, false);
+    impressions.setProperty(Shared.INTERACTS_WITH_MAP, false);
+    impressions.setProperty(Shared.SKIP_TO_CONTENT, false);
+    impressions.setProperty(Shared.RETURN_TO_AD, false);
 
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     dataStore.put(impressions);

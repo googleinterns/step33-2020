@@ -13,8 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 
 public class Shared {
 
+  public final String CORRELATOR = "correlator";
+  public final String FIND_NEAREST_LOCATION = "clicksFindNearestLocation";
+  public final String GRANTS_LOCATION = "grantsLocation";
+  public final String INTERACTS_WITH_MAP = "interactsWithMap";
+  public final String SKIP_TO_CONTENT = "clicksSkipToContent";
+  public final String RETURN_TO_AD = "clicksReturnToAd";
+
   public static String getCorrelator(HttpServletRequest request) {
-    String correlator = request.getParameter("correlator");
+    String correlator = request.getParameter(CORRELATOR);
 
     if (correlator == null) {
       return "";
@@ -25,7 +32,7 @@ public class Shared {
  
   public static void updateDatabase(String correlator, String propertyToUpdate) {
     
-    final Filter correlatorFilter =  new FilterPredicate("correlator", FilterOperator.EQUAL, correlator);
+    final Filter correlatorFilter =  new FilterPredicate(CORRELATOR, FilterOperator.EQUAL, correlator);
     final Query impressionQuery = new Query("Impressions").setFilter(correlatorFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
