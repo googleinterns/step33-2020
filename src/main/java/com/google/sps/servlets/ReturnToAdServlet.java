@@ -27,7 +27,7 @@ public class ReturnToAdServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-        String correlator = request.getParameter("correlator");
+    String correlator = request.getParameter("correlator");
 
     if (correlator == null){
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);

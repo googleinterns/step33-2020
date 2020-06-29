@@ -26,26 +26,15 @@ public class SkipToContentServlet extends HttpServlet {
   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        
+
     String correlator = request.getParameter("correlator");
 
-    //TODO: find a more graceful way to handle this
     if (correlator == null){
-      throw new IOException();
-    }
-    
-    Filter correlatorFilter =  new FilterPredicate("correlator", FilterOperator.EQUAL, correlator);
-    Query impressionQuery = new Query("Impressions").setFilter(correlatorFilter);
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery filteredImpression = datastore.prepare(impressionQuery);
-
-    //only runs once
-    for (Entity impression : filteredImpression.asIterable()) {
-      impression.setProperty("clicksSkipToContent", true);
-      datastore.put(impression);  //override the existing entity
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
 
-    response.setStatus(HttpServletResponse.SC_OK); 
+    Constants.updateDatabase(correlator, "clicksSkipToContent");
+
+    response.setStatus(HttpServletResponse.SC_OK);
   }
 }
