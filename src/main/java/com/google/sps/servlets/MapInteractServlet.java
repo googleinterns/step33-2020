@@ -34,7 +34,7 @@ public class MapInteractServlet extends HttpServlet {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
 
-    Constants.updateDatabase("interactWithMap");
+    Constants.updateDatabase(correlator, "interactWithMap");
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }
