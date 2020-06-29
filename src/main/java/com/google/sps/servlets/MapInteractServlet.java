@@ -13,6 +13,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.sps.servlets.Constants.updateDatabase;
 
 @WebServlet("/map-interact")
 public class MapInteractServlet extends HttpServlet {
@@ -29,22 +30,11 @@ public class MapInteractServlet extends HttpServlet {
         
     String correlator = request.getParameter("correlator");
 
-    //TODO: find a more graceful way to handle this
     if (correlator == null){
-      throw new IOException();
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
-    
-    Filter correlatorFilter =  new FilterPredicate("correlator", FilterOperator.EQUAL, correlator);
-    Query impressionQuery = new Query("Impressions").setFilter(correlatorFilter);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery filteredImpression = datastore.prepare(impressionQuery);
-
-    //only runs once
-    for (Entity impression : filteredImpression.asIterable()) {
-      impression.setProperty("interactsWithMap", true);
-      datastore.put(impression);  //override the existing entity
-    }
+    updateDatabase("interactWithMap");
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }
