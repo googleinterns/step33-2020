@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.sps.servlets.DBUtilities;
+import com.google.sps.servlets.Propery;
 
 @WebServlet("/grant-location")
 public class GrantLocationServlet extends HttpServlet {

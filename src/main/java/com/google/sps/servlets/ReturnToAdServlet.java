@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.sps.servlets.DBUtilities;
+import com.google.sps.servlets.Propery;
 
 @WebServlet("/return-to-ad")
 public class ReturnToAdServlet extends HttpServlet {
@@ -27,7 +28,7 @@ public class ReturnToAdServlet extends HttpServlet {
       return;
     }
 
-    DBUtilities.setToTrue(correlator, Property..RETURN_TO_AD);
+    DBUtilities.setToTrue(correlator, Property.RETURN_TO_AD);
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }
