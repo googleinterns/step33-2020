@@ -11,6 +11,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.sps.servlets.DBUtilities;
 import com.google.sps.servlets.Property;
+import com.google.sps.servlets.RequestUtils;
 
 @WebServlet("/initialize")
 public class InitializeServlet extends HttpServlet {
@@ -25,7 +26,7 @@ public class InitializeServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-    final String correlator = DBUtilities.getCorrelator(request);
+    final String correlator = RequestUtils.getCorrelator(request);
 
     if (correlator.isEmpty()) {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

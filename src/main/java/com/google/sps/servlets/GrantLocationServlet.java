@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.sps.servlets.DBUtilities;
 import com.google.sps.servlets.Property;
+import com.google.sps.servlets.RequestUtils;
 
 @WebServlet("/grant-location")
 public class GrantLocationServlet extends HttpServlet {
@@ -21,7 +22,7 @@ public class GrantLocationServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
  
-    final String correlator = DBUtilities.getCorrelator(request);
+    final String correlator = RequestUtils.getCorrelator(request);
 
     if (correlator.isEmpty()) {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

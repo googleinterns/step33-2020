@@ -8,27 +8,10 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import com.google.sps.servlets.Property;
 
 public class DBUtilities {
 
   public static final String INTERACTION_TABLE = "Interactions";
-
- /**
-  * Given an HTTP request object, this method will get the correlator parameter
-  * and return it. Returns an empty string if correlator is not given.
-  */
-  public static String getCorrelator(HttpServletRequest request) {
-    String correlator = request.getParameter(Property.CORRELATOR);
-
-    if (correlator == null) {
-      return "";
-    }
-
-    return correlator;
-  }
  
  /**
   * Given the correlator and the property to update, this will update the database to reflect that the user
