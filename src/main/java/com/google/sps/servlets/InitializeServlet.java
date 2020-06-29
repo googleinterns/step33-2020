@@ -31,7 +31,7 @@ public class InitializeServlet extends HttpServlet {
       return;
     }
 
-    Entity impressions = new Entity("Impressions");
+    Entity impressions = new Entity(Shared.INTERACTION_TABLE);
     impressions.setProperty(Shared.CORRELATOR, correlator);
     impressions.setProperty(Shared.FIND_NEAREST_LOCATION, false);
     impressions.setProperty(Shared.GRANTS_LOCATION, false);

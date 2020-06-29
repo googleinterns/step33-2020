@@ -19,6 +19,7 @@ public class Shared {
   public final String INTERACTS_WITH_MAP = "interactsWithMap";
   public final String SKIP_TO_CONTENT = "clicksSkipToContent";
   public final String RETURN_TO_AD = "clicksReturnToAd";
+  public final String INTERACTION_TABLE = "Interactions";
 
  /**
   * Given an HTTP request object, this method will get the correlator parameter
@@ -44,7 +45,7 @@ public class Shared {
   public static void updateDatabase(String correlator, String propertyToUpdate) {
     
     final Filter correlatorFilter =  new FilterPredicate(CORRELATOR, FilterOperator.EQUAL, correlator);
-    final Query impressionQuery = new Query("Impressions").setFilter(correlatorFilter);
+    final Query impressionQuery = new Query(INTERACTION_TABLE).setFilter(correlatorFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery filteredImpression = datastore.prepare(impressionQuery);
