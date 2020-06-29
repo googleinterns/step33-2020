@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.sps.servlets.Shared;
+import com.google.sps.servlets.DBUtilities;
 
 @WebServlet("/map-interact")
 public class MapInteractServlet extends HttpServlet {
@@ -20,14 +20,14 @@ public class MapInteractServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    final String correlator = Shared.getCorrelator(request);
+    final String correlator = DBUtilities.getCorrelator(request);
 
     if (correlator.isEmpty()) {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return;
     }
 
-    Shared.updateDatabase(correlator, Shared.INTERACTS_WITH_MAP);
+    DBUtilities.setToTrue(correlator, Property.INTERACTS_WITH_MAP);
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }

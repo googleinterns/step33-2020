@@ -10,15 +10,10 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import com.google.sps.servlets.Propery;
 
-public class Shared {
+public class DBUtilities {
 
-  public final String CORRELATOR = "correlator";
-  public final String FIND_NEAREST_LOCATION = "clicksFindNearestLocation";
-  public final String GRANTS_LOCATION = "grantsLocation";
-  public final String INTERACTS_WITH_MAP = "interactsWithMap";
-  public final String SKIP_TO_CONTENT = "clicksSkipToContent";
-  public final String RETURN_TO_AD = "clicksReturnToAd";
   public final String INTERACTION_TABLE = "Interactions";
 
  /**
@@ -26,7 +21,7 @@ public class Shared {
   * and return it. Returns an empty string if correlator is not given.
   */
   public static String getCorrelator(HttpServletRequest request) {
-    String correlator = request.getParameter(CORRELATOR);
+    String correlator = request.getParameter(Property.CORRELATOR);
 
     if (correlator == null) {
       return "";
@@ -42,9 +37,9 @@ public class Shared {
   * correlator - A correlator of type String for the current user.
   * propertyToUpdate - A property of type String that is to be updated
   */
-  public static void updateDatabase(String correlator, String propertyToUpdate) {
+  public static void setToTrue(String correlator, String propertyToUpdate) {
     
-    final Filter correlatorFilter =  new FilterPredicate(CORRELATOR, FilterOperator.EQUAL, correlator);
+    final Filter correlatorFilter =  new FilterPredicate(Property.CORRELATOR, FilterOperator.EQUAL, correlator);
     final Query impressionQuery = new Query(INTERACTION_TABLE).setFilter(correlatorFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

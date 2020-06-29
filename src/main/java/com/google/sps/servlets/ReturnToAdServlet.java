@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.sps.servlets.Shared;
+import com.google.sps.servlets.DBUtilities;
 
 @WebServlet("/return-to-ad")
 public class ReturnToAdServlet extends HttpServlet {
@@ -20,14 +20,14 @@ public class ReturnToAdServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-    final String correlator = Shared.getCorrelator(request);
+    final String correlator = DBUtilities.getCorrelator(request);
 
     if (correlator.isEmpty()) {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return;
     }
 
-    Shared.updateDatabase(correlator, Shared.RETURN_TO_AD);
+    DBUtilities.setToTrue(correlator, Property..RETURN_TO_AD);
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }

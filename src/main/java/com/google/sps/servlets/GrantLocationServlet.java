@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.sps.servlets.Shared;
+import com.google.sps.servlets.DBUtilities;
 
 @WebServlet("/grant-location")
 public class GrantLocationServlet extends HttpServlet {
@@ -20,14 +20,14 @@ public class GrantLocationServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
  
-    final String correlator = Shared.getCorrelator(request);
+    final String correlator = DBUtilities.getCorrelator(request);
 
     if (correlator.isEmpty()) {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return;
     }
 
-    Constants.updateDatabase(correlator, Shared.GRANTS_LOCATION);
+    DBUtilities.setToTrue(correlator, Property.GRANTS_LOCATION);
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }

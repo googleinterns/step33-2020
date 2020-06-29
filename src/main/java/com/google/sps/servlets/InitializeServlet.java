@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.sps.servlets.Shared;
+import com.google.sps.servlets.DBUtilities;
 
 @WebServlet("/initialize")
 public class InitializeServlet extends HttpServlet {
@@ -24,20 +24,20 @@ public class InitializeServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-    final String correlator = Shared.getCorrelator(request);
+    final String correlator = DBUtilities.getCorrelator(request);
 
     if (correlator.isEmpty()) {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return;
     }
 
-    Entity impressions = new Entity(Shared.INTERACTION_TABLE);
-    impressions.setProperty(Shared.CORRELATOR, correlator);
-    impressions.setProperty(Shared.FIND_NEAREST_LOCATION, false);
-    impressions.setProperty(Shared.GRANTS_LOCATION, false);
-    impressions.setProperty(Shared.INTERACTS_WITH_MAP, false);
-    impressions.setProperty(Shared.SKIP_TO_CONTENT, false);
-    impressions.setProperty(Shared.RETURN_TO_AD, false);
+    Entity impressions = new Entity(DBUtilities.INTERACTION_TABLE);
+    impressions.setProperty(Property.CORRELATOR, correlator);
+    impressions.setProperty(Property.FIND_NEAREST_LOCATION, false);
+    impressions.setProperty(Property.GRANTS_LOCATION, false);
+    impressions.setProperty(Property.INTERACTS_WITH_MAP, false);
+    impressions.setProperty(Property.SKIP_TO_CONTENT, false);
+    impressions.setProperty(Property.RETURN_TO_AD, false);
 
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     dataStore.put(impressions);
