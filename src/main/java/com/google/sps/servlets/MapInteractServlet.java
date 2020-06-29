@@ -22,11 +22,12 @@ public class MapInteractServlet extends HttpServlet {
         
     String correlator = request.getParameter("correlator");
 
-    if (correlator == null){
+    if (correlator == null) {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      return;
     }
 
-    Constants.updateDatabase(correlator, "interactWithMap");
+    Constants.updateDatabase(correlator, "interactsWithMap");
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }

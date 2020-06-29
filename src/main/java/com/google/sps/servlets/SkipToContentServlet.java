@@ -22,8 +22,9 @@ public class SkipToContentServlet extends HttpServlet {
 
     String correlator = request.getParameter("correlator");
 
-    if (correlator == null){
+    if (correlator == null) {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      return;
     }
 
     Constants.updateDatabase(correlator, "clicksSkipToContent");
