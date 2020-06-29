@@ -6,11 +6,10 @@ let testMap;
 
 beforeEach(() => {
     testMap = new SimidMapCreative();
+    document.body.innerHTML = '<button id="findNearest"></button>';
 });
 
-test('testing button text updates from ad params', ()=> {
-    document.body.innerHTML = '<button id="findNearest"></button>';
-
+test('testing button text updates from ad params', () => {
     const eventData = {
         args: {
             creativeData: {
@@ -37,9 +36,7 @@ test('testing button text updates from ad params', ()=> {
     expect(button.innerText).toBe('Find Nearest Place');
 });
 
-test('testing button text updates with default ad params', ()=> {
-    document.body.innerHTML = '<button id="findNearest"></button>';
-
+test('testing button text updates with default ad params', () => {
     const eventData = {
         args: {
             creativeData: {
