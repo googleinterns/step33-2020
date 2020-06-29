@@ -21,7 +21,7 @@ public class FindLocationServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
-    String correlator = request.getParameter("correlator");
+    final String correlator = request.getParameter("correlator");
 
     if (correlator == null) {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);

@@ -23,11 +23,11 @@ public class InitializeServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-    String correlator = request.getParameter("correlator");
+    final String correlator = request.getParameter("correlator");
 
-    //TODO: find a more graceful way to handle this
-    if (correlator == null){
+    if (correlator == null) {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      return;
     }
 
     Entity impressions = new Entity("Impressions");
