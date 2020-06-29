@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class Shared {
 
-  public static void getCorrelator(HttpServletRequest request) {
+  public static String getCorrelator(HttpServletRequest request) {
     String correlator = request.getParameter("correlator");
 
     if (correlator == null) {
@@ -25,8 +25,8 @@ public class Shared {
  
   public static void updateDatabase(String correlator, String propertyToUpdate) {
     
-    public static final Filter correlatorFilter =  new FilterPredicate("correlator", FilterOperator.EQUAL, correlator);
-    public static final Query impressionQuery = new Query("Impressions").setFilter(correlatorFilter);
+    final Filter correlatorFilter =  new FilterPredicate("correlator", FilterOperator.EQUAL, correlator);
+    final Query impressionQuery = new Query("Impressions").setFilter(correlatorFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery filteredImpression = datastore.prepare(impressionQuery);
