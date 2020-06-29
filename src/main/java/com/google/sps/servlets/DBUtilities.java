@@ -40,14 +40,17 @@ public class DBUtilities {
   public static void setToTrue(String correlator, String propertyToUpdate) {
     
     final Filter correlatorFilter =  new FilterPredicate(Property.CORRELATOR, FilterOperator.EQUAL, correlator);
-    final Query impressionQuery = new Query(INTERACTION_TABLE).setFilter(correlatorFilter);
+    final Query interactionQuery = new Query(INTERACTION_TABLE).setFilter(correlatorFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery filteredImpression = datastore.prepare(impressionQuery);
+    PreparedQuery filteredImpression = datastore.prepare(interactionQuery);
 
-    for (Entity impression : filteredImpression.asIterable()) {
-      impression.setProperty(propertyToUpdate, true);
-      datastore.put(impression);  // override the existing entity
+    // throws a tooManyResultsException if more than one entry exists with same correlator
+    Entity currentInteraction = filteredImpression.asSingleEntity();
+
+    if (currentInteraction != null) {
+      currentInteraction.setProperty(propertyToUpdate, true);
+      datastore.put(currentInteraction);  // override the existing entity
     }
   }
 }
