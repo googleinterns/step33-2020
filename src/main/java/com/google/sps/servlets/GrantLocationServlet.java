@@ -27,7 +27,7 @@ public class GrantLocationServlet extends HttpServlet {
       return;
     }
 
-    Constants.updateDatabase(correlator, "grantsLocation");
+    Constants.updateDatabase(correlator, Shared.GRANTS_LOCATION);
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }

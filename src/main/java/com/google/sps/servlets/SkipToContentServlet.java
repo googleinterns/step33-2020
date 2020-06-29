@@ -27,7 +27,7 @@ public class SkipToContentServlet extends HttpServlet {
       return;
     }
 
-    Shared.updateDatabase(correlator, "clicksSkipToContent");
+    Shared.updateDatabase(correlator, Shared.SKIP_TO_CONTENT);
 
     response.setStatus(HttpServletResponse.SC_OK);
   }

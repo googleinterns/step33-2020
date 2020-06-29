@@ -27,7 +27,7 @@ public class ReturnToAdServlet extends HttpServlet {
       return;
     }
 
-    Shared.updateDatabase(correlator, "clicksReturnToAd");
+    Shared.updateDatabase(correlator, Shared.RETURN_TO_AD);
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }

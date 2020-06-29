@@ -27,7 +27,7 @@ public class MapInteractServlet extends HttpServlet {
       return;
     }
 
-    Shared.updateDatabase(correlator, "interactsWithMap");
+    Shared.updateDatabase(correlator, Shared.INTERACTS_WITH_MAP);
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }

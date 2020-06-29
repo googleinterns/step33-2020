@@ -28,7 +28,7 @@ public class FindLocationServlet extends HttpServlet {
       return;
     }
 
-    Shared.updateDatabase(correlator, "clicksFindNearestLocation");
+    Shared.updateDatabase(correlator, Shared.FIND_NEAREST_LOCATION);
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }
