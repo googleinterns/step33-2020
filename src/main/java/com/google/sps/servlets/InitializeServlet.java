@@ -27,7 +27,7 @@ public class InitializeServlet extends HttpServlet {
 
     //TODO: find a more graceful way to handle this
     if (correlator == null){
-      throw new IOException();
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
 
     Entity impressions = new Entity("Impressions");

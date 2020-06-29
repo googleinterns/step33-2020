@@ -13,7 +13,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.sps.servlets.Constants.updateDatabase;
+import com.google.sps.servlets.Constants;
 
 @WebServlet("/map-interact")
 public class MapInteractServlet extends HttpServlet {
@@ -34,7 +34,7 @@ public class MapInteractServlet extends HttpServlet {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
 
-    updateDatabase("interactWithMap");
+    Constants.updateDatabase("interactWithMap");
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }
