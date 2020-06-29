@@ -25,7 +25,7 @@ public class FindLocationServlet extends HttpServlet {
     final String correlator = DBUtilities.getCorrelator(request);
 
     if (correlator.isEmpty()) {
-      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       return;
     }
 
