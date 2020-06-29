@@ -20,6 +20,10 @@ public class Shared {
   public final String SKIP_TO_CONTENT = "clicksSkipToContent";
   public final String RETURN_TO_AD = "clicksReturnToAd";
 
+ /**
+  * Given an HTTP request object, this method will get the correlator parameter
+  * and return it. Returns an empty string if correlator is not given.
+  */
   public static String getCorrelator(HttpServletRequest request) {
     String correlator = request.getParameter(CORRELATOR);
 
@@ -30,6 +34,13 @@ public class Shared {
     return correlator;
   }
  
+ /**
+  * Given the correlator and the property to update, this will update the database to reflect that the user
+  * clicked on the corresponding metric.
+  *
+  * correlator - A correlator of type String for the current user.
+  * propertyToUpdate - A property of type String that is to be updated
+  */
   public static void updateDatabase(String correlator, String propertyToUpdate) {
     
     final Filter correlatorFilter =  new FilterPredicate(CORRELATOR, FilterOperator.EQUAL, correlator);
