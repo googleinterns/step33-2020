@@ -10,7 +10,7 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import com.google.sps.servlets.Propery;
+import com.google.sps.servlets.Property;
 
 public class DBUtilities {
 

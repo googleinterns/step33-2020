@@ -10,7 +10,7 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.sps.servlets.DBUtilities;
-import com.google.sps.servlets.Propery;
+import com.google.sps.servlets.Property;
 
 @WebServlet("/initialize")
 public class InitializeServlet extends HttpServlet {
