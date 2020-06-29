@@ -17,8 +17,8 @@ public class DBUtilities {
   * Given the correlator and the property to update, this will update the database to reflect that the user
   * clicked on the corresponding metric.
   *
-  * correlator - A correlator of type String for the current user.
-  * propertyToUpdate - A property of type String that is to be updated
+  * @param correlator A correlator for the current user.
+  * @param propertyToUpdate The property that is to be updated
   */
   public static void setToTrue(String correlator, String propertyToUpdate) {
     
