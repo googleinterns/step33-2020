@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.sps.servlets.Shared;
 
 @WebServlet("/initialize")
 public class InitializeServlet extends HttpServlet {
@@ -23,9 +24,9 @@ public class InitializeServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-    final String correlator = request.getParameter("correlator");
+    final String correlator = Shared.getCorrelator(request);
 
-    if (correlator == null) {
+    if (correlator.isEmpty()) {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return;
     }

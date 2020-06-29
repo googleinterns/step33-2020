@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.sps.servlets.Constants;
+import com.google.sps.servlets.Shared;
 
 @WebServlet("/skip-to-content")
 public class SkipToContentServlet extends HttpServlet {
@@ -20,14 +20,14 @@ public class SkipToContentServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    final String correlator = request.getParameter("correlator");
+    final String correlator = Shared.getCorrelator(request);
 
-    if (correlator == null) {
+    if (correlator.isEmpty()) {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return;
     }
 
-    Constants.updateDatabase(correlator, "clicksSkipToContent");
+    Shared.updateDatabase(correlator, "clicksSkipToContent");
 
     response.setStatus(HttpServletResponse.SC_OK);
   }

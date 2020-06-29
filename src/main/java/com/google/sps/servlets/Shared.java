@@ -8,8 +8,20 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 
-public class Constants {
+public class Shared {
+
+  public static void getCorrelator(HttpServletRequest request) {
+    String correlator = request.getParameter("correlator");
+
+    if (correlator == null) {
+      return "";
+    }
+
+    return correlator;
+  }
  
   public static void updateDatabase(String correlator, String propertyToUpdate) {
     
