@@ -1,10 +1,6 @@
 
 import BaseSimidCreative from '../base_simid_creative.js';
 
-/**
- * A sample SIMID ad that shows a map of nearby locations
- */
-
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
   SEARCH_QUERY: 'searchQuery',
@@ -14,6 +10,9 @@ const AdParamKeys = {
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
 const DEFAULT_BUTTON_LABEL = "Location";
 
+/**
+ * A sample SIMID ad that shows a map of nearby locations.
+ */
 export default class SimidMapCreative extends BaseSimidCreative {
 
   constructor() {
@@ -26,16 +25,18 @@ export default class SimidMapCreative extends BaseSimidCreative {
     //ToDo(juliareichel@): handle invalid JSON and param errors
     const adParams = JSON.parse(this.creativeData.adParameters);
     const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
-    const searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
     //ToDo(juliareichel@): handle case where searchQuery is undefined
+    const searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
     const marker = adParams[AdParamKeys.MARKER];
     this.specifyButtonFeatures_(buttonLabel);
   }
  
   /**
    * Sets the text of the Find Nearest button and assigns it a click functionality.
-   * @param {string=} buttonLabel refers to the default value "location" written on the
-     Find Nearest button. Advertisers have the option of changing the text on button.
+   * @param {string=} buttonLabel Refers to the value given to the BUTTON_LABEL key in 
+   *   the AdParamKeys object. The value should be representative of the advertised product's 
+   *   category and can be specified by the advertisers. If the value is not specified, 
+   *   then BUTTON_LABEL's value will default to Location.
    * @private 
   */   
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
