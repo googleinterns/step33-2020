@@ -22,15 +22,27 @@ export default class SimidMapCreative extends BaseSimidCreative {
   /** @override */
   onStart(eventData){
     super.onStart(eventData);
-    //ToDo(juliareichel@): handle invalid JSON and param errors
-    const adParams = JSON.parse(this.creativeData.adParameters);
+    try {
+      const adParams = JSON.parse(this.creativeData.adParameters);
+    } catch (e) {
+      this.sendErrorMessage_(CreativeErrorCode.MESSAGES_NOT_FOLLOWING_SPEC);
+    }
     const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
     //ToDo(juliareichel@): handle case where searchQuery is undefined
     const searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
     const marker = adParams[AdParamKeys.MARKER];
+
+    if (searchQuery == undefined) {
+      this.sendErrorMessage_(CreativeErrorCode.UNSPECIFIED);
+    }
+
     this.specifyButtonFeatures_(buttonLabel);
   }
- 
+
+  sendErrorMessage_(message) {
+    this.simidProtocol.sendMessage(message);
+  }
+
   /**
    * Sets the text of the Find Nearest button and assigns it a click functionality.
    * @param {string=} buttonLabel Refers to the value given to the BUTTON_LABEL key in 
