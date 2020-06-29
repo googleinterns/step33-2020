@@ -29,22 +29,11 @@ public class FindLocationServlet extends HttpServlet {
     
     String correlator = request.getParameter("correlator");
 
-    //TODO: find a more graceful way to handle this
     if (correlator == null){
-      throw new IOException();
+      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
-    
-    Filter correlatorFilter =  new FilterPredicate("correlator", FilterOperator.EQUAL, correlator);
-    Query impressionQuery = new Query("Impressions").setFilter(correlatorFilter);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery filteredImpression = datastore.prepare(impressionQuery);
-
-    //only runs once
-    for (Entity impression : filteredImpression.asIterable()) {
-      impression.setProperty("clicksFindNearestLocation", true);
-      datastore.put(impression);  //override the existing entity
-    }
+    Constants.updateDatabase(correlator, "clicksFindNearestLocation");
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }

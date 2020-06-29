@@ -34,7 +34,7 @@ public class GrantLocationServlet extends HttpServlet {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
 
-    Constants.updateDatabase("grantsLocation");
+    Constants.updateDatabase(correlator, "grantsLocation");
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }
