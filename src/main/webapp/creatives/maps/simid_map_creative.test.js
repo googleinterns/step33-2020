@@ -1,6 +1,6 @@
 /** Tests to see if Find Nearest X button is appending correct text */
 
-import SimidMapCreative from './simid_maps.js';
+import SimidMapCreative from './simid_map_creative.js';
 
 test('testing button given ad params', ()=> {
     document.body.innerHTML = '<button id="findNearest"></button>';

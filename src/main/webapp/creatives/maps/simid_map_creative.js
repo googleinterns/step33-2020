@@ -22,7 +22,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
   /** @override */
   onStart(eventData){
-    debugger;
     super.onStart(eventData);
     //ToDo(juliareichel@): handle invalid JSON and param errors
     const adParams = JSON.parse(this.creativeData.adParameters);
@@ -34,9 +33,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
  
   /**
-   * Sets the text of the initial button and assigns it a click functionality.
+   * Sets the text of the Find Nearest button and assigns it a click functionality.
    * @param {string=} buttonLabel refers to the default value "location" written on the
-   * Find Nearest button. Advertisers have the option of changing the text on button.
+     Find Nearest button. Advertisers have the option of changing the text on button.
    * @private 
   */   
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
