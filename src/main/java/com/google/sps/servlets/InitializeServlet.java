@@ -19,8 +19,8 @@ public class InitializeServlet extends HttpServlet {
   * Given the correlator, this will create an entry in the database with default
   * values.
   *
-  * request - This includes a correlator of type String for the current user.
-  * response - An empty 200 response 
+  * @param request This includes a correlator for the current user.
+  * @param response A 200 status or 400 error
   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
