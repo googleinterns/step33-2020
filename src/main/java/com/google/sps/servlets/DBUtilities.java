@@ -14,7 +14,7 @@ import com.google.sps.servlets.Property;
 
 public class DBUtilities {
 
-  public final String INTERACTION_TABLE = "Interactions";
+  public static final String INTERACTION_TABLE = "Interactions";
 
  /**
   * Given an HTTP request object, this method will get the correlator parameter
