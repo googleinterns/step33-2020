@@ -49,7 +49,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * Prompts the users to grant or deny access to their current location.
    * @private 
   */
- 
   grantLocationAccess_() {
     //ToDo(kristenmason@): implement map
     this.loadMap_();
