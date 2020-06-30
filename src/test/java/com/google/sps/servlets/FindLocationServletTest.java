@@ -25,7 +25,7 @@ public final class FindLocationServletTest {
   }
 
   @Test
-  public void checkIfBadRequestStatusSentNull() {
+  public void testIfBadRequestStatusSentNull() {
     HttpServletRequest request = mock(HttpServletRequest.class);       
     HttpServletResponse response = mock(HttpServletResponse.class);    
 
@@ -37,7 +37,7 @@ public final class FindLocationServletTest {
   }
 
   @Test
-  public void checkIfBadRequestStatusSentEmpty() {
+  public void testIfBadRequestStatusSentEmpty() {
     HttpServletRequest request = mock(HttpServletRequest.class);       
     HttpServletResponse response = mock(HttpServletResponse.class);    
 

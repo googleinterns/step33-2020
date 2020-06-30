@@ -25,7 +25,7 @@ public final class GrantLocationServletTest {
   }
 
   @Test
-  public void checkIfBadRequestStatusSentNull() {
+  public void testsIfBadRequestStatusSentNull() {
     HttpServletRequest request = mock(HttpServletRequest.class);       
     HttpServletResponse response = mock(HttpServletResponse.class);    
 
@@ -37,7 +37,7 @@ public final class GrantLocationServletTest {
   }
 
   @Test
-  public void checkIfBadRequestStatusSentEmpty() {
+  public void testIfBadRequestStatusSentEmpty() {
     HttpServletRequest request = mock(HttpServletRequest.class);       
     HttpServletResponse response = mock(HttpServletResponse.class);    
 

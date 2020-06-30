@@ -55,15 +55,17 @@ public final class DBUtilitiesTest {
   public void testIfOnlyOneEntryMade() {
     DatastoreService dataStore = setDatabaseUp();
 
+    // a specific property used here, but any of the properties can be used
     DBUtilities.setToTrue("Person1", Property.FIND_NEAREST_LOCATION);
 
     assertEquals(1, dataStore.prepare(new Query(DBUtilities.INTERACTION_TABLE)).countEntities(withLimit(10)));
   }
 
   @Test
-  public void checkIfPropertyUpdatedCorrectly() {
+  public void testIfPropertyUpdatedCorrectly() {
     DatastoreService datastore = setDatabaseUp();
     
+    // a specific property used here, but any of the properties can be used
     DBUtilities.setToTrue("Person1", Property.GRANTS_LOCATION);
 
     final Filter correlatorFilter =  new FilterPredicate(Property.CORRELATOR, FilterOperator.EQUAL, "Person1");
@@ -78,9 +80,10 @@ public final class DBUtilitiesTest {
   }
 
   @Test
-  public void checkIfNothingUpdatesWhenPersonNotFound() {
+  public void testIfNothingUpdatesWhenPersonNotFound() {
     DatastoreService datastore = setDatabaseUp();
     
+    // a specific property used here, but any of the properties can be used
     DBUtilities.setToTrue("Person2", Property.GRANTS_LOCATION);
 
     Entity originalInteraction = new Entity("Interactions");
