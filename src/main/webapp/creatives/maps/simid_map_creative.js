@@ -56,12 +56,12 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
   /**
    * Loads a map object that currently displays a hardcoded location.
+   * @param {Object} coordinates - the LatLng object of user's current location
    * ToDo(kristenmason@): implement grant location access and modify
-   * function to pass in current position
+   * function to pass in current position (currently coords default to GooglePlex)
    * @private 
   */
-  loadMap_() {
-    const coordinates = new google.maps.LatLng(37.422004,-122.081402);
+  loadMap_(coordinates = new google.maps.LatLng(37.422004,-122.081402)) { 
     const map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
       center: coordinates
