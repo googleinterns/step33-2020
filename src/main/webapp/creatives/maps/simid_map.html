@@ -1,13 +1,14 @@
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="simid_maps.css">
+    <link rel="stylesheet" type="text/css" href="simid_map.css">
   </head>
   <body>
     <div id="container">
       <button id="findNearest"></button>
     </div>
+    <div id="map"></div>
     <script type="module">
-      import SimidMapCreative from './simid_maps.js';
+      import SimidMapCreative from './simid_map_creative.js';
       const map = new SimidMapCreative();
       map.ready();
     </script>
