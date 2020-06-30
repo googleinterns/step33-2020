@@ -55,6 +55,12 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.loadMap_();
   }
 
+  /**
+   * Loads a map object that currently displays a hardcoded location.
+   * ToDo(kristenmason@): implement grant location access and modify
+   * function to pass in current position
+   * @private 
+  */
   loadMap_() {
     const coordinates = new google.maps.LatLng(37.422004,-122.081402);
     const map = new google.maps.Map(document.getElementById('map'), {
