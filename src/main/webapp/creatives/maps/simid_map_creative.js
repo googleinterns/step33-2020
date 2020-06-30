@@ -66,7 +66,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
       zoom: 13,
       center: coordinates
     });
-    map.setCenter(coordinates);
     const marker = new google.maps.Marker({
       position: coordinates,
       map: map,
