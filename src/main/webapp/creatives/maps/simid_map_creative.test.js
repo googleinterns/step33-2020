@@ -24,13 +24,14 @@ test('testing button text updates from ad params', () => {
     };
     testMap.onInit(eventData);
 
+    const buttonLabel = "Place";
     const startData = {
         messageId: 1,
         sessionId: "test-session-id",
         timestamp: 0,
         type: "SIMID:Player:startCreative",  
     }
-    testMap.onStart(startData);
+    testMap.onStart(startData, buttonLabel);
 
     const button = document.getElementById("findNearest");
     expect(button.innerText).toBe('Find Nearest Place');
