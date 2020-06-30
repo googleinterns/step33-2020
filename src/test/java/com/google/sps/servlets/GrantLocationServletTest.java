@@ -21,7 +21,7 @@ public final class GrantLocationServletTest {
 
     new GrantLocationServlet().doGet(request, response);
 
-    assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+    Assert.assertEquals(HttpServletResponse.SC_OK, response.getStatus());
   }
 
   @Test
@@ -33,7 +33,7 @@ public final class GrantLocationServletTest {
 
     new GrantLocationServlet().doGet(request, response);
 
-    assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+    Assert.assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
   }
 
   @Test
@@ -45,6 +45,6 @@ public final class GrantLocationServletTest {
 
     new GrantLocationServlet().doGet(request, response);
 
-    assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+    Assert.assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
   }
 }

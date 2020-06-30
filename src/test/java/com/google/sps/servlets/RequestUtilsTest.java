@@ -19,7 +19,7 @@ public final class RequestUtilsTest {
 
     when(request.getParameter("correlator")).thenReturn("Person1");
     
-    assertEquals(RequestUtils.getCorrelator(request), "Person1");
+    Assert.assertEquals(RequestUtils.getCorrelator(request), "Person1");
   }
 
   @Test
@@ -28,7 +28,7 @@ public final class RequestUtilsTest {
 
     when(request.getParameter("correlator")).thenReturn("");
     
-    assertEquals(RequestUtils.getCorrelator(request), "");
+    Assert.assertEquals(RequestUtils.getCorrelator(request), "");
   }
 
   @Test
@@ -37,6 +37,6 @@ public final class RequestUtilsTest {
 
     when(request.getParameter("correlator")).thenReturn(null);
     
-    assertEquals(RequestUtils.getCorrelator(request), "");
+    Assert.assertEquals(RequestUtils.getCorrelator(request), "");
   }
 }
