@@ -49,7 +49,23 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * Prompts the users to grant or deny access to their current location.
    * @private 
   */
+ 
   grantLocationAccess_() {
     //ToDo(kristenmason@): implement map
+    this.loadMap_();
+  }
+
+  loadMap_() {
+    const coordinates = new google.maps.LatLng(37.422004,-122.081402);
+    const map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: coordinates
+    });
+    map.setCenter(coordinates);
+    const marker = new google.maps.Marker({
+      position: coordinates,
+      map: map,
+      title: 'Current Position'
+    });
   }
 }
