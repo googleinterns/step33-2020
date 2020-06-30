@@ -50,7 +50,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
   */
   grantLocationAccess_() {
-    //ToDo(kristenmason@): implement map
     this.loadMap_();
   }
 
