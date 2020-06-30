@@ -1,5 +1,6 @@
 
 import BaseSimidCreative from '../base_simid_creative.js';
+import {CreativeErrorCode} from '../constants.js';
 
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
@@ -20,27 +21,53 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   /** @override */
-  onStart(eventData){
-    super.onStart(eventData);
+  onInit(eventData) {
+    this.creativeData = eventData.args.creativeData;
+    this.environmentData = eventData.args.environmentData;
+
+
+    this.videoState = {
+      currentSrc:'',
+      currentTime: -1, // Time not yet known
+      duration: -1, // duration unknown
+      ended: false,
+      muted: this.environmentData.muted,
+      paused: false,
+      volume: this.environmentData.volume,
+      fullscreen: false,
+    }
+
+    /**
+     * Error handeling for empty or incorrect ad paramters.
+     */
+    let adParams = "";
+    if (this.creativeData.adParameters == "") {
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
+        message: "Ad parameters not found"});
+    }
+
     try {
-      const adParams = JSON.parse(this.creativeData.adParameters);
-    } catch (e) {
-      this.sendErrorMessage_(CreativeErrorCode.MESSAGES_NOT_FOLLOWING_SPEC);
+      adParams = JSON.parse(this.creativeData.adParameters);
+    } catch (exception) {
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.MESSAGES_NOT_FOLLOWING_SPEC, 
+        message: "Invalid JSON input"});
     }
     const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
-    //ToDo(juliareichel@): handle case where searchQuery is undefined
     const searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
-    const marker = adParams[AdParamKeys.MARKER];
 
     if (searchQuery == undefined) {
-      this.sendErrorMessage_(CreativeErrorCode.UNSPECIFIED);
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
+        message: "Required field 'SearchQuery' not found"});
     }
 
-    this.specifyButtonFeatures_(buttonLabel);
+    const marker = adParams[AdParamKeys.MARKER];
+    this.simidProtocol.resolve(eventData, {});
   }
 
-  sendErrorMessage_(message) {
-    this.simidProtocol.sendMessage(message);
+  /** @override */
+  onStart(eventData, buttonLabel) {
+    super.onStart(eventData);
+    this.specifyButtonFeatures_(buttonLabel);
   }
 
   /**
