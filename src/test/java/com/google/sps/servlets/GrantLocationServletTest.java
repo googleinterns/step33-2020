@@ -1,5 +1,6 @@
 package com.google.sps.servlets;
 
+import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.After;
@@ -30,7 +31,7 @@ public final class GrantLocationServletTest {
   }
 
   @Test
-  public void testCorrectStatusSent() {
+  public void testCorrectStatusSent() throws IOException {
     HttpServletRequest request = mock(HttpServletRequest.class);       
     HttpServletResponse response = mock(HttpServletResponse.class);    
 
@@ -42,7 +43,7 @@ public final class GrantLocationServletTest {
   }
 
   @Test
-  public void testsIfBadRequestStatusSentNull() {
+  public void testsIfBadRequestStatusSentNull() throws IOException {
     HttpServletRequest request = mock(HttpServletRequest.class);       
     HttpServletResponse response = mock(HttpServletResponse.class);    
 
@@ -54,7 +55,7 @@ public final class GrantLocationServletTest {
   }
 
   @Test
-  public void testIfBadRequestStatusSentEmpty() {
+  public void testIfBadRequestStatusSentEmpty() throws IOException {
     HttpServletRequest request = mock(HttpServletRequest.class);       
     HttpServletResponse response = mock(HttpServletResponse.class);    
 

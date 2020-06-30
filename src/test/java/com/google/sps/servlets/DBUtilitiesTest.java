@@ -58,7 +58,7 @@ public final class DBUtilitiesTest {
     // a specific property used here, but any of the properties can be used
     DBUtilities.setToTrue("Person1", Property.FIND_NEAREST_LOCATION);
 
-    assertEquals(1, dataStore.prepare(new Query(DBUtilities.INTERACTION_TABLE)).countEntities(withLimit(10)));
+    Assert.assertEquals(1, dataStore.prepare(new Query(DBUtilities.INTERACTION_TABLE)).countEntities());
   }
 
   @Test
@@ -71,12 +71,12 @@ public final class DBUtilitiesTest {
     final Filter correlatorFilter =  new FilterPredicate(Property.CORRELATOR, FilterOperator.EQUAL, "Person1");
     final Query interactionQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(correlatorFilter);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery filteredImpression = datastore.prepare(interactionQuery);
+    DatastoreService newDatastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery filteredImpression = newDatastore.prepare(interactionQuery);
 
     Entity currentInteraction = filteredImpression.asSingleEntity(); 
 
-    assertEquals(true, (boolean) currentInteraction.getProperty(Property.GRANTS_LOCATION));
+    Assert.assertEquals(true, (boolean) currentInteraction.getProperty(Property.GRANTS_LOCATION));
   }
 
   @Test
@@ -97,11 +97,11 @@ public final class DBUtilitiesTest {
     final Filter correlatorFilter =  new FilterPredicate(Property.CORRELATOR, FilterOperator.EQUAL, "Person1");
     final Query interactionQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(correlatorFilter);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery filteredImpression = datastore.prepare(interactionQuery);
+    DatastoreService newDatastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery filteredImpression = newDatastore.prepare(interactionQuery);
 
     Entity currentInteraction = filteredImpression.asSingleEntity(); 
 
-    assertEquals(originalInteraction.toString(), currentInteraction.toString());
+    Assert.assertEquals(originalInteraction.toString(), currentInteraction.toString());
   }
 }
