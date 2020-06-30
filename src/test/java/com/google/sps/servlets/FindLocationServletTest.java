@@ -8,7 +8,7 @@ import com.google.sps.servlets.DBUtilities;
 import org.mockito.Mock;
 
 @RunWith(JUnit4.class)
-public final class GrantLocationServletTest {
+public final class FindLocationServletTest {
 
   @Test
   public void testCorrectStatusSent() {
@@ -17,7 +17,7 @@ public final class GrantLocationServletTest {
 
     when(request.getParameter("correlator")).thenReturn("Person1");
 
-    new GrantLocationServlet().doGet(request, response);
+    new FindLocationServlet().doGet(request, response);
 
     assertEquals(HttpServletResponse.SC_OK, response.getStatus());
   }
@@ -29,7 +29,7 @@ public final class GrantLocationServletTest {
 
     when(request.getParameter("correlator")).thenReturn(null);
 
-    new GrantLocationServlet().doGet(request, response);
+    new FindLocationServlet().doGet(request, response);
 
     assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
   }
@@ -41,7 +41,7 @@ public final class GrantLocationServletTest {
 
     when(request.getParameter("correlator")).thenReturn("");
 
-    new GrantLocationServlet().doGet(request, response);
+    new FindLocationServlet().doGet(request, response);
 
     assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
   }
