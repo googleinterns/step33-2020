@@ -22,24 +22,18 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
   /** @override */
   onInit(eventData) {
+    this.handleAdParams_(eventData);
+    super.onInit(eventData);
+  }
+
+  /**
+   * Checks validity of ad parameters and rejects with proper message if invalid.
+   * @param eventData an object that contains information details for a particular event
+   *   such as event type, unique Ids, creativeData and environmentData.
+   * @private 
+  */ 
+  handleAdParams_(eventData) {
     this.creativeData = eventData.args.creativeData;
-    this.environmentData = eventData.args.environmentData;
-
-
-    this.videoState = {
-      currentSrc:'',
-      currentTime: -1, // Time not yet known
-      duration: -1, // duration unknown
-      ended: false,
-      muted: this.environmentData.muted,
-      paused: false,
-      volume: this.environmentData.volume,
-      fullscreen: false,
-    }
-
-    /**
-     * Error handeling for empty or incorrect ad paramters.
-     */
     let adParams = "";
     if (this.creativeData.adParameters == "") {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
@@ -49,7 +43,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     try {
       adParams = JSON.parse(this.creativeData.adParameters);
     } catch (exception) {
-      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.MESSAGES_NOT_FOLLOWING_SPEC, 
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.CREATIVE_INTERNAL_ERROR, 
         message: "Invalid JSON input"});
     }
     const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
@@ -59,9 +53,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
         message: "Required field 'SearchQuery' not found"});
     }
-
-    const marker = adParams[AdParamKeys.MARKER];
-    this.simidProtocol.resolve(eventData, {});
   }
 
   /** @override */
