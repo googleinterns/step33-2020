@@ -2,6 +2,7 @@ package com.google.sps.servlets;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -9,12 +10,10 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.sps.servlets.DBUtilities;
 import com.google.sps.servlets.Property;
+import com.google.appengine.api.datastore.DatastoreService;
 
 @RunWith(JUnit4.class)
 public final class DBUtilitiesTest {
-  //set up database
-  //call function
-  //assert database
 
   private final LocalServiceTestHelper helper =
       new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());

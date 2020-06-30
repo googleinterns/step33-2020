@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import com.google.sps.servlets.DBUtilities;
-import org.mockito.Mock;
+import static org.mockito.Mockito.Mock;
 
 @RunWith(JUnit4.class)
 public final class MapInteractServletTest {

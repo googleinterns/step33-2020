@@ -33,16 +33,26 @@ public class InitializeServlet extends HttpServlet {
       return;
     }
 
-    Entity impressions = new Entity(DBUtilities.INTERACTION_TABLE);
-    impressions.setProperty(Property.CORRELATOR, correlator);
-    impressions.setProperty(Property.FIND_NEAREST_LOCATION, false);
-    impressions.setProperty(Property.GRANTS_LOCATION, false);
-    impressions.setProperty(Property.INTERACTS_WITH_MAP, false);
-    impressions.setProperty(Property.SKIP_TO_CONTENT, false);
-    impressions.setProperty(Property.RETURN_TO_AD, false);
+    // this doesn't handle an entry iwth the same correlator
+    // the initialize route would send the key to the entity it creates
+    // the js file would use that for the rest of the session
+
+    // uuid
+
+    // maybe ask ryan?
+    // 3: hash function on client side
+    // 5: don't handle collisions and assume they don't happen often and error out
+
+    Entity interaction = new Entity(DBUtilities.INTERACTION_TABLE);
+    interaction.setProperty(Property.CORRELATOR, correlator);
+    interaction.setProperty(Property.FIND_NEAREST_LOCATION, false);
+    interaction.setProperty(Property.GRANTS_LOCATION, false);
+    interaction.setProperty(Property.INTERACTS_WITH_MAP, false);
+    interaction.setProperty(Property.SKIP_TO_CONTENT, false);
+    interaction.setProperty(Property.RETURN_TO_AD, false);
 
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
-    dataStore.put(impressions);
+    dataStore.put(interaction);
 
     response.setStatus(HttpServletResponse.SC_OK); 
   }
