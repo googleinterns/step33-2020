@@ -29,10 +29,8 @@ public final class DBUtilitiesTest {
     helper.tearDown();
   }
 
-  // Run this test twice to prove we're not leaking any state across tests.
   private DatastoreService setDatabaseUp() {
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
-    // assertEquals(0, dataStore.prepare(new Query("yam")).countEntities(withLimit(10)));
     
     Entity originalInteraction = new Entity("Interactions");
     originalInteraction.setProperty(Property.CORRELATOR, "Person1");
@@ -67,9 +65,6 @@ public final class DBUtilitiesTest {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery filteredImpression = datastore.prepare(interactionQuery);
-    
-    // Query.newEntityQueryBuilder().setKind(DBUtilities.INTERACTION_TABLE).setFilter(PropertyFilter.eq("correlator", "Person1"))
-    //     .build();
 
     Entity currentInteraction = filteredImpression.asSingleEntity(); 
 
