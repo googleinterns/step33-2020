@@ -11,6 +11,13 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.sps.servlets.DBUtilities;
 import com.google.sps.servlets.Property;
 import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 @RunWith(JUnit4.class)
 public final class DBUtilitiesTest {
@@ -31,7 +38,7 @@ public final class DBUtilitiesTest {
   private DatastoreService setDatabaseUp() {
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     
-    Entity originalInteraction = new Entity("Interactions");
+    Entity originalInteraction = new Entity(DBUtilities.INTERACTION_TABLE);
     originalInteraction.setProperty(Property.CORRELATOR, "Person1");
     originalInteraction.setProperty(Property.FIND_NEAREST_LOCATION, false);
     originalInteraction.setProperty(Property.GRANTS_LOCATION, false);
@@ -59,8 +66,8 @@ public final class DBUtilitiesTest {
     
     DBUtilities.setToTrue("Person1", Property.GRANTS_LOCATION);
 
-    final Filter correlatorFilter =  new FilterPredicate(Property.CORRELATOR, FilterOperator.EQUAL, correlator);
-    final Query interactionQuery = new Query(INTERACTION_TABLE).setFilter(correlatorFilter);
+    final Filter correlatorFilter =  new FilterPredicate(Property.CORRELATOR, FilterOperator.EQUAL, "Person1");
+    final Query interactionQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(correlatorFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery filteredImpression = datastore.prepare(interactionQuery);
@@ -85,7 +92,7 @@ public final class DBUtilitiesTest {
     originalInteraction.setProperty(Property.RETURN_TO_AD, false);
 
     final Filter correlatorFilter =  new FilterPredicate(Property.CORRELATOR, FilterOperator.EQUAL, "Person1");
-    final Query interactionQuery = new Query(INTERACTION_TABLE).setFilter(correlatorFilter);
+    final Query interactionQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(correlatorFilter);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery filteredImpression = datastore.prepare(interactionQuery);
