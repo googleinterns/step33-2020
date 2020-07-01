@@ -23,7 +23,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
   /** @override */
   onInit(eventData) {
     this.validateAndParseAdParams_(eventData);
-    super.onInit(eventData);
+    super.updateInternalOnInit(eventData);
   }
 
   /**
@@ -44,14 +44,17 @@ export default class SimidMapCreative extends BaseSimidCreative {
       adParams = JSON.parse(this.creativeData.adParameters);
     } catch (exception) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.CREATIVE_INTERNAL_ERROR, 
-        message: "Invalid JSON input"});
+        message: "Invalid JSON input for ad parameters"});
     }
     const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
     const searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
 
-    if (searchQuery == undefined) {
+    if (!searchQuery) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
-        message: "Required field " + AdParamKeys.SEARCH_QUERY + " not found"});
+        message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`});
+    }
+    else {
+      super.onInit(eventData);
     }
   }
 
