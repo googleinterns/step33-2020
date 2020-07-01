@@ -10,11 +10,11 @@ const URL = {
 
 class User {
   constructor() {
-    this.correlator = generateRandomCorrelator();
+    this.correlator = Math.floor(Math.random() * new Date().getTime());
   }
 
   sendRequest_(url) {
-    fetch(`/${url}?correlator=${this.correlator}`).then(() => console.log("success"));
+    fetch(`/${url}?correlator="${this.correlator}"`).then(() => console.log("success"));
   }
 
   initialize() {
@@ -40,6 +40,4 @@ class User {
   clickReturnToAd() {
     this.sendRequest_(URL.RETURN_TO_AD);
   }
-
-
 }
