@@ -25,8 +25,11 @@ public final class DBUtilitiesTest {
   private final LocalServiceTestHelper helper =
       new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
+  private DatastoreService dataStore;
+
   @Before
   public void setUp() {
+    dataStore = setDatabaseUp();
     helper.setUp();
   }
 
@@ -53,7 +56,6 @@ public final class DBUtilitiesTest {
 
   @Test
   public void testIfOnlyOneEntryMade() {
-    DatastoreService dataStore = setDatabaseUp();
 
     // a specific property used here, but any of the properties can be used
     DBUtilities.setToTrue("Person1", Property.FIND_NEAREST_LOCATION);
@@ -63,7 +65,6 @@ public final class DBUtilitiesTest {
 
   @Test
   public void testIfPropertyUpdatedCorrectly() {
-    DatastoreService datastore = setDatabaseUp();
     
     // a specific property used here, but any of the properties can be used
     DBUtilities.setToTrue("Person1", Property.GRANTS_LOCATION);
@@ -81,7 +82,6 @@ public final class DBUtilitiesTest {
 
   @Test
   public void testNothingChangesWhenPersonNotFound() {
-    DatastoreService datastore = setDatabaseUp();
     
     // a specific property used here, but any of the properties can be used
     DBUtilities.setToTrue("Person2", Property.GRANTS_LOCATION);
