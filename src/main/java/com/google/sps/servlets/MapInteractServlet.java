@@ -17,7 +17,7 @@ public class MapInteractServlet extends HttpServlet {
   * interacted with the map.
   *
   * @param request This includes a correlator for the current user.
-  * @param response A 200 status or 400 error
+  * @param response A 200 status or 400 error.
   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

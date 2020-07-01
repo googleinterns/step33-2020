@@ -18,7 +18,7 @@ public class FindLocationServlet extends HttpServlet {
   * clicked 'find nearby location'.
   *
   * @param request This includes a correlator for the current user.
-  * @param response A 200 status or 400 error
+  * @param response A 200 status or 400 error.
   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

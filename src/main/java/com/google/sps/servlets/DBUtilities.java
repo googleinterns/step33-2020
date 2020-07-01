@@ -18,7 +18,7 @@ public class DBUtilities {
   * clicked on the corresponding metric.
   *
   * @param correlator A correlator for the current user.
-  * @param propertyToUpdate The property that is to be updated
+  * @param propertyToUpdate The property that is to be updated.
   */
   public static void setToTrue(String correlator, String propertyToUpdate) {
     
