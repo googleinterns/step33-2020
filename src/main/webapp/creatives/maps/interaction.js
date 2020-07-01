@@ -17,6 +17,10 @@ class User {
     return correlator;
   }
 
+  sendRequest_(url) {
+    fetch(`/${url}`).then(() => console.log("success"));
+  }
+
   initialize() {
 
   }
