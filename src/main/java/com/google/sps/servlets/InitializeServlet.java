@@ -33,16 +33,6 @@ public class InitializeServlet extends HttpServlet {
       return;
     }
 
-    // this doesn't handle an entry iwth the same correlator
-    // the initialize route would send the key to the entity it creates
-    // the js file would use that for the rest of the session
-
-    // uuid
-
-    // maybe ask ryan?
-    // 3: hash function on client side
-    // 5: don't handle collisions and assume they don't happen often and error out
-
     Entity interaction = new Entity(DBUtilities.INTERACTION_TABLE);
     interaction.setProperty(Property.CORRELATOR, correlator);
     interaction.setProperty(Property.FIND_NEAREST_LOCATION, false);
