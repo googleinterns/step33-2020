@@ -15,27 +15,27 @@ public final class RequestUtilsTest {
 
   @Test
   public void testCorrelatorValid() {
-    HttpServletRequest request = mock(HttpServletRequest.class);    
+    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);    
 
-    when(request.getParameter("correlator")).thenReturn("Person1");
+    Mockito.when(request.getParameter("correlator")).thenReturn("Person1");
     
     Assert.assertEquals(RequestUtils.getCorrelator(request), "Person1");
   }
 
   @Test
   public void testCorrelatorInvalid() {
-    HttpServletRequest request = mock(HttpServletRequest.class);    
+    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);    
 
-    when(request.getParameter("correlator")).thenReturn("");
+    Mockito.when(request.getParameter("correlator")).thenReturn("");
     
     Assert.assertEquals(RequestUtils.getCorrelator(request), "");
   }
 
   @Test
   public void testCorrelatorNull() {
-    HttpServletRequest request = mock(HttpServletRequest.class);    
+    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);    
 
-    when(request.getParameter("correlator")).thenReturn(null);
+    Mockito.when(request.getParameter("correlator")).thenReturn(null);
     
     Assert.assertEquals(RequestUtils.getCorrelator(request), "");
   }

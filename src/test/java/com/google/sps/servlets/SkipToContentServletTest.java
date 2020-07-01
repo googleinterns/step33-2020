@@ -32,37 +32,37 @@ public final class SkipToContentServletTest {
 
   @Test
   public void testCorrectStatusSent() throws IOException {
-    HttpServletRequest request = mock(HttpServletRequest.class);       
-    HttpServletResponse response = mock(HttpServletResponse.class);    
+    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);       
+    HttpServletResponse response = Mockito.mock(HttpServletResponse.class);    
 
-    when(request.getParameter("correlator")).thenReturn("Person1");
+    Mockito.when(request.getParameter("correlator")).thenReturn("Person1");
 
     new SkipToContentServlet().doGet(request, response);
 
-    Assert.assertEquals(HttpServletResponse.SC_OK, response.getStatus());
+    Mockito.verify(response).setStatus(HttpServletResponse.SC_OK);
   }
 
   @Test
   public void testIfBadRequestStatusSentNull() throws IOException {
-    HttpServletRequest request = mock(HttpServletRequest.class);       
-    HttpServletResponse response = mock(HttpServletResponse.class);    
+    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);       
+    HttpServletResponse response = Mockito.mock(HttpServletResponse.class);    
 
-    when(request.getParameter("correlator")).thenReturn(null);
+    Mockito.when(request.getParameter("correlator")).thenReturn(null);
 
     new SkipToContentServlet().doGet(request, response);
 
-    Assert.assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+    Mockito.verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
   }
 
   @Test
   public void testIfBadRequestStatusSentEmpty() throws IOException {
-    HttpServletRequest request = mock(HttpServletRequest.class);       
-    HttpServletResponse response = mock(HttpServletResponse.class);    
+    HttpServletRequest request = Mockito.mock(HttpServletRequest.class);       
+    HttpServletResponse response = Mockito.mock(HttpServletResponse.class);    
 
-    when(request.getParameter("correlator")).thenReturn("");
+    Mockito.when(request.getParameter("correlator")).thenReturn("");
 
     new SkipToContentServlet().doGet(request, response);
 
-    Assert.assertEquals(HttpServletResponse.SC_BAD_REQUEST, response.getStatus());
+    Mockito.verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
   }
 }
