@@ -55,8 +55,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
   /**
    * Loads a map object that currently displays a hardcoded location.
-   * @param {Object} coordinates - the LatLng object of user's current location
-   * ToDo(kristenmason@): implement grant location access and modify
+   * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location
+   * TODO(kristenmason@): implement grant location access and modify
    * function to pass in current position (currently coords default to GooglePlex)
    * @private 
   */

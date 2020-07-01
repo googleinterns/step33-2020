@@ -72,11 +72,11 @@ test('testing button text updates with default ad params', () => {
     expect(button.innerText).toBe('Find Nearest Location');
 });
 
-test('Map constructor in Maps API is accessed on button click', () => {
+test('instance of map is instantiated on button click', () => {
     const eventData = {
         args: {
             creativeData: {
-                adParameters: '{"buttonLabel": "Place"}',
+                adParameters: '{}',
             },
             environmentData: {},
         },

@@ -14,8 +14,10 @@ html, body {
     padding: 0;
   }
 
-/*Display the map in the center of the iframe, 
-  scaled to allow button display*/
+/*
+ * Display the map in the center of the iframe, 
+ * scaled to allow button display
+ */
 #map {
     height: 80%;
     width: 80%;
