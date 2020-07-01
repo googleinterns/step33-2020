@@ -51,7 +51,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
     if (searchQuery == undefined) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
-        message: "Required field 'SearchQuery' not found"});
+        message: "Required field " + AdParamKeys.SEARCH_QUERY + " not found"});
     }
   }
 
