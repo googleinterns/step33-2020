@@ -22,7 +22,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
   /** @override */
   onInit(eventData) {
-    this.handleAdParams_(eventData);
+    this.validateAndParseAdParams_(eventData);
     super.onInit(eventData);
   }
 
@@ -32,7 +32,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    *   such as event type, unique Ids, creativeData and environmentData.
    * @private 
   */ 
-  handleAdParams_(eventData) {
+  validateAndParseAdParams_(eventData) {
     this.creativeData = eventData.args.creativeData;
     let adParams = "";
     if (this.creativeData.adParameters == "") {
