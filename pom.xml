@@ -26,7 +26,7 @@
     <dependency>
       <groupId>com.google.appengine</groupId>
       <artifactId>appengine-api-1.0-sdk</artifactId>
-      <version>1.9.59</version>
+      <version>1.9.64</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -37,13 +37,36 @@
     <dependency>
       <groupId>com.google.appengine</groupId>
       <artifactId>appengine-testing</artifactId>
-      <version>1.5.0</version>
+      <version>1.9.64</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
       <version>1.10.19</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-api-stubs</artifactId>
+      <version>1.9.64</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-api-labs</artifactId>
+      <version>1.9.64</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-tools-sdk</artifactId>
+      <version>1.9.64</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.api-client</groupId>
+      <artifactId>google-api-client-appengine</artifactId>
+      <version>1.23.0</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -61,5 +84,23 @@
         </configuration>
       </plugin>
     </plugins>
+
+    <testResources>
+      <testResource>
+        <directory>${SDK_ROOT}/lib/impl/appengine-api.jar</directory>
+      </testResource>
+      <testResource>
+        <directory>${SDK_ROOT}/lib/impl/appengine-api-labs.jar</directory>
+      </testResource>
+      <testResource>
+        <directory>${SDK_ROOT}/lib/impl/appengine-api-stubs.jar</directory>
+      </testResource>
+      <testResource>
+        <directory>${SDK_ROOT}/lib/appengine-tools-api.jar</directory>
+      </testResource>
+      <testResource>
+        <directory>${SDK_ROOT}/lib/testing/appengine-testing.jar</directory>
+      </testResource>
+    </testResources>
   </build>
 </project>
