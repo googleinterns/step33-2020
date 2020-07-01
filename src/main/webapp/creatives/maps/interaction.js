@@ -13,36 +13,32 @@ class User {
     this.correlator = generateRandomCorrelator();
   }
 
-  getCorrelator() {
-    return correlator;
-  }
-
   sendRequest_(url) {
-    fetch(`/${url}`).then(() => console.log("success"));
+    fetch(`/${url}?correlator=${this.correlator}`).then(() => console.log("success"));
   }
 
   initialize() {
-
+    this.sendRequest_(URL.INITIALIZE);
   }
 
   clicksFindNearestLocation() {
-
+    this.sendRequest_(URL.FIND_NEAREST_LOCATION);
   }
 
   grantLocationData() {
-
+    this.sendRequest_(URL.GRANT_LOCATION_DATA);
   }
 
   interactWithMap() {
-
+    this.sendRequest_(URL.MAP_INTERACT);
   }
 
   clickSkipToContent() {
-
+    this.sendRequest_(URL.SKIP_TO_CONTENT);
   }
 
   clickReturnToAd() {
-
+    this.sendRequest_(URL.RETURN_TO_AD);
   }
 
 
