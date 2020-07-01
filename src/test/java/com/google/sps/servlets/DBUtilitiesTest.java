@@ -55,7 +55,7 @@ public final class DBUtilitiesTest {
   }
 
   @Test
-  public void testIfOnlyOneEntryMade() {
+  public void testSetToTrueDoesntCreateNewEntry() {
 
     // a specific property used here, but any of the properties can be used
     DBUtilities.setToTrue("Person1", Property.FIND_NEAREST_LOCATION);
