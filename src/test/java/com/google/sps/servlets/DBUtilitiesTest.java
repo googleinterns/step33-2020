@@ -101,7 +101,14 @@ public final class DBUtilitiesTest {
     PreparedQuery filteredImpression = newDatastore.prepare(interactionQuery);
 
     Entity currentInteraction = filteredImpression.asSingleEntity(); 
-
-    Assert.assertEquals(originalInteraction.toString(), currentInteraction.toString());
+    
+    Assert.assertEquals(originalInteraction.getProperty(Property.CORRELATOR), currentInteraction.getProperty(Property.CORRELATOR));
+    Assert.assertEquals(originalInteraction.getProperty(Property.FIND_NEAREST_LOCATION), currentInteraction.getProperty(Property.FIND_NEAREST_LOCATION));
+    Assert.assertEquals(originalInteraction.getProperty(Property.GRANTS_LOCATION), currentInteraction.getProperty(Property.GRANTS_LOCATION));
+    Assert.assertEquals(originalInteraction.getProperty(Property.INTERACTS_WITH_MAP), currentInteraction.getProperty(Property.INTERACTS_WITH_MAP));
+    Assert.assertEquals(originalInteraction.getProperty(Property.SKIP_TO_CONTENT), currentInteraction.getProperty(Property.SKIP_TO_CONTENT));
+    Assert.assertEquals(originalInteraction.getProperty(Property.RETURN_TO_AD), currentInteraction.getProperty(Property.RETURN_TO_AD));
+    
+    
   }
 }
