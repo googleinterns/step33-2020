@@ -1,5 +1,4 @@
 /** Tests to see if Find Nearest X button is appending correct text */
-import '@testing-library/jest-dom';
 import SimidMapCreative from './simid_map_creative.js';
 
 let testMap, googleMaps;
