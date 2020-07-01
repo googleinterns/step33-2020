@@ -1,4 +1,6 @@
 
+import {generateSessionId} from '../maps/utils.js';
+
 const URL = {
   INITIALIZE: "initialize",
   FIND_NEAREST_LOCATION: "find-location",
@@ -10,7 +12,7 @@ const URL = {
 
 class User {
   constructor() {
-    this.correlator = Math.floor(Math.random() * new Date().getTime());
+    this.correlator = generateSessionId();
   }
 
   sendRequest_(url) {

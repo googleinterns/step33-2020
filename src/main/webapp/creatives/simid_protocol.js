@@ -6,7 +6,7 @@
  */
 
 import {PlayerMessage, CreativeMessage} from './constants.js';
-import {generateSessionId_} from '../creatives/maps/utils.js';
+import {generateSessionId} from '../creatives/maps/utils.js';
 
 export default class SimidProtocol {
 
@@ -253,8 +253,7 @@ export default class SimidProtocol {
       console.log('Session creation was rejected.');
     }
 
-    this.sessionId_ = generateSessionId_();
-    this.generateSessionId_();
+    this.sessionId_ = generateSessionId();
     this.sendMessage(ProtocolMessage.CREATE_SESSION).then(
       sessionCreationResolved, sessionCreationRejected);
   }

@@ -3,7 +3,7 @@
 /**
  * Sets the session ID, this should only be used on session creation.
  */
-export function generateSessionId_() {
+export function generateSessionId() {
   let dt = new Date().getTime();
   const generateRandomHex = (c) => {
     const r = (dt + Math.random()*16)%16 | 0;
