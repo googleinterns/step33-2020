@@ -80,19 +80,11 @@ public final class DBUtilitiesTest {
   }
 
   @Test
-  public void testIfNothingUpdatesWhenPersonNotFound() {
+  public void testNothingChangesWhenPersonNotFound() {
     DatastoreService datastore = setDatabaseUp();
     
     // a specific property used here, but any of the properties can be used
     DBUtilities.setToTrue("Person2", Property.GRANTS_LOCATION);
-
-    Entity originalInteraction = new Entity("Interactions");
-    originalInteraction.setProperty(Property.CORRELATOR, "Person1");
-    originalInteraction.setProperty(Property.FIND_NEAREST_LOCATION, false);
-    originalInteraction.setProperty(Property.GRANTS_LOCATION, false);
-    originalInteraction.setProperty(Property.INTERACTS_WITH_MAP, false);
-    originalInteraction.setProperty(Property.SKIP_TO_CONTENT, false);
-    originalInteraction.setProperty(Property.RETURN_TO_AD, false);
 
     final Filter correlatorFilter =  new FilterPredicate(Property.CORRELATOR, FilterOperator.EQUAL, "Person1");
     final Query interactionQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(correlatorFilter);
@@ -100,15 +92,8 @@ public final class DBUtilitiesTest {
     DatastoreService newDatastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery filteredImpression = newDatastore.prepare(interactionQuery);
 
-    Entity currentInteraction = filteredImpression.asSingleEntity(); 
+    Entity interaction = filteredImpression.asSingleEntity(); 
     
-    Assert.assertEquals(originalInteraction.getProperty(Property.CORRELATOR), currentInteraction.getProperty(Property.CORRELATOR));
-    Assert.assertEquals(originalInteraction.getProperty(Property.FIND_NEAREST_LOCATION), currentInteraction.getProperty(Property.FIND_NEAREST_LOCATION));
-    Assert.assertEquals(originalInteraction.getProperty(Property.GRANTS_LOCATION), currentInteraction.getProperty(Property.GRANTS_LOCATION));
-    Assert.assertEquals(originalInteraction.getProperty(Property.INTERACTS_WITH_MAP), currentInteraction.getProperty(Property.INTERACTS_WITH_MAP));
-    Assert.assertEquals(originalInteraction.getProperty(Property.SKIP_TO_CONTENT), currentInteraction.getProperty(Property.SKIP_TO_CONTENT));
-    Assert.assertEquals(originalInteraction.getProperty(Property.RETURN_TO_AD), currentInteraction.getProperty(Property.RETURN_TO_AD));
-    
-    
+    Assert.assertEquals(false, interaction.getProperty(Property.GRANTS_LOCATION));    
   }
 }
