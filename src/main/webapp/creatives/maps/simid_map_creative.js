@@ -80,9 +80,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
     skipAdButton.id = "skipToContent";
     skipAdButton.onclick = () => this.playContent_();
 
-    const iframeContainer = document.getElementById('iframeContainer');
-    iframeContainer.appendChild(returnToAdButton);
-    iframeContainer.appendChild(skipAdButton);
+    const adContainer = document.getElementById('adContainer');
+    adContainer.appendChild(returnToAdButton);
+    adContainer.appendChild(skipAdButton);
   }
 
   /**
