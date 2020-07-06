@@ -1,22 +1,14 @@
 
-import {generateSessionId} from './utils.js';
+import {generateSessionId, URL} from './utils.js';
 
-/** A list of server routes that keep track of each interaction when fetched. */
-const URL = {
-  INITIALIZE: "initialize",
-  FIND_NEAREST_LOCATION: "find-location",
-  GRANT_LOCATION_DATA: "grant-location",
-  MAP_INTERACT: "map-interact",
-  SKIP_TO_CONTENT: "skip-to-content",
-  RETURN_TO_AD: "return-to-ad"
-}
+class UserActivityLogger {
 
-class Logger {
-  /**
-   * Each instance gets a correlator to uniquely identify it.
-   */
   constructor() {
-    this.correlator = generateSessionId();
+    /**
+     * Each instance gets a correlator to uniquely identify it.
+     * @private @const {string}
+     */
+    this.correlator_ = generateSessionId();
   }
 
   /**
@@ -24,7 +16,7 @@ class Logger {
    * @param {string} url A URL to send the request to.
    */
   sendRequest_(url) {
-    fetch(`/${url}?correlator="${this.correlator}"`);
+    fetch(`/${url}?correlator="${this.correlator_}"`);
   }
 
   userInitializes() {
