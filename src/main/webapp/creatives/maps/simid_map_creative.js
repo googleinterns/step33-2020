@@ -34,12 +34,13 @@ export default class SimidMapCreative extends BaseSimidCreative {
   */ 
   validateAndParseAdParams_(eventData) {
     this.creativeData = eventData.args.creativeData;
-    let adParams = "";
+
     if (this.creativeData.adParameters == "") {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
         message: "Ad parameters not found"});
     }
 
+    let adParams = "";
     try {
       adParams = JSON.parse(this.creativeData.adParameters);
     } catch (exception) {
