@@ -54,7 +54,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
   */
   grantLocationAccess_() {
-    console.log(this);
     this.loadMap_();
     this.findNearby_(searchQuery);
   }
