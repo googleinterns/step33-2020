@@ -72,3 +72,21 @@ test('instance of map is instantiated on button click', () => {
     findNearestButton.dispatchEvent(new Event('click'));
     expect(window.google.maps.Map.mock.instances.length).toBe(1);
 });
+
+test('marker is added to map when map loads', () => {
+    const eventData = createEventData();
+    testMap.onInit(eventData);
+    testMap.onStart(startData);
+    const findNearestButton = document.getElementById('findNearest');
+    findNearestButton.dispatchEvent(new Event('click'));
+    expect(window.google.maps.Marker.mock.instances.length).toBe(1);
+});
+
+test('LatLng coordinates constructor is called by default', () => {
+    const eventData = createEventData();
+    testMap.onInit(eventData);
+    testMap.onStart(startData);
+    const findNearestButton = document.getElementById('findNearest');
+    findNearestButton.dispatchEvent(new Event('click'));
+    expect(window.google.maps.LatLng.mock.instances.length).toBe(1);
+});
