@@ -19,6 +19,19 @@ public class DashboardServlet extends HttpServlet {
   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        
+    Query interactionQuery = new Query(DBUtilities.INTERACTION_TABLE);
+    
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery interactions = datastore.prepare(interactionQuery);
+
+    int findNearestLocationCounter = 0;
+    int grantsLocationCounter = 0;
+    int interactsWithMapCounter = 0;
+    int skipToContentCounter = 0;
+    int returnToAdCounter = 0;
+    
+    for (Entity entity : interactions.asIterable()) {
+      
+    }
   }
 }
