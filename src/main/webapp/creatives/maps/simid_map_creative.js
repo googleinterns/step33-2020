@@ -9,6 +9,7 @@ const AdParamKeys = {
 
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
 const DEFAULT_BUTTON_LABEL = "Location";
+const DEFAULT_ZOOM = 13;
 
 /**
  * A sample SIMID ad that shows a map of nearby locations.
@@ -55,14 +56,14 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
   /**
    * Loads a map object that currently displays a hardcoded location.
-   * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location
+   * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
    * TODO(kristenmason@): implement grant location access and modify
    * function to pass in current position (currently coords default to GooglePlex)
    * @private 
   */
   loadMap_(coordinates = new google.maps.LatLng(37.422004,-122.081402)) { 
     const map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 13,
+      zoom: DEFAULT_ZOOM,
       center: coordinates
     });
     const marker = new google.maps.Marker({
