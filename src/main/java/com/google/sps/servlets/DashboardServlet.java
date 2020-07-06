@@ -12,6 +12,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.sps.servlets.Property;
+import java.util.HashMap;
 
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
@@ -44,21 +45,23 @@ public class DashboardServlet extends HttpServlet {
       returnToAdCounter = (boolean) entity.getProperty(Property.RETURN_TO_AD) ? ++returnToAdCounter : returnToAdCounter;
     }
 
-    Map<String, Integer> countPercentages = new HashMap<>();
-    countPercentages.put(Property.FIND_NEAREST_LOCATION, findNearestLocationCounter);
-    countPercentages.put(Property.GRANTS_LOCATION, grantsLocationCounter);
-    countPercentages.put(Property.INTERACTS_WITH_MAP, interactsWithMapCounter);
-    countPercentages.put(Property.SKIP_TO_CONTENT, skipToContentCounter);
-    countPercentages.put(Property.RETURN_TO_AD, returnToAdCounter);
+    HashMap<String, Integer> countPercentages = new HashMap<>();
+
+    int totalInteractions = interactions.countEntities();
+    countPercentages.put(Property.FIND_NEAREST_LOCATION, findNearestLocationCounter/totalInteractions);
+    countPercentages.put(Property.GRANTS_LOCATION, grantsLocationCounter/totalInteractions);
+    countPercentages.put(Property.INTERACTS_WITH_MAP, interactsWithMapCounter/totalInteractions);
+    countPercentages.put(Property.SKIP_TO_CONTENT, skipToContentCounter/totalInteractions);
+    countPercentages.put(Property.RETURN_TO_AD, returnToAdCounter/totalInteractions);
     
     String jsonToSend = convertToJson(countPercentages);
 
     response.setContentType("application/json; charset=UTF-8");
-    response.getWriter().println(json);
+    response.getWriter().println(jsonToSend);
 
   }
 
-  private String convertToJson(Map<String, Integer> data) {
+  private String convertToJson(HashMap<String, Integer> data) {
     Gson gson = new Gson();
     String json = gson.toJson(data);
     return json;
