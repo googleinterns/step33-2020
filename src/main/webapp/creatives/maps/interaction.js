@@ -10,7 +10,7 @@ const URL = {
   RETURN_TO_AD: "return-to-ad"
 }
 
-class User {
+class Logger {
   constructor() {
     this.correlator = generateSessionId();
   }
@@ -19,27 +19,27 @@ class User {
     fetch(`/${url}?correlator="${this.correlator}"`).then(() => console.log("success"));
   }
 
-  initialize() {
+  userInitializes() {
     this.sendRequest_(URL.INITIALIZE);
   }
 
-  clicksFindNearestLocation() {
+  userClicksFindNearestLocation() {
     this.sendRequest_(URL.FIND_NEAREST_LOCATION);
   }
 
-  grantLocationData() {
+  userGrantsLocationData() {
     this.sendRequest_(URL.GRANT_LOCATION_DATA);
   }
 
-  interactWithMap() {
+  userInteractsWithMap() {
     this.sendRequest_(URL.MAP_INTERACT);
   }
 
-  clickSkipToContent() {
+  userClicksSkipToContent() {
     this.sendRequest_(URL.SKIP_TO_CONTENT);
   }
 
-  clickReturnToAd() {
+  userClicksReturnToAd() {
     this.sendRequest_(URL.RETURN_TO_AD);
   }
 }
