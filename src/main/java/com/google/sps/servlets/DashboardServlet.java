@@ -42,7 +42,19 @@ public class DashboardServlet extends HttpServlet {
       interactsWithMapCounter = (boolean) entity.getProperty(Property.INTERACTS_WITH_MAP) ? ++interactsWithMapCounter : interactsWithMapCounter;
       skipToContentCounter = (boolean) entity.getProperty(Property.SKIP_TO_CONTENT) ? ++skipToContentCounter : skipToContentCounter;
       returnToAdCounter = (boolean) entity.getProperty(Property.RETURN_TO_AD) ? ++returnToAdCounter : returnToAdCounter;
-      
     }
+
+    Map<String, Integer> countPercentages = new HashMap<>();
+    countPercentages.put(Property.FIND_NEAREST_LOCATION, findNearestLocationCounter);
+    countPercentages.put(Property.GRANTS_LOCATION, grantsLocationCounter);
+    countPercentages.put(Property.INTERACTS_WITH_MAP, interactsWithMapCounter);
+    countPercentages.put(Property.SKIP_TO_CONTENT, skipToContentCounter);
+    countPercentages.put(Property.RETURN_TO_AD, returnToAdCounter);
+    
+    String jsonToSend = convertToJson(countPercentages);
+
+    response.setContentType("application/json; charset=UTF-8");
+    response.getWriter().println(json);
+
   }
 }
