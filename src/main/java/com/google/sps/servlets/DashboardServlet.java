@@ -57,4 +57,10 @@ public class DashboardServlet extends HttpServlet {
     response.getWriter().println(json);
 
   }
+
+  private String convertToJson(Map<String, Integer> data) {
+    Gson gson = new Gson();
+    String json = gson.toJson(data);
+    return json;
+  }
 }
