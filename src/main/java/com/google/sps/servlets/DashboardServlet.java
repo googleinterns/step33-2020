@@ -11,6 +11,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.sps.servlets.Property;
 
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
@@ -36,7 +37,12 @@ public class DashboardServlet extends HttpServlet {
     int returnToAdCounter = 0;
     
     for (Entity entity : interactions.asIterable()) {
-      System.out.println(entity);
+      findNearestLocationCounter = (boolean) entity.getProperty(Property.FIND_NEAREST_LOCATION) ? ++findNearestLocationCounter : findNearestLocationCounter;
+      grantsLocationCounter = (boolean) entity.getProperty(Property.GRANTS_LOCATION) ? ++grantsLocationCounter : grantsLocationCounter;
+      interactsWithMapCounter = (boolean) entity.getProperty(Property.INTERACTS_WITH_MAP) ? ++interactsWithMapCounter : interactsWithMapCounter;
+      skipToContentCounter = (boolean) entity.getProperty(Property.SKIP_TO_CONTENT) ? ++skipToContentCounter : skipToContentCounter;
+      returnToAdCounter = (boolean) entity.getProperty(Property.RETURN_TO_AD) ? ++returnToAdCounter : returnToAdCounter;
+      
     }
   }
 }
