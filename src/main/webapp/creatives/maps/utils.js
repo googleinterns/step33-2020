@@ -1,7 +1,7 @@
 
 
 /**
- * Sets the session ID, this should only be used on session creation.
+ * @return {string} A statndard UUID conforming to en.wikipedia.org/wiki/Universally_unique_identifier
  */
 export function generateSessionId() {
   let dt = new Date().getTime();
