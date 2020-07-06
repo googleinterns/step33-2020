@@ -15,8 +15,8 @@ function drawChart() {
 
     const options = {
       'title': 'Interaction Dashboard',
-      'width': 600,
-      'height': 500
+      'width': 1000,
+      'height': 1000
     };
 
     const chart = new google.visualization.PieChart(
