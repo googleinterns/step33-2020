@@ -1,7 +1,6 @@
 
 import BaseSimidCreative from '../base_simid_creative.js';
-import {CreativeMessage} from '../constants.js';
-import {CreativeErrorCode} from '../constants.js';
+import {CreativeMessage, CreativeErrorCode} from '../constants.js';
 
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
@@ -53,14 +52,13 @@ export default class SimidMapCreative extends BaseSimidCreative {
   */
   grantLocationAccess_() {
     //ToDo(kristenmason@): implement the Google Maps request access functionality
-    try{
-      this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
-        findNearest.classList.add("hidden");})
-    }
-    catch(exception){
+    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
+      findNearest.classList.add("hidden");
+    }).catch(() => {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.PAUSE_NOT_HONORED, 
-        message: "Request to pause ad not honored"});
-    }
+      message: "Request to pause ad not honored"
+      });
+    });
     this.createButtonsMapState_();
   }
 
@@ -71,12 +69,12 @@ export default class SimidMapCreative extends BaseSimidCreative {
   */
   createButtonsMapState_() {
     const returnToAdButton = document.createElement("button");
-    returnToAdButton.innerHTML = "Return To Ad";
+    returnToAdButton.textContent = "Return To Ad";
     returnToAdButton.id = "returnToAd";
     returnToAdButton.onclick = () => this.playAd_(returnToAdButton); 
 
     const skipAdButton = document.createElement("button");
-    skipAdButton.innerHTML = "Skip Ad";
+    skipAdButton.textContent = "Skip Ad";
     skipAdButton.id = "skipToContent";
     skipAdButton.onclick = () => this.playContent_();
 
