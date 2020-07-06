@@ -1,5 +1,6 @@
 
 import BaseSimidCreative from '../base_simid_creative.js';
+import { CreativeMessage } from '../constants.js';
 
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
@@ -42,6 +43,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
+
     findNearest.onclick = () => this.grantLocationAccess_();
   }
  
@@ -50,6 +52,37 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
   */
   grantLocationAccess_() {
-    //ToDo(kristenmason@): implement map
+    //ToDo(kristenmason@): implement the Google Maps request access functionality
+    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
+      findNearest.classList.add("hidden");
+      //ToDo(kristenmason@): display map
+      this.createButtons_();
+    })
+  }
+
+  createButtons_() {
+    const returnToAdButton = document.createElement("button");
+    returnToAdButton.innerHTML = "Return To Ad";
+    returnToAdButton.id = "returnToAd";
+    returnToAdButton.onclick = () => this.playAd_(returnToAdButton); 
+
+    const skipToContentButton = document.createElement("button");
+    skipToContentButton.innerHTML = "Skip To Content";
+    skipToContentButton.id = "skipToContent";
+    skipToContentButton.onclick = () => this.playContent_();
+
+    const container = document.getElementById('container');
+    container.appendChild(returnToAdButton);
+    container.appendChild(skipToContentButton);
+  }
+
+  playAd_(returnToAdButton) {
+    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PLAY);
+    returnToAdButton.classList.add("hidden");
+    //ToDo(kristenmason@): hide map
+  }
+
+  playContent_() {
+    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_STOP);
   }
 }
