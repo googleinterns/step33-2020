@@ -45,9 +45,9 @@ public class DashboardServlet extends HttpServlet {
       returnToAdCounter = (boolean) entity.getProperty(Property.RETURN_TO_AD) ? ++returnToAdCounter : returnToAdCounter;
     }
 
-    HashMap<String, Integer> countPercentages = new HashMap<>();
+    HashMap<String, Double> countPercentages = new HashMap<>();
 
-    int totalInteractions = interactions.countEntities();
+    double totalInteractions = interactions.countEntities();
     countPercentages.put(Property.FIND_NEAREST_LOCATION, findNearestLocationCounter/totalInteractions);
     countPercentages.put(Property.GRANTS_LOCATION, grantsLocationCounter/totalInteractions);
     countPercentages.put(Property.INTERACTS_WITH_MAP, interactsWithMapCounter/totalInteractions);
@@ -61,7 +61,7 @@ public class DashboardServlet extends HttpServlet {
 
   }
 
-  private String convertToJson(HashMap<String, Integer> data) {
+  private String convertToJson(HashMap<String, Double> data) {
     Gson gson = new Gson();
     String json = gson.toJson(data);
     return json;
