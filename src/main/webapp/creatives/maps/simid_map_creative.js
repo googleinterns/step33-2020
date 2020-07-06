@@ -1,6 +1,7 @@
 
 import BaseSimidCreative from '../base_simid_creative.js';
-import { CreativeMessage } from '../constants.js';
+import {CreativeMessage} from '../constants.js';
+import {CreativeErrorCode} from '../constants.js';
 
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
@@ -43,7 +44,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
-
     findNearest.onclick = () => this.grantLocationAccess_();
   }
  
@@ -53,11 +53,15 @@ export default class SimidMapCreative extends BaseSimidCreative {
   */
   grantLocationAccess_() {
     //ToDo(kristenmason@): implement the Google Maps request access functionality
-    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
-      findNearest.classList.add("hidden");
-      //ToDo(kristenmason@): display map
-      this.createButtons_();
-    })
+    try{
+      this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
+        findNearest.classList.add("hidden");})
+    }
+    catch(exception){
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.PAUSE_NOT_HONORED, 
+        message: "Request to pause ad not honored"});
+    }
+    this.createButtonsMapState_();
   }
 
   /**
@@ -65,20 +69,20 @@ export default class SimidMapCreative extends BaseSimidCreative {
    *   grants permission to access their location and the map appears.
    * @private 
   */
-  createButtons_() {
+  createButtonsMapState_() {
     const returnToAdButton = document.createElement("button");
     returnToAdButton.innerHTML = "Return To Ad";
     returnToAdButton.id = "returnToAd";
     returnToAdButton.onclick = () => this.playAd_(returnToAdButton); 
 
-    const skipToContentButton = document.createElement("button");
-    skipToContentButton.innerHTML = "Skip To Content";
-    skipToContentButton.id = "skipToContent";
-    skipToContentButton.onclick = () => this.playContent_();
+    const skipAdButton = document.createElement("button");
+    skipAdButton.innerHTML = "Skip Ad";
+    skipAdButton.id = "skipToContent";
+    skipAdButton.onclick = () => this.playContent_();
 
-    const container = document.getElementById('container');
-    container.appendChild(returnToAdButton);
-    container.appendChild(skipToContentButton);
+    const iframeContainer = document.getElementById('iframeContainer');
+    iframeContainer.appendChild(returnToAdButton);
+    iframeContainer.appendChild(skipAdButton);
   }
 
   /**
@@ -96,6 +100,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
   */
   playContent_() {
-    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_STOP);
+    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_SKIP);
   }
 }
