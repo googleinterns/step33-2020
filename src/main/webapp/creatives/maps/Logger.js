@@ -1,6 +1,7 @@
 
-import {generateSessionId} from '../maps/utils.js';
+import {generateSessionId} from './utils.js';
 
+/** A list of server routes that keep track of each interaction when fetched. */
 const URL = {
   INITIALIZE: "initialize",
   FIND_NEAREST_LOCATION: "find-location",
@@ -11,12 +12,19 @@ const URL = {
 }
 
 class Logger {
+  /**
+   * Each instance gets a correlator to uniquely identify it.
+   */
   constructor() {
     this.correlator = generateSessionId();
   }
 
+  /**
+   * Makes a GET request to the given URL with the correlator as a parameter.
+   * @param {string} url A URL to send the request to.
+   */
   sendRequest_(url) {
-    fetch(`/${url}?correlator="${this.correlator}"`).then(() => console.log("success"));
+    fetch(`/${url}?correlator="${this.correlator}"`);
   }
 
   userInitializes() {

@@ -1,7 +1,7 @@
 
 
 /**
- * @return {string} A statndard UUID conforming to en.wikipedia.org/wiki/Universally_unique_identifier
+ * @return {string} A standard UUID conforming to en.wikipedia.org/wiki/Universally_unique_identifier
  */
 export function generateSessionId() {
   let date = new Date().getTime();
