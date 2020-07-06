@@ -60,6 +60,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
     })
   }
 
+  /**
+   * Creates the Skip To Content and Return To Ad buttons once the user
+   *   grants permission to access their location and the map appears.
+   * @private 
+  */
   createButtons_() {
     const returnToAdButton = document.createElement("button");
     returnToAdButton.innerHTML = "Return To Ad";
@@ -76,12 +81,20 @@ export default class SimidMapCreative extends BaseSimidCreative {
     container.appendChild(skipToContentButton);
   }
 
+  /**
+   * Continues to play the ad if user clicks on Return To Ad button.
+   * @private 
+  */
   playAd_(returnToAdButton) {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PLAY);
     returnToAdButton.classList.add("hidden");
     //ToDo(kristenmason@): hide map
   }
 
+  /**
+   * Returns to video content if user clicks on Skip To Content button.
+   * @private 
+  */
   playContent_() {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_STOP);
   }
