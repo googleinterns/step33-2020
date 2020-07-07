@@ -32,7 +32,11 @@ beforeEach(() => {
             LatLng: jest.fn(), 
             Map: jest.fn(),
             Marker: jest.fn(),
-            Autocomplete: class {}
+            Autocomplete: class {},
+            places: {
+                PlacesService:   jest.fn(),
+                RankBy: jest.fn()
+            }
         }
       };
     testMap = new SimidMapCreative();
@@ -48,18 +52,56 @@ beforeEach(() => {
 });
 
 test('testing button text updates from ad params', () => {
-    const eventData = createEventData('"buttonLabel": "Place"');
+    const eventData = {
+        args: {
+            creativeData: {
+                adParameters: '{"buttonLabel": "Place"}',
+            },
+            environmentData: {},
+        },
+        messageId: 0,
+        sessionId: "test-session-id",
+        timestamp: 0,
+        type: "SIMID:Player:init",
+    };
     testMap.onInit(eventData);
-    testMap.onStart(startData);
+
+    const buttonLabel = "Place";
+    const startData = {
+        messageId: 1,
+        sessionId: "test-session-id",
+        timestamp: 0,
+        type: "SIMID:Player:startCreative",  
+    }
+    testMap.onStart(startData, buttonLabel);
 
     const button = document.getElementById("findNearest");
     expect(button.innerText).toBe('Find Nearest Place');
 });
 
 test('testing button text updates with default ad params', () => {
-    const eventData = createEventData();
+    const eventData = {
+        args: {
+            creativeData: {
+                adParameters: '{}',
+            },
+            environmentData: {},
+        },
+        messageId: 0,
+        sessionId: "test-session-id",
+        timestamp: 0,
+        type: "SIMID:Player:init",
+    };
     testMap.onInit(eventData);
+
+    const startData = {
+        messageId: 1,
+        sessionId: "test-session-id",
+        timestamp: 0,
+        type: "SIMID:Player:startCreative",  
+    }
     testMap.onStart(startData);
+
     const button = document.getElementById("findNearest");
     expect(button.innerText).toBe('Find Nearest Location');
 });
@@ -88,5 +130,5 @@ test('LatLng coordinates constructor is called by default', () => {
     testMap.onStart(startData);
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
-    expect(window.google.maps.LatLng.mock.instances.length).toBe(1);
+    expect(window.google.maps.LatLng.mock.instances.length).toBe(2);
 });
