@@ -51,7 +51,7 @@ test('testing button text updates from ad params', () => {
     const eventData = {
         args: {
             creativeData: {
-                adParameters: '{"buttonLabel": "Place"}',
+                adParameters: "{'buttonLabel': 'Place'}",
             },
             environmentData: {},
         },
