@@ -51,6 +51,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
   /**
    * Prompts the users to grant or deny access to their current location.
+   * TODO(kristenmason@): implement grant location access and modify
+   * function to pass in current position (currently coords default to GooglePlex)
    * @private 
   */
   grantLocationAccess_() {
@@ -61,8 +63,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
   /**
    * Loads a map object that currently displays a hardcoded location.
    * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
-   * TODO(kristenmason@): implement grant location access and modify
-   * function to pass in current position (currently coords default to GooglePlex)
    * @private 
   */
   loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
