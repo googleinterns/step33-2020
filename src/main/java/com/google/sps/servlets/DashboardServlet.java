@@ -18,11 +18,7 @@ import java.util.HashMap;
 public class DashboardServlet extends HttpServlet {
 
  /**
-  * Given the correlator, this will create an entry in the database with default
-  * values.
-  *
-  * @param request This includes a correlator for the current user.
-  * @param response A 200 status or 400 error.
+  * This route will return a JSON with the percentages of each interaction
   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
