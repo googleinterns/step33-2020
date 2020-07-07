@@ -10,7 +10,7 @@ let startData;
  * If the field is left blank, passes in the default parameters.
  * @return {!Object} an object containing the event data and corresponding AdParameters.
  */
-function createEventData(adParameters = ""){
+function createInitData(adParameters = ""){
     const eventData = {
         args: {
             creativeData: {
@@ -32,14 +32,18 @@ beforeEach(() => {
             LatLng: jest.fn(), 
             Map: jest.fn(),
             Marker: jest.fn(),
+            Size: jest.fn(),
+            Point: jest.fn(),
+            InfoWindow: jest.fn(),
             Autocomplete: class {},
             places: {
-                PlacesService: jest.fn(), 
-                nearbySearch: jest.fn(),
-                RankBy: jest.fn()
+                PlacesService: jest.fn(() => ({nearbySearch: jest.fn()})),
+                RankBy: jest.fn(),
+                PlacesServiceStatus: jest.fn()
             }
         }
       };
+    //window.google.maps.places.PlacesService.mockReturnValue(jest.fn());
     testMap = new SimidMapCreative();
     document.body.innerHTML = `
     <button id="findNearest"></button>
@@ -108,7 +112,7 @@ test('testing button text updates with default ad params', () => {
 });
 
 test('instance of map is instantiated on button click', () => {
-    const eventData = createEventData();
+    const eventData = createInitData();
     testMap.onInit(eventData);
     testMap.onStart(startData);
     const findNearestButton = document.getElementById('findNearest');
@@ -117,7 +121,7 @@ test('instance of map is instantiated on button click', () => {
 });
 
 test('marker is added to map when map loads', () => {
-    const eventData = createEventData();
+    const eventData = createInitData();
     testMap.onInit(eventData);
     testMap.onStart(startData);
     const findNearestButton = document.getElementById('findNearest');
@@ -126,7 +130,7 @@ test('marker is added to map when map loads', () => {
 });
 
 test('LatLng coordinates constructor is called by default', () => {
-    const eventData = createEventData();
+    const eventData = createInitData();
     testMap.onInit(eventData);
     testMap.onStart(startData);
     const findNearestButton = document.getElementById('findNearest');
