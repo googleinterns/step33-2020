@@ -34,7 +34,8 @@ beforeEach(() => {
             Marker: jest.fn(),
             Autocomplete: class {},
             places: {
-                PlacesService:   jest.fn(),
+                PlacesService: jest.fn(), 
+                nearbySearch: jest.fn(),
                 RankBy: jest.fn()
             }
         }
