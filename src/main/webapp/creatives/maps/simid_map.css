@@ -6,3 +6,24 @@
     bottom: 65px;
     padding: 15px;
 }
+
+/*Allows map to display*/
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/*
+ * Display the map in the center of the iframe, 
+ * scaled to allow button display
+ */
+#map {
+    height: 80%;
+    width: 80%;
+    margin: auto;
+    position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
