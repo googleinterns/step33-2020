@@ -27,28 +27,17 @@ public class DashboardServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery interactions = datastore.prepare(interactionQuery);
 
-    int findNearestLocationCounter = 0;
-    int grantsLocationCounter = 0;
-    int interactsWithMapCounter = 0;
-    int skipToContentCounter = 0;
-    int returnToAdCounter = 0;
-    
-    for (Entity entity : interactions.asIterable()) {
-      findNearestLocationCounter = (boolean) entity.getProperty(Property.FIND_NEAREST_LOCATION) ? ++findNearestLocationCounter : findNearestLocationCounter;
-      grantsLocationCounter = (boolean) entity.getProperty(Property.GRANTS_LOCATION) ? ++grantsLocationCounter : grantsLocationCounter;
-      interactsWithMapCounter = (boolean) entity.getProperty(Property.INTERACTS_WITH_MAP) ? ++interactsWithMapCounter : interactsWithMapCounter;
-      skipToContentCounter = (boolean) entity.getProperty(Property.SKIP_TO_CONTENT) ? ++skipToContentCounter : skipToContentCounter;
-      returnToAdCounter = (boolean) entity.getProperty(Property.RETURN_TO_AD) ? ++returnToAdCounter : returnToAdCounter;
-    }
-
+    Field[] allProperties = Property.class.getDeclaredFields();
+    double totalInteractions = interactions.countEntities();
     HashMap<String, Double> countPercentages = new HashMap<>();
 
-    double totalInteractions = interactions.countEntities();
-    countPercentages.put(Property.FIND_NEAREST_LOCATION, findNearestLocationCounter/totalInteractions);
-    countPercentages.put(Property.GRANTS_LOCATION, grantsLocationCounter/totalInteractions);
-    countPercentages.put(Property.INTERACTS_WITH_MAP, interactsWithMapCounter/totalInteractions);
-    countPercentages.put(Property.SKIP_TO_CONTENT, skipToContentCounter/totalInteractions);
-    countPercentages.put(Property.RETURN_TO_AD, returnToAdCounter/totalInteractions);
+    for (Field property : allProperties) {
+      Filter keyFilter =  new FilterPredicate(property, FilterOperator.EQUAL, true);
+      Query interactionQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(keyFilter);
+    
+      int numUsersInteracted = datastore.prepare(interactionQuery).countEntities();
+      countPercentages.put(property, numUsersInteracted / totalInteractions);
+    }
     
     String jsonToSend = convertToJson(countPercentages);
 
