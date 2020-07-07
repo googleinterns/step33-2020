@@ -12,16 +12,16 @@ function drawChart() {
     data.addColumn('string', 'Interaction Type');
     data.addColumn('number', 'Percentage');
     Object.keys(dataPercentages).forEach((interactionType) => {
-      data.addRow([interactionType, dataPercentages[interactionType]]);
+      data.addRow([interactionType, 100 * dataPercentages[interactionType]]);
     });
 
     const options = {
       'title': 'Interaction Dashboard',
-      'width': 1000,
-      'height': 1000
+      'width': 1500,
+      'height': 700
     };
 
-    const chart = new google.visualization.PieChart(
+    const chart = new google.visualization.ColumnChart(
         document.getElementById('chart-container'));
     chart.draw(data, options);
   });
