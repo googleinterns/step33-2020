@@ -105,33 +105,6 @@ test('testing button text updates with default ad params', () => {
     expect(button.innerText).toBe('Find Nearest Location');
 });
 
-test('instance of map is instantiated on button click', () => {
-    const eventData = createInitData();
-    testMap.onInit(eventData);
-    testMap.onStart(startData);
-    const findNearestButton = document.getElementById('findNearest');
-    findNearestButton.dispatchEvent(new Event('click'));
-    expect(window.google.maps.Map.mock.instances.length).toBe(1);
-});
-
-test('marker is added to map when map loads', () => {
-    const eventData = createInitData();
-    testMap.onInit(eventData);
-    testMap.onStart(startData);
-    const findNearestButton = document.getElementById('findNearest');
-    findNearestButton.dispatchEvent(new Event('click'));
-    expect(window.google.maps.Marker.mock.instances.length).toBe(1);
-});
-
-test('LatLng coordinates constructor is called by default', () => {
-    const eventData = createInitData();
-    testMap.onInit(eventData);
-    testMap.onStart(startData);
-    const findNearestButton = document.getElementById('findNearest');
-    findNearestButton.dispatchEvent(new Event('click'));
-    expect(window.google.maps.LatLng.mock.instances.length).toBe(1);
-});
-
 test('testing that rejection for ad params not found is working', () => {
     const eventData = {
         args: {
@@ -213,4 +186,32 @@ test('testing that rejection for JSON parsing errors is working', () => {
     const rejectMessageObject = instance.reject.mock.calls[0][1];
     expect(rejectMessageObject.message).toBe("Invalid JSON input for ad parameters");
 });
+
+test('instance of map is instantiated on button click', () => {
+    const eventData = createInitData();
+    testMap.onInit(eventData);
+    testMap.onStart(startData);
+    const findNearestButton = document.getElementById('findNearest');
+    findNearestButton.dispatchEvent(new Event('click'));
+    expect(window.google.maps.Map.mock.instances.length).toBe(1);
+});
+
+test('marker is added to map when map loads', () => {
+    const eventData = createInitData();
+    testMap.onInit(eventData);
+    testMap.onStart(startData);
+    const findNearestButton = document.getElementById('findNearest');
+    findNearestButton.dispatchEvent(new Event('click'));
+    expect(window.google.maps.Marker.mock.instances.length).toBe(1);
+});
+
+test('LatLng coordinates constructor is called by default', () => {
+    const eventData = createInitData();
+    testMap.onInit(eventData);
+    testMap.onStart(startData);
+    const findNearestButton = document.getElementById('findNearest');
+    findNearestButton.dispatchEvent(new Event('click'));
+    expect(window.google.maps.LatLng.mock.instances.length).toBe(1);
+});
+
 
