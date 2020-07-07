@@ -87,9 +87,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
       findNearest.classList.add("hidden");
     }).catch(() => {
-      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.PAUSE_NOT_HONORED, 
-      message: "Request to pause ad not honored"
-      });
+      findNearest.classList.add("hidden");
+      const pauseErrorMessage = {
+        message: "WARNING: Request to pause ad failed",
+      };
+      this.simidProtocol.sendMessage(CreativeMessage.LOG, pauseErrorMessage);
     });
     this.createButtonsMapState_();
   }
