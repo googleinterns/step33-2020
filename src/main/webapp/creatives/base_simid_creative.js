@@ -25,7 +25,16 @@ export default class BaseSimidCreative {
      * The most recent video state from the player.
      * @protected {?Object}
      */
-    this.videoState = {};
+    this.videoState = {
+      currentSrc:'',
+      currentTime: -1, // Time not yet known
+      duration: -1, // duration unknown
+      ended: false,
+      muted: false,
+      paused: false,
+      volume: 0.5,
+      fullscreen: false,
+    }
 
     /**
      * The simid version, once the player makes it known.
@@ -74,21 +83,22 @@ export default class BaseSimidCreative {
    * @param {!Object} eventData Data from the event.
    */
   onInit(eventData) {
+    this.updateInternalOnInit(eventData);
+    this.simidProtocol.resolve(eventData, {});
+  }
+
+  /**
+   * Updates internal data on initialization call.
+   *
+   * Note: When overriding the onInit function and not wishing
+   * to always resolve, subclasses may instead use this function.
+   * @param {!Object} eventData Data from the event.
+  */
+  updateInternalOnInit(eventData) {
     this.creativeData = eventData.args.creativeData;
     this.environmentData = eventData.args.environmentData;
-
-
-    this.videoState = {
-      currentSrc:'',
-      currentTime: -1, // Time not yet known
-      duration: -1, // duration unknown
-      ended: false,
-      muted: this.environmentData.muted,
-      paused: false,
-      volume: this.environmentData.volume,
-      fullscreen: false,
-    }
-    this.simidProtocol.resolve(eventData, {});
+    this.videoState.muted = this.environmentData.muted;
+    this.videoState.volume = this.environmentData.volume;
   }
 
   /**
@@ -98,7 +108,6 @@ export default class BaseSimidCreative {
   onStart(eventData) {
     // Acknowledge that the ad is started.
     this.simidProtocol.resolve(eventData, {});
-    console.log('Simid creative started.')
   }
 
   /** Called when the creative receives the fatal error message from the player.*/
