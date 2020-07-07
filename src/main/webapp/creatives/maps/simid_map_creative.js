@@ -81,6 +81,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * Searches for the closest corresponding businesses based off of the given search parameter,
    * and places pins on the map that represent the 4 closest locations.
    * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
+   * Currently defaults to GooglePlex coords, will take in user's current location.
    * @param {String} searchParameter A string with the business's name to use in the query.
    * @private 
   */
