@@ -11,8 +11,10 @@ function drawChart() {
     const data = new google.visualization.DataTable();
     data.addColumn('string', 'Interaction Type');
     data.addColumn('number', 'Percentage');
-    Object.keys(dataPercentages).forEach((interactionType) => {
-      data.addRow([interactionType, 100 * dataPercentages[interactionType]]);
+    Object.keys(dataPercentages).forEach((interactionType, index) => {
+      if (index > 0) {  // skip the correlator property
+        data.addRow([interactionType, 100 * dataPercentages[interactionType]]);
+      }
     });
 
     const options = {
