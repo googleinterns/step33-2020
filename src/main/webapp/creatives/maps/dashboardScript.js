@@ -19,7 +19,10 @@ function drawChart() {
 
     const options = {
       'width': 1500,
-      'height': 700
+      'height': 700,
+      vAxis: {
+        viewWindow: {max:  100}
+      }
     };
 
     const chart = new google.visualization.ColumnChart(
