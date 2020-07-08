@@ -29,12 +29,24 @@ function createInitData(adParameters = ""){
 }
 
 beforeEach(() => {
+    const fakeNearbySearch = jest.fn();
     window.google = {
         maps: {
             LatLng: jest.fn(), 
             Map: jest.fn(),
             Marker: jest.fn(),
-            Autocomplete: class {}
+            Size: jest.fn(),
+            Point: jest.fn(),
+            InfoWindow: jest.fn(),
+            Autocomplete: class {},
+            places: {
+                PlacesService: jest.fn(() => ({nearbySearch: fakeNearbySearch})),
+                RankBy: jest.fn(),
+                PlacesServiceStatus: jest.fn()
+            },
+            event: {
+                addListener: jest.fn()
+            }
         }
       };
     SimidProtocol.mockClear();
