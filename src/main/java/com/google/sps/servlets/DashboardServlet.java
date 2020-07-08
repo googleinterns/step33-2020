@@ -11,6 +11,9 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.sps.servlets.Property;
 import java.util.HashMap;
 
@@ -33,9 +36,9 @@ public class DashboardServlet extends HttpServlet {
 
     for (Field property : allProperties) {
       Filter keyFilter =  new FilterPredicate(property, FilterOperator.EQUAL, true);
-      Query interactionQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(keyFilter);
+      Query filteredQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(keyFilter);
     
-      int numUsersInteracted = datastore.prepare(interactionQuery).countEntities();
+      int numUsersInteracted = datastore.prepare(filteredQuery).countEntities();
       countPercentages.put(property, numUsersInteracted / totalInteractions);
     }
     
