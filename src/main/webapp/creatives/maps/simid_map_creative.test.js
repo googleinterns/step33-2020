@@ -47,7 +47,6 @@ beforeEach(() => {
             }
         }
       };
-    //window.google.maps.places.PlacesService.mockReturnValue(jest.fn());
     testMap = new SimidMapCreative();
     document.body.innerHTML = `
     <button id="findNearest"></button>

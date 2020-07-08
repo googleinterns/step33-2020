@@ -112,7 +112,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
           });
           google.maps.event.addListener(placeMarker, 'click', function () {
             const infowindow = new google.maps.InfoWindow;
-            infowindow.setContent(place.name + "\n" + place.vicinity);
+            infowindow.setContent(place.name);
             infowindow.open(map, this);
           });
         }
