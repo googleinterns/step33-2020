@@ -84,10 +84,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
   */
   grantLocationAccess_() {
     //ToDo(kristenmason@): implement the Google Maps request access functionality
-    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
-      findNearest.classList.add("hidden");
-    }).catch(() => {
-      findNearest.classList.add("hidden");
+    findNearest.classList.add("hidden");
+    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).catch(() => {
       const pauseErrorMessage = {
         message: "WARNING: Request to pause ad failed",
       };
