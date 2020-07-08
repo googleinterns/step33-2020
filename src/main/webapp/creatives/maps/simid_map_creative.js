@@ -84,26 +84,68 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * Prompts the users to grant or deny access to their current location.
    * @private 
   */
-  grantLocationAccess_() {
-    this.loadMap_();
-  }
+ grantLocationAccess_() {
+  this.loadMap_();
+  this.findNearby_(searchQuery);
+}
 
-  /**
-   * Loads a map object that currently displays a hardcoded location.
-   * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
-   * TODO(kristenmason@): implement grant location access and modify
-   * function to pass in current position (currently coords default to GooglePlex)
-   * @private 
-  */
-  loadMap_(coordinates = new google.maps.LatLng(37.422004,-122.081402)) { 
-    const map = new google.maps.Map(document.getElementById('map'), {
-      zoom: DEFAULT_ZOOM,
-      center: coordinates
-    });
-    const marker = new google.maps.Marker({
-      position: coordinates,
-      map: map,
-      title: 'Current Position'
-    });
-  }
+/**
+ * Loads a map object that currently displays a hardcoded location.
+ * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
+ * @private 
+*/
+loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: DEFAULT_ZOOM,
+    center: coordinates
+  });
+  const marker = new google.maps.Marker({
+    position: coordinates,
+    map: map,
+    title: 'Current Position'
+  });
+}
+
+/**
+ * Searches for the closest corresponding businesses based off of the given search parameter,
+ * and places pins on the map that represent the 4 closest locations.
+ * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
+ * Currently defaults to GooglePlex coords, will take in user's current location.
+ * @param {String} searchParameter A string with the business's name to use in the query.
+ * @private 
+*/
+findNearby_(searchParameter, coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
+  const request = {
+    location: coordinates,
+    name: searchParameter,
+    openNow: true,
+    rankBy: google.maps.places.RankBy.DISTANCE
+  };
+  const service = new google.maps.places.PlacesService(map);
+  //TODO(kristenmason@) Add helper functions to shorten findNearby_
+  service.nearbySearch(request, function(results, status){
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      for (let i = 0; i < 4; i++) {
+        const place = results[i];
+        const placeIcon = {
+          url: marker,
+          size: new google.maps.Size(71, 71),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(25, 25)
+        };
+        const placeMarker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location,
+          icon: placeIcon
+        });
+        google.maps.event.addListener(placeMarker, 'click', function () {
+          const infowindow = new google.maps.InfoWindow;
+          infowindow.setContent(place.name);
+          infowindow.open(map, this);
+        });
+      }
+    }
+  });
+}
 }
