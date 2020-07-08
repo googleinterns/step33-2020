@@ -60,4 +60,6 @@ function createQueryForm(){
 
   queryDiv.appendChild(queryButton);
   queryForm.appendChild(queryDiv);
+
+  return queryForm;
 }
