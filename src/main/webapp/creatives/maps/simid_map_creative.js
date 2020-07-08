@@ -127,7 +127,7 @@ findNearby_(searchParameter, coordinates) {
     rankBy: google.maps.places.RankBy.DISTANCE
   };
   const service = new google.maps.places.PlacesService(map);
-  //TODO(kristenmason@) Add helper functions to shorten findNearby_
+  //TODO(kristenmason@) Add helper functions to shorten findNearby_ & improve readability
   service.nearbySearch(request, function(results, status){
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       for (let i = 0; i < 4; i++) {
