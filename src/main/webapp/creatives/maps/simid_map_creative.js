@@ -85,14 +85,14 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @param {String} searchParameter A string with the business's name to use in the query.
    * @private 
   */
-  findNearby_(searchParameter, latLng = new google.maps.LatLng(37.422004, -122.081402)) {
+  findNearby_(searchParameter, coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
     const request = {
-      location: latLng,
+      location: coordinates,
       name: searchParameter,
       openNow: true,
       rankBy: google.maps.places.RankBy.DISTANCE
     };
-    let service = new google.maps.places.PlacesService(map);
+    const service = new google.maps.places.PlacesService(map);
     //TODO(kristenmason@) Add helper functions to shorten findNearby_
     service.nearbySearch(request, function(results, status){
       if (status == google.maps.places.PlacesServiceStatus.OK) {
