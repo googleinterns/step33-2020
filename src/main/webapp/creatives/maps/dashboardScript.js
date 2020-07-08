@@ -30,3 +30,34 @@ function drawChart() {
     chart.draw(data, options);
   });
 }
+
+function createQueryForm(){
+  let queryForm = document.createElement("form");
+
+  const QUERY_OPTIONS = ["clicksFindNearestLocation", "grantsLocation", "interactsWithMap", 
+                          "clicksSkipToContent", "clicksReturnToAd"];
+
+  for (let i = 1; i <= 5; ++i){
+    let inputBox = document.createElement("input");
+    inputBox.type = "checkbox";
+    inputBox.name = `filter_${i}`;
+    inputBox.value = QUERY_OPTIONS[i];
+    
+
+    let label = document.createElement("label");
+    label.for = `filter_${i}`;
+    label.textContent = QUERY_OPTIONS[i];
+
+    queryForm.appendChild(inputBox);
+    queryForm.appendChild(label);
+  }
+
+
+  let queryDiv = document.createElement("div");
+  let queryButton = document.createElement("button");
+  queryButton.textContent = "Query";
+  queryButton.onclick = "getData()";
+
+  queryDiv.appendChild(queryButton);
+  queryForm.appendChild(queryDiv);
+}
