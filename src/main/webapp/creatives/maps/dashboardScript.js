@@ -18,7 +18,6 @@ function drawChart() {
     });
 
     const options = {
-      'title': 'Interaction Dashboard',
       'width': 1500,
       'height': 700
     };
