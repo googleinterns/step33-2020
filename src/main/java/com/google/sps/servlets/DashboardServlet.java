@@ -35,7 +35,7 @@ public class DashboardServlet extends HttpServlet {
       response.setContentType("application/json; charset=UTF-8");
       response.getWriter().println(jsonToSend);
     
-    } catch (IllegalAccessException except) {
+    } catch (IllegalAccessException exception) {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
   }
