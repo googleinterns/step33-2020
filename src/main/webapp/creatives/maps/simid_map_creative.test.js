@@ -223,7 +223,7 @@ test('LatLng coordinates constructor is called by default', () => {
     testMap.onStart(startData);
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
-    expect(window.google.maps.LatLng.mock.instances.length).toBe(2);
+    expect(window.google.maps.LatLng.mock.instances.length).toBe(1);
 });
 
 test('PlacesService object is initialized when map loads', () => {

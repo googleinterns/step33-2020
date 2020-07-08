@@ -91,7 +91,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
   */
  grantLocationAccess_() {
   this.loadMap_();
-  this.findNearby_(searchQuery);
 }
 
 /**
@@ -109,6 +108,7 @@ loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
     map: map,
     title: 'Current Position'
   });
+  this.findNearby_(searchQuery, coordinates);
 }
 
 /**
@@ -119,7 +119,7 @@ loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
  * @param {String} searchParameter A string with the business's name to use in the query.
  * @private 
 */
-findNearby_(searchParameter, coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
+findNearby_(searchParameter, coordinates) {
   const request = {
     location: coordinates,
     name: searchParameter,
