@@ -31,13 +31,15 @@ function drawChart() {
   });
 }
 
+document.getElementById("form-container").appendChild(createQueryForm());
+
 function createQueryForm(){
   let queryForm = document.createElement("form");
 
   const QUERY_OPTIONS = ["clicksFindNearestLocation", "grantsLocation", "interactsWithMap", 
                           "clicksSkipToContent", "clicksReturnToAd"];
 
-  for (let i = 1; i <= 5; ++i){
+  for (let i = 0; i < 5; ++i){
     let inputBox = document.createElement("input");
     inputBox.type = "checkbox";
     inputBox.name = `filter_${i}`;
