@@ -11,6 +11,10 @@ const AdParamKeys = {
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
 const DEFAULT_BUTTON_LABEL = "Location";
 const DEFAULT_ZOOM = 13;
+let map;
+let searchQuery;
+let marker;
+
 
 /**
  * A sample SIMID ad that shows a map of nearby locations.
@@ -49,7 +53,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
         return;
     }
     const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
-    const searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
+    searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
+    marker = adParams[AdParamKeys.MARKER];
 
     if (!searchQuery) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
