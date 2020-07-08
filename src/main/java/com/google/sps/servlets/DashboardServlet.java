@@ -15,6 +15,7 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.sps.servlets.Property;
+import java.lang.reflect.Field; 
 import java.util.HashMap;
 
 @WebServlet("/dashboard")
@@ -25,28 +26,45 @@ public class DashboardServlet extends HttpServlet {
   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query interactionQuery = new Query(DBUtilities.INTERACTION_TABLE);
+
+    try {
+      HashMap<String, Double> interactionPercentages = calculatePercentages();
+      
+      String jsonToSend = convertToJson(interactionPercentages);
+
+      response.setContentType("application/json; charset=UTF-8");
+      response.getWriter().println(jsonToSend);
     
+    } catch (IllegalAccessException except) {
+      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    }
+  }
+
+ /**
+  * This function queries for and calculates the percentages of each interaction.
+  * @return A hashmap with the interactions as keys and the percentages as values.
+  */
+  public HashMap<String, Double> calculatePercentages() throws IllegalAccessException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery interactions = datastore.prepare(interactionQuery);
+    PreparedQuery interactions = datastore.prepare(new Query(DBUtilities.INTERACTION_TABLE));
 
-    Field[] allProperties = Property.class.getDeclaredFields();
-    double totalInteractions = interactions.countEntities();
-    HashMap<String, Double> countPercentages = new HashMap<>();
+    Field[] allFields = Property.class.getDeclaredFields();
+  
+    HashMap<String, Double> interactionPercentages = new HashMap<>();
 
-    for (Field property : allProperties) {
+    for (Field field : allFields) {
+      String property = (String) field.get(new Property()); // gets the value of the field variable
+
       Filter keyFilter =  new FilterPredicate(property, FilterOperator.EQUAL, true);
       Query filteredQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(keyFilter);
     
       int numUsersInteracted = datastore.prepare(filteredQuery).countEntities();
-      countPercentages.put(property, numUsersInteracted / totalInteractions);
+      int totalInteractions = interactions.countEntities();
+
+      interactionPercentages.put(property, numUsersInteracted / (double) totalInteractions);
     }
-    
-    String jsonToSend = convertToJson(countPercentages);
 
-    response.setContentType("application/json; charset=UTF-8");
-    response.getWriter().println(jsonToSend);
-
+    return interactionPercentages;
   }
 
   private String convertToJson(HashMap<String, Double> data) {
