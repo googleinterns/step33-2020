@@ -19,12 +19,14 @@
     cursor: pointer;
 }
 
-#skipToContent {
+#skipAd {
     position: absolute;
     bottom: 65px;
-    right: 10px;
+    right: 0px;
     padding: 15px;
     cursor: pointer;
+    padding-right: 30px;
+    padding-left: 30px;
 }
 
 /*Allows map to display*/
@@ -40,10 +42,11 @@ html, body {
  */
 #map {
     height: 80%;
-    width: 80%;
+    width: 100%;
     margin: auto;
     position: relative;
     top: 50%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
+    overflow: inherit !important;
 }
