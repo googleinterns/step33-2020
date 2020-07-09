@@ -37,7 +37,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
         message: "Ad parameters not found"});
         return;
-    }
+    }Fsk
 
     let adParams = "";
     try {
@@ -84,9 +84,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
   */
   prepareCreative_() {
+    debugger;
     //ToDo(kristenmason@): implement the Google Maps request access functionality
     findNearest.classList.add("hidden");
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
+      debugger;
       this.createMapState_();
     }).catch(() => {
         const pauseErrorMessage = {
@@ -109,7 +111,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
     const skipAdButton = document.createElement("button");
     skipAdButton.textContent = "Skip Ad";
-    skipAdButton.id = "skipToContent";
+    skipAdButton.id = "skipAd";
     skipAdButton.onclick = () => this.playContent_();
 
     const adContainer = document.getElementById('adContainer');
