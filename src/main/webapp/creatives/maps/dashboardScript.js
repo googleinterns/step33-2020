@@ -34,34 +34,23 @@ function drawChart() {
 document.getElementById("form-container").appendChild(createQueryForm());
 
 function createQueryForm(){
-  let queryForm = document.createElement("form");
-  queryForm.action = `/${URL.DASHBOARD}`;
-
-  const QUERY_OPTIONS = ["clicksFindNearestLocation", "grantsLocation", "interactsWithMap", 
-                          "clicksSkipToContent", "clicksReturnToAd"];
-
-  for (let i = 0; i < 5; ++i){
-    let inputBox = document.createElement("input");
-    inputBox.type = "checkbox";
-    inputBox.name = `filter_${i}`;
-    inputBox.value = QUERY_OPTIONS[i];
-    
-
-    let label = document.createElement("label");
-    label.for = `filter_${i}`;
-    label.textContent = QUERY_OPTIONS[i];
-
-    queryForm.appendChild(inputBox);
-    queryForm.appendChild(label);
-  }
-
-
   let queryDiv = document.createElement("div");
-  let queryButton = document.createElement("button");
-  queryButton.textContent = "Query";
 
+  let label = document.createElement("label");
+  label.for = "submit-day";
+  label.textContent = "Pick date to see interactions from that period";
+
+  let input = document.createElement("input");
+  input.type = "date";
+  input.id = "submit-day";
+
+  let queryButton = document.createElement("button");
+  queryButton.id = "submit-day";
+  queryButton.textContent = "Query by Date";
+
+  queryDiv.appendChild(label);
+  queryDiv.appendChild(input);
   queryDiv.appendChild(queryButton);
-  queryForm.appendChild(queryDiv);
 
   return queryForm;
 }
