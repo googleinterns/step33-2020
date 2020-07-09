@@ -76,17 +76,19 @@ export default class SimidMapCreative extends BaseSimidCreative {
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
-    findNearest.onclick = () => this.grantLocationAccess_();
+    findNearest.onclick = () => this.prepareCreative_();
   }
  
   /**
-   * Prompts the users to grant or deny access to their current location.
+   * Requests player to pause, if accepted generate map.
    * @private 
   */
-  grantLocationAccess_() {
+  prepareCreative_() {
+    debugger;
     //ToDo(kristenmason@): implement the Google Maps request access functionality
     findNearest.classList.add("hidden");
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
+      debugger;
       this.createMapState_();
     }).catch(() => {
         const pauseErrorMessage = {
@@ -121,6 +123,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
   /**
    * Continues to play the ad if user clicks on Return To Ad button.
+   * @param {!Element} returnToAdButton Refers to the button that takes
+   *   a user back to the video ad. 
    * @private 
   */
   playAd_(returnToAdButton) {
