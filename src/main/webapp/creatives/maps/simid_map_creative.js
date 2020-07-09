@@ -1,5 +1,6 @@
 
 import BaseSimidCreative from '../base_simid_creative.js';
+import {CreativeErrorCode} from '../constants.js';
 
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
@@ -9,6 +10,7 @@ const AdParamKeys = {
 
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
 const DEFAULT_BUTTON_LABEL = "Location";
+const DEFAULT_ZOOM = 13;
 
 /**
  * A sample SIMID ad that shows a map of nearby locations.
@@ -20,17 +22,50 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   /** @override */
-  onStart(eventData){
-    super.onStart(eventData);
-    //ToDo(juliareichel@): handle invalid JSON and param errors
-    const adParams = JSON.parse(this.creativeData.adParameters);
+  onInit(eventData) {
+    this.updateInternalOnInit(eventData);
+    this.validateAndParseAdParams_(eventData);
+  }
+
+  /**
+   * Checks validity of ad parameters and rejects with proper message if invalid.
+   * @param eventData an object that contains information details for a particular event
+   *   such as event type, unique Ids, creativeData and environmentData.
+   * @private 
+  */ 
+  validateAndParseAdParams_(eventData) {
+    if (this.creativeData.adParameters == "") {
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
+        message: "Ad parameters not found"});
+        return;
+    }
+
+    let adParams = "";
+    try {
+      adParams = JSON.parse(this.creativeData.adParameters);
+    } catch (exception) {
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.CREATIVE_INTERNAL_ERROR, 
+        message: "Invalid JSON input for ad parameters"});
+        return;
+    }
     const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
-    //ToDo(juliareichel@): handle case where searchQuery is undefined
     const searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
-    const marker = adParams[AdParamKeys.MARKER];
+
+    if (!searchQuery) {
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
+        message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`});
+        return;
+    }
+    
+    this.simidProtocol.resolve(eventData, {});
+  }
+
+  /** @override */
+  onStart(eventData, buttonLabel) {
+    super.onStart(eventData);
     this.specifyButtonFeatures_(buttonLabel);
   }
- 
+
   /**
    * Sets the text of the Find Nearest button and assigns it a click functionality.
    * @param {string=} buttonLabel Refers to the value given to the BUTTON_LABEL key in 
@@ -50,6 +85,25 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
   */
   grantLocationAccess_() {
-    //ToDo(kristenmason@): implement map
+    this.loadMap_();
+  }
+
+  /**
+   * Loads a map object that currently displays a hardcoded location.
+   * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
+   * TODO(kristenmason@): implement grant location access and modify
+   * function to pass in current position (currently coords default to GooglePlex)
+   * @private 
+  */
+  loadMap_(coordinates = new google.maps.LatLng(37.422004,-122.081402)) { 
+    const map = new google.maps.Map(document.getElementById('map'), {
+      zoom: DEFAULT_ZOOM,
+      center: coordinates
+    });
+    const marker = new google.maps.Marker({
+      position: coordinates,
+      map: map,
+      title: 'Current Position'
+    });
   }
 }
