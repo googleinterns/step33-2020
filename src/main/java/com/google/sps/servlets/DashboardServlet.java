@@ -42,9 +42,9 @@ public class DashboardServlet extends HttpServlet {
     }
     
     try {
-      HashMap<String, Double> interactionPercentages = calculatePercentages(startTimestamp, endTimestamp);
+      HashMap<String, Double> dataToSend = calculatePercentages(startTimestamp, endTimestamp);
       
-      String jsonToSend = convertToJson(interactionPercentages);
+      String jsonToSend = convertToJson(dataToSend);
 
       response.setContentType("application/json; charset=UTF-8");
       response.getWriter().println(jsonToSend);
@@ -69,10 +69,11 @@ public class DashboardServlet extends HttpServlet {
 
     Field[] allFields = Property.class.getDeclaredFields();
   
-    HashMap<String, Double> interactionPercentages = new HashMap<>();
+    HashMap<String, Double> dataToSend = new HashMap<>();
 
-    for (Field field : allFields) {
-      String property = (String) field.get(new Property()); // gets the value of the field variable
+    // skip the timestamp and correlator properties
+    for (int i = 2; i < allFields.length; ++i){
+      String property = (String) allFields[i].get(new Property()); // gets the value of the field variable
 
       Filter propertyFilter =  new FilterPredicate(property, FilterOperator.EQUAL, true);
       Query filteredQuery = new Query(DBUtilities.INTERACTION_TABLE);
@@ -88,10 +89,12 @@ public class DashboardServlet extends HttpServlet {
         percentage = numUsersInteracted / (double) totalInteractions;
       }
 
-      interactionPercentages.put(property, percentage);
+      dataToSend.put(property, percentage);
     }
 
-    return interactionPercentages;
+    dataToSend.put("totalInteractions", (double) interactions.countEntities());
+    
+    return dataToSend;
   }
 
   private String convertToJson(HashMap<String, Double> data) {
