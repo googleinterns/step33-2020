@@ -13,10 +13,6 @@ const DEFAULT_BUTTON_LABEL = "Location";
 const DEFAULT_ZOOM = 13;
 const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 
-let searchQuery;
-let markerImage;
-
-
 /**
  * A sample SIMID ad that shows a map of nearby locations.
  */
@@ -59,7 +55,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
     this.markerImage = adParams[AdParamKeys.MARKER];
 
-    if (!searchQuery) {
+    if (!this.searchQuery) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
         message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`});
         return;
@@ -111,7 +107,7 @@ loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
     map: this.map,
     title: 'Current Position'
   });
-  this.findNearby_(searchQuery, coordinates);
+  this.findNearby_(this.searchQuery, coordinates);
 }
 
 /**
@@ -136,7 +132,7 @@ findNearby_(searchParameter, coordinates) {
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
         const place = results[i];
         const placeIcon = {
-          url: markerImage,
+          url: this.markerImage,
           size: new google.maps.Size(71, 71),
           origin: new google.maps.Point(0, 0),
           anchor: new google.maps.Point(17, 34),
