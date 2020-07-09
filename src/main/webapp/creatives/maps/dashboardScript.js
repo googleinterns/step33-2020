@@ -9,8 +9,8 @@ function drawChart(parameter = "") {
     const data = new google.visualization.DataTable();
     data.addColumn('string', 'Interaction Type');
     data.addColumn('number', 'Percentage');
-    Object.keys(dataPercentages).forEach((interactionType, index) => {
-      if (index != dataPercentages.length - 1) {  // skip the total interaction data
+    Object.keys(dataPercentages).forEach((interactionType) => {
+      if (interactionType != "totalInteractions") {
         data.addRow([interactionType, 100 * dataPercentages[interactionType]]);
       }
     });
