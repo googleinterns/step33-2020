@@ -23,7 +23,7 @@ import com.google.sps.servlets.RequestUtils;
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
 
-  private final long SECONDS_IN_DAY = 86400;
+  private final long MILLISECONDS_IN_DAY = 86400000;
   private final String DEFAULT_START_TIMESTAMP = "0";
   private final String DEFAULT_END_TIMESTAMP = String.valueOf(System.currentTimeMillis());
 
@@ -40,7 +40,7 @@ public class DashboardServlet extends HttpServlet {
       startTimestamp = DEFAULT_START_TIMESTAMP;
       endTimestamp = DEFAULT_END_TIMESTAMP;
     } else {
-      endTimestamp = String.valueOf(Long.valueOf(startTimestamp) + SECONDS_IN_DAY);
+      endTimestamp = String.valueOf(Long.valueOf(startTimestamp) + MILLISECONDS_IN_DAY);
     }
     
     try {
