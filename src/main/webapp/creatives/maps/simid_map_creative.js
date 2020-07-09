@@ -37,8 +37,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
         message: "Ad parameters not found"});
         return;
-    }Fsk
-
+    }
+    
     let adParams = "";
     try {
       adParams = JSON.parse(this.creativeData.adParameters);
