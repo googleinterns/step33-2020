@@ -52,7 +52,12 @@ public class DashboardServlet extends HttpServlet {
   */
   public HashMap<String, Double> calculatePercentages(String startTimestamp, String endTimestamp) throws IllegalAccessException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery interactions = datastore.prepare(new Query(DBUtilities.INTERACTION_TABLE));
+    
+    final Filter startTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.GREATER_THAN_OR_EQUAL, startTimestamp);
+    final Filter endTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.LESS_THAN_OR_EQUAL, endTimestamp);
+    
+    final Query query = new Query(DBUtilities.INTERACTION_TABLE).setFilter(and(startTimestampFilter, endTimestampFilter));
+    PreparedQuery interactions = datastore.prepare(query);
 
     Field[] allFields = Property.class.getDeclaredFields();
   
