@@ -1,12 +1,10 @@
 
-import {URL} from './utils.js'
-
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
 /** Fetches interaction data from server and uses it to create a chart. */
 function drawChart(parameter = "") {
-  fetch(`/${URL.DASHBOARD}?${parameter}`).then(response => response.json())
+  fetch(`/dashboard?${parameter}`).then(response => response.json())
   .then((dataPercentages) => {
     const data = new google.visualization.DataTable();
     data.addColumn('string', 'Interaction Type');
