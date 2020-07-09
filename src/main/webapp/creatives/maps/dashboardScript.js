@@ -12,7 +12,7 @@ function drawChart(parameter = "") {
     data.addColumn('string', 'Interaction Type');
     data.addColumn('number', 'Percentage');
     Object.keys(dataPercentages).forEach((interactionType, index) => {
-      if (index > 0) {  // skip the correlator property
+      if (index > 1) {  // skip the timestamp & correlator properties
         data.addRow([interactionType, 100 * dataPercentages[interactionType]]);
       }
     });
