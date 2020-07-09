@@ -24,6 +24,8 @@ import com.google.sps.servlets.RequestUtils;
 public class DashboardServlet extends HttpServlet {
 
   private final long SECONDS_IN_DAY = 86400;
+  private final String DEFAULT_START_TIMESTAMP = "0";
+  private final String DEFAULT_END_TIMESTAMP = String.valueOf(System.currentTimeMillis());
 
  /**
   * This route will return a JSON with the percentages of each interaction
@@ -35,8 +37,8 @@ public class DashboardServlet extends HttpServlet {
     String endTimestamp;
 
     if (startTimestamp.isEmpty()) {
-      startTimestamp = "0";
-      endTimestamp = String.valueOf(System.currentTimeMillis());
+      startTimestamp = DEFAULT_START_TIMESTAMP;
+      endTimestamp = DEFAULT_END_TIMESTAMP;
     } else {
       endTimestamp = String.valueOf(Long.valueOf(startTimestamp) + SECONDS_IN_DAY);
     }
