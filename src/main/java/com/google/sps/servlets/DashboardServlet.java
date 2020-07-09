@@ -14,6 +14,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.sps.servlets.Property;
 import java.lang.reflect.Field; 
 import java.util.HashMap;
@@ -22,16 +23,16 @@ import com.google.sps.servlets.RequestUtils;
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
 
+  private final long SECONDS_IN_DAY = 86400;
+
  /**
   * This route will return a JSON with the percentages of each interaction
   */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    final long SECONDS_IN_DAY = 86400;
-
     final String startTimestamp = RequestUtils.getParameter(request, Property.TIMESTAMP);
-    final String endTimestamp = (String) (Long.valueOf(startTimestamp) + SECONDS_IN_DAY);
+    final String endTimestamp = String.valueOf(Long.valueOf(startTimestamp) + SECONDS_IN_DAY);
     
     try {
       HashMap<String, Double> interactionPercentages = calculatePercentages(startTimestamp, endTimestamp);
@@ -56,7 +57,7 @@ public class DashboardServlet extends HttpServlet {
     final Filter startTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.GREATER_THAN_OR_EQUAL, startTimestamp);
     final Filter endTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.LESS_THAN_OR_EQUAL, endTimestamp);
     
-    final Query timedQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(and(startTimestampFilter, endTimestampFilter));
+    final Query timedQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(CompositeFilterOperator.and(startTimestampFilter, endTimestampFilter));
     PreparedQuery interactions = datastore.prepare(timedQuery);
 
     Field[] allFields = Property.class.getDeclaredFields();
@@ -68,7 +69,7 @@ public class DashboardServlet extends HttpServlet {
 
       Filter keyFilter =  new FilterPredicate(property, FilterOperator.EQUAL, true);
       Query filteredQuery = new Query(DBUtilities.INTERACTION_TABLE);
-      filteredQuery.setFilter(and(keyFilter, startTimestampFilter, endTimestampFilter);
+      filteredQuery.setFilter(CompositeFilterOperator.and(keyFilter, startTimestampFilter, endTimestampFilter));
 
       int numUsersInteracted = datastore.prepare(filteredQuery).countEntities();
       int totalInteractions = interactions.countEntities();

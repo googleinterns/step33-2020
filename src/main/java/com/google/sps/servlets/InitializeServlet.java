@@ -34,7 +34,7 @@ public class InitializeServlet extends HttpServlet {
     }
 
     Entity interaction = new Entity(DBUtilities.INTERACTION_TABLE);
-    interaction.setPropert(Property.TIMESTAMP, String.valueOf(System.currentTimeMillis()));
+    interaction.setProperty(Property.TIMESTAMP, String.valueOf(System.currentTimeMillis()));
     interaction.setProperty(Property.CORRELATOR, correlator);
     interaction.setProperty(Property.FIND_NEAREST_LOCATION, false);
     interaction.setProperty(Property.GRANTS_LOCATION, false);
