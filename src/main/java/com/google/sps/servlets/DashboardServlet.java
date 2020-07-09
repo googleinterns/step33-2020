@@ -56,8 +56,8 @@ public class DashboardServlet extends HttpServlet {
     final Filter startTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.GREATER_THAN_OR_EQUAL, startTimestamp);
     final Filter endTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.LESS_THAN_OR_EQUAL, endTimestamp);
     
-    final Query query = new Query(DBUtilities.INTERACTION_TABLE).setFilter(and(startTimestampFilter, endTimestampFilter));
-    PreparedQuery interactions = datastore.prepare(query);
+    final Query timedQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(and(startTimestampFilter, endTimestampFilter));
+    PreparedQuery interactions = datastore.prepare(timedQuery);
 
     Field[] allFields = Property.class.getDeclaredFields();
   
@@ -67,8 +67,9 @@ public class DashboardServlet extends HttpServlet {
       String property = (String) field.get(new Property()); // gets the value of the field variable
 
       Filter keyFilter =  new FilterPredicate(property, FilterOperator.EQUAL, true);
-      Query filteredQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(keyFilter);
-    
+      Query filteredQuery = new Query(DBUtilities.INTERACTION_TABLE);
+      filteredQuery.setFilter(and(keyFilter, startTimestampFilter, endTimestampFilter);
+
       int numUsersInteracted = datastore.prepare(filteredQuery).countEntities();
       int totalInteractions = interactions.countEntities();
 
