@@ -11,16 +11,13 @@ const AdParamKeys = {
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
 const DEFAULT_BUTTON_LABEL = "Location";
 const DEFAULT_ZOOM = 13;
-let map;
-let searchQuery;
-let marker;
+
 
 
 /**
  * A sample SIMID ad that shows a map of nearby locations.
  */
 export default class SimidMapCreative extends BaseSimidCreative {
-
   constructor() {
     super();
   }
@@ -94,7 +91,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
 }
 
 /**
- * Loads a map object that currently displays a hardcoded location.
+ * Loads a map object that currently defaults to a hardcoded location.
  * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
  * @private 
 */
