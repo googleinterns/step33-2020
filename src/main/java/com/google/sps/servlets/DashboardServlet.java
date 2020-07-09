@@ -31,8 +31,15 @@ public class DashboardServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    final String startTimestamp = RequestUtils.getParameter(request, Property.TIMESTAMP);
-    final String endTimestamp = String.valueOf(Long.valueOf(startTimestamp) + SECONDS_IN_DAY);
+    String startTimestamp = RequestUtils.getParameter(request, Property.TIMESTAMP);
+    String endTimestamp;
+
+    if (startTimestamp.isEmpty()) {
+      startTimestamp = "0";
+      endTimestamp = String.valueOf(System.currentTimeMillis());
+    } else {
+      endTimestamp = String.valueOf(Long.valueOf(startTimestamp) + SECONDS_IN_DAY);
+    }
     
     try {
       HashMap<String, Double> interactionPercentages = calculatePercentages(startTimestamp, endTimestamp);
@@ -53,7 +60,7 @@ public class DashboardServlet extends HttpServlet {
   */
   public HashMap<String, Double> calculatePercentages(String startTimestamp, String endTimestamp) throws IllegalAccessException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    
+
     final Filter startTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.GREATER_THAN_OR_EQUAL, startTimestamp);
     final Filter endTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.LESS_THAN_OR_EQUAL, endTimestamp);
     
@@ -67,14 +74,21 @@ public class DashboardServlet extends HttpServlet {
     for (Field field : allFields) {
       String property = (String) field.get(new Property()); // gets the value of the field variable
 
-      Filter keyFilter =  new FilterPredicate(property, FilterOperator.EQUAL, true);
+      Filter propertyFilter =  new FilterPredicate(property, FilterOperator.EQUAL, true);
       Query filteredQuery = new Query(DBUtilities.INTERACTION_TABLE);
-      filteredQuery.setFilter(CompositeFilterOperator.and(keyFilter, startTimestampFilter, endTimestampFilter));
+      filteredQuery.setFilter(CompositeFilterOperator.and(propertyFilter, startTimestampFilter, endTimestampFilter));
 
       int numUsersInteracted = datastore.prepare(filteredQuery).countEntities();
       int totalInteractions = interactions.countEntities();
 
-      interactionPercentages.put(property, numUsersInteracted / (double) totalInteractions);
+      double percentage;
+      if (totalInteractions == 0) {
+        percentage = 0;
+      } else {
+        percentage = numUsersInteracted / (double) totalInteractions;
+      }
+
+      interactionPercentages.put(property, percentage);
     }
 
     return interactionPercentages;

@@ -7,7 +7,6 @@ export const URL = {
   MAP_INTERACT: "map-interact",
   SKIP_TO_CONTENT: "skip-to-content",
   RETURN_TO_AD: "return-to-ad",
-  DASHBOARD: "dashboard"
 }
 
 /**

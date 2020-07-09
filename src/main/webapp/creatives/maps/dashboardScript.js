@@ -10,12 +10,13 @@ function drawChart(parameter = "") {
     data.addColumn('string', 'Interaction Type');
     data.addColumn('number', 'Percentage');
     Object.keys(dataPercentages).forEach((interactionType, index) => {
-      if (index > 1) {  // skip the timestamp & correlator properties
+      if (index != dataPercentages.length - 1) {  // skip the total interaction data
         data.addRow([interactionType, 100 * dataPercentages[interactionType]]);
       }
     });
 
     const options = {
+      'title': `Total Interactions: ${dataPercentages["totalInteractions"]}`,
       'width': 1500,
       'height': 700,
       vAxis: {
@@ -50,5 +51,5 @@ function createQueryForm(){
 
 document.getElementById("submit-button").addEventListener("click", () => {
   const chosenDateTimestamp = document.getElementById("input-day").valueAsNumber;
-  drawChart(`time=${chosenDateTimestamp}`);
+  drawChart(`timestamp=${chosenDateTimestamp}`);
 })
