@@ -10,13 +10,13 @@ public class RequestUtils {
   * Given an HTTP request object, this method will get the correlator parameter
   * and return it. Returns an empty string if correlator is not given.
   */
-  public static String getCorrelator(HttpServletRequest request) {
-    String correlator = request.getParameter(Property.CORRELATOR);
+  public static String getParameter(HttpServletRequest request, String parameter) {
+    String value = request.getParameter(parameter);
 
-    if (correlator == null) {
+    if (value == null) {
       return "";
     }
 
-    return correlator;
+    return value;
   }
 }

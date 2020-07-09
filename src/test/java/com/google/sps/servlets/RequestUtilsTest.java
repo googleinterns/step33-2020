@@ -19,7 +19,7 @@ public final class RequestUtilsTest {
 
     Mockito.when(request.getParameter("correlator")).thenReturn("Person1");
     
-    Assert.assertEquals(RequestUtils.getCorrelator(request), "Person1");
+    Assert.assertEquals(RequestUtils.getParameter(request, Property.CORRELATOR), "Person1");
   }
 
   @Test
@@ -28,7 +28,7 @@ public final class RequestUtilsTest {
 
     Mockito.when(request.getParameter("correlator")).thenReturn("");
     
-    Assert.assertEquals(RequestUtils.getCorrelator(request), "");
+    Assert.assertEquals(RequestUtils.getParameter(request, Property.CORRELATOR), "");
   }
 
   @Test
@@ -37,6 +37,6 @@ public final class RequestUtilsTest {
 
     Mockito.when(request.getParameter("correlator")).thenReturn(null);
     
-    Assert.assertEquals(RequestUtils.getCorrelator(request), "");
+    Assert.assertEquals(RequestUtils.getParameter(request, Property.CORRELATOR), "");
   }
 }
