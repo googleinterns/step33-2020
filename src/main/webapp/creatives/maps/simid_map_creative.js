@@ -11,6 +11,11 @@ const AdParamKeys = {
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
 const DEFAULT_BUTTON_LABEL = "Location";
 const DEFAULT_ZOOM = 13;
+const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
+
+let map;
+let searchQuery;
+let marker;
 
 
 
@@ -127,7 +132,7 @@ findNearby_(searchParameter, coordinates) {
   //TODO(kristenmason@) Add helper functions to shorten findNearby_
   service.nearbySearch(request, function(results, status){
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
         const place = results[i];
         const placeIcon = {
           url: marker,
