@@ -35,6 +35,7 @@ document.getElementById("form-container").appendChild(createQueryForm());
 
 function createQueryForm(){
   let queryForm = document.createElement("form");
+  queryForm.action = `/${URL.DASHBOARD}`;
 
   const QUERY_OPTIONS = ["clicksFindNearestLocation", "grantsLocation", "interactsWithMap", 
                           "clicksSkipToContent", "clicksReturnToAd"];
@@ -58,7 +59,6 @@ function createQueryForm(){
   let queryDiv = document.createElement("div");
   let queryButton = document.createElement("button");
   queryButton.textContent = "Query";
-  queryButton.onclick = "getData()";
 
   queryDiv.appendChild(queryButton);
   queryForm.appendChild(queryDiv);
