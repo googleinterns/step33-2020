@@ -84,11 +84,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
   */
   prepareCreative_() {
-    debugger;
     //ToDo(kristenmason@): implement the Google Maps request access functionality
     findNearest.classList.add("hidden");
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
-      debugger;
       this.createMapState_();
     }).catch(() => {
         const pauseErrorMessage = {
