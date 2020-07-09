@@ -5,8 +5,8 @@ google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
 /** Fetches interaction data from server and uses it to create a chart. */
-function drawChart() {
-  fetch(`/${URL.DASHBOARD}`).then(response => response.json())
+function drawChart(parameter = "") {
+  fetch(`/${URL.DASHBOARD}?${parameter}`).then(response => response.json())
   .then((dataPercentages) => {
     const data = new google.visualization.DataTable();
     data.addColumn('string', 'Interaction Type');
@@ -49,3 +49,8 @@ function createQueryForm(){
 
   return queryDiv;
 }
+
+document.getElementById("submit-button").addEventListener("click", () => {
+  const chosenDateTimestamp = document.getElementById("input-day").valueAsNumber;
+  drawChart(`time=${chosenDateTimestamp}`);
+})
