@@ -13,10 +13,8 @@ const DEFAULT_BUTTON_LABEL = "Location";
 const DEFAULT_ZOOM = 13;
 const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 
-let map;
 let searchQuery;
 let markerImage;
-
 
 
 /**
@@ -25,6 +23,9 @@ let markerImage;
 export default class SimidMapCreative extends BaseSimidCreative {
   constructor() {
     super();
+    this.map = null;
+    this.markerImage = null;
+    this.searchQuery = null;
   }
 
   /** @override */
@@ -55,8 +56,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
         return;
     }
     const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
-    searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
-    markerImage = adParams[AdParamKeys.MARKER];
+    this.searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
+    this.markerImage = adParams[AdParamKeys.MARKER];
 
     if (!searchQuery) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
@@ -101,13 +102,13 @@ export default class SimidMapCreative extends BaseSimidCreative {
  * @private 
 */
 loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
-  map = new google.maps.Map(document.getElementById('map'), {
+  this.map = new google.maps.Map(document.getElementById('map'), {
     zoom: DEFAULT_ZOOM,
     center: coordinates
   });
   const marker = new google.maps.Marker({
     position: coordinates,
-    map: map,
+    map: this.map,
     title: 'Current Position'
   });
   this.findNearby_(searchQuery, coordinates);
@@ -142,7 +143,7 @@ findNearby_(searchParameter, coordinates) {
           scaledSize: new google.maps.Size(25, 25)
         };
         const placeMarker = new google.maps.Marker({
-          map: map,
+          map: this.map,
           position: place.geometry.location,
           icon: placeIcon
         });
