@@ -28,10 +28,13 @@ public class DashboardServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    final String timestamp = RequestUtils.getParameter(request, Property.TIMESTAMP);
+    final long SECONDS_IN_DAY = 86400;
+
+    final String startTimestamp = RequestUtils.getParameter(request, Property.TIMESTAMP);
+    final String endTimestamp = (String) (Long.valueOf(startTimestamp) + SECONDS_IN_DAY);
     
     try {
-      HashMap<String, Double> interactionPercentages = calculatePercentages(timestamp);
+      HashMap<String, Double> interactionPercentages = calculatePercentages(startTimestamp, endTimestamp);
       
       String jsonToSend = convertToJson(interactionPercentages);
 
@@ -47,7 +50,7 @@ public class DashboardServlet extends HttpServlet {
   * This function queries for and calculates the percentages of each interaction.
   * @return A hashmap with the interactions as keys and the percentages as values.
   */
-  public HashMap<String, Double> calculatePercentages(String timestamp) throws IllegalAccessException {
+  public HashMap<String, Double> calculatePercentages(String startTimestamp, String endTimestamp) throws IllegalAccessException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery interactions = datastore.prepare(new Query(DBUtilities.INTERACTION_TABLE));
 
