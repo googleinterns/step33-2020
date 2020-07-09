@@ -36,21 +36,16 @@ document.getElementById("form-container").appendChild(createQueryForm());
 function createQueryForm(){
   let queryDiv = document.createElement("div");
 
-  let label = document.createElement("label");
-  label.for = "submit-day";
-  label.textContent = "Pick date to see interactions from that period";
-
   let input = document.createElement("input");
   input.type = "date";
-  input.id = "submit-day";
+  input.id = "input-day";
 
   let queryButton = document.createElement("button");
-  queryButton.id = "submit-day";
+  queryButton.id = "submit-button";
   queryButton.textContent = "Query by Date";
 
-  queryDiv.appendChild(label);
   queryDiv.appendChild(input);
   queryDiv.appendChild(queryButton);
 
-  return queryForm;
+  return queryDiv;
 }
