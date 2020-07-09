@@ -15,7 +15,7 @@ const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 
 let map;
 let searchQuery;
-let marker;
+let markerImage;
 
 
 
@@ -56,7 +56,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     }
     const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
     searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
-    marker = adParams[AdParamKeys.MARKER];
+    markerImage = adParams[AdParamKeys.MARKER];
 
     if (!searchQuery) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
@@ -135,7 +135,7 @@ findNearby_(searchParameter, coordinates) {
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
         const place = results[i];
         const placeIcon = {
-          url: marker,
+          url: markerImage,
           size: new google.maps.Size(71, 71),
           origin: new google.maps.Point(0, 0),
           anchor: new google.maps.Point(17, 34),
