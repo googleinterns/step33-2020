@@ -36,12 +36,12 @@ public class DashboardServlet extends HttpServlet {
     String startTimestamp = RequestUtils.getParameter(request, "startTime");
     String endTimestamp = RequestUtils.getParameter(request, "endTime");
 
-    // endTimestamp should include the entire second date requested
-    endTimestamp = String.valueOf(Long.valueOf(endTimestamp) + MILLISECONDS_IN_DAY);
-    
     if (startTimestamp.isEmpty() || endTimestamp.isEmpty()) {
       startTimestamp = DEFAULT_START_TIMESTAMP;
       endTimestamp = DEFAULT_END_TIMESTAMP;
+    } else {
+      // endTimestamp should include the entire second date requested
+      endTimestamp = String.valueOf(Long.valueOf(endTimestamp) + MILLISECONDS_IN_DAY);
     }
     
     try {
