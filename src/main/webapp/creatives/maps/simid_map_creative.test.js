@@ -34,11 +34,11 @@ function drivePromisesToCompletion() {
  * If the field is left blank, passes in the default parameters.
  * @return {!Object} an object containing the event data and corresponding AdParameters.
  */
-function createInitData(adParameters = ""){
+function createInitData(adParameters){
     const eventData = {
         args: {
             creativeData: {
-                adParameters: '{'+adParameters+'}',
+                adParameters: adParameters,
             },
             environmentData: {},
         },
@@ -75,19 +75,7 @@ beforeEach(() => {
 });
 
 test('testing button text updates from ad params', () => {
-    const eventData = {
-        args: {
-            creativeData: {
-                adParameters: "{'buttonLabel': 'Place'}",
-            },
-            environmentData: {},
-        },
-        messageId: 0,
-        sessionId: "test-session-id",
-        timestamp: 0,
-        type: "SIMID:Player:init",
-    };
-    testMap.onInit(eventData);
+    testMap.onInit(createInitData("{'buttonLabel': 'Place'}"));
 
     const buttonLabel = "Place";
     const startData = {
@@ -103,19 +91,7 @@ test('testing button text updates from ad params', () => {
 });
 
 test('testing button text updates with default ad params', () => {
-    const eventData = {
-        args: {
-            creativeData: {
-                adParameters: '{}',
-            },
-            environmentData: {},
-        },
-        messageId: 0,
-        sessionId: "test-session-id",
-        timestamp: 0,
-        type: "SIMID:Player:init",
-    };
-    testMap.onInit(eventData);
+    testMap.onInit(createInitData('{}'));
 
     const startData = {
         messageId: 1,
@@ -130,19 +106,7 @@ test('testing button text updates with default ad params', () => {
 });
 
 test('testing that rejection for ad params not found is working', () => {
-    const eventData = {
-        args: {
-            creativeData: {
-                adParameters: "",
-            },
-            environmentData: {},
-        },
-        messageId: 0,
-        sessionId: "test-session-id",
-        timestamp: 0,
-        type: "SIMID:Player:init",
-    };
-    testMap.onInit(eventData);
+    testMap.onInit(createInitData(""));
 
     expect(mockReject.mock.calls.length).toBe(1);
     const rejectMessageObject = mockReject.mock.calls[0][1];
@@ -150,19 +114,7 @@ test('testing that rejection for ad params not found is working', () => {
 });
 
 test('testing that rejection for searchQuery not found is working when given empty string', () => {
-    const eventData = {
-        args: {
-            creativeData: {
-                adParameters: '{"searchQuery": ""}',
-            },
-            environmentData: {},
-        },
-        messageId: 0,
-        sessionId: "test-session-id",
-        timestamp: 0,
-        type: "SIMID:Player:init",
-    };
-    testMap.onInit(eventData);
+    testMap.onInit(createInitData('{"searchQuery": ""}'));
 
     expect(mockReject.mock.calls.length).toBe(1);
     const rejectMessageObject = mockReject.mock.calls[0][1];
@@ -170,19 +122,7 @@ test('testing that rejection for searchQuery not found is working when given emp
 });
 
 test('testing that rejection for searchQuery not found is working when search query not included', () => {
-    const eventData = {
-        args: {
-            creativeData: {
-                adParameters: '{"buttonLabel": "Location", "marker": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg.png"}'
-            },
-            environmentData: {},
-        },
-        messageId: 0,
-        sessionId: "test-session-id",
-        timestamp: 0,
-        type: "SIMID:Player:init",
-    };
-    testMap.onInit(eventData);
+    testMap.onInit(createInitData('{"buttonLabel": "Location", "marker": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg.png"}'));
 
     expect(mockReject.mock.calls.length).toBe(1);
     const rejectMessageObject = mockReject.mock.calls[0][1];
@@ -190,19 +130,7 @@ test('testing that rejection for searchQuery not found is working when search qu
 });
 
 test('testing that rejection for JSON parsing errors is working', () => {
-    const eventData = {
-        args: {
-            creativeData: {
-                adParameters: 'test',
-            },
-            environmentData: {},
-        },
-        messageId: 0,
-        sessionId: "test-session-id",
-        timestamp: 0,
-        type: "SIMID:Player:init",
-    };
-    testMap.onInit(eventData);
+    testMap.onInit(createInitData('test'));
 
     expect(mockReject.mock.calls.length).toBe(1);
     const rejectMessageObject = mockReject.mock.calls[0][1];

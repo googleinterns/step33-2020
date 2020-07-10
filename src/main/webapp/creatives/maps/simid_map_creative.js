@@ -31,7 +31,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @param eventData an object that contains information details for a particular event
    *   such as event type, unique Ids, creativeData and environmentData.
    * @private 
-  */ 
+   */ 
   validateAndParseAdParams_(eventData) {
     if (this.creativeData.adParameters == "") {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
@@ -72,7 +72,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    *   category and can be specified by the advertisers. If the value is not specified, 
    *   then BUTTON_LABEL's value will default to Location.
    * @private 
-  */   
+   */   
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
@@ -82,7 +82,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
   /**
    * Requests player to pause, if accepted generate map.
    * @private 
-  */
+   */
   prepareCreative_() {
     //ToDo(kristenmason@): implement the Google Maps request access functionality
     findNearest.classList.add("hidden");
@@ -100,7 +100,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * Creates the Skip To Content and Return To Ad buttons once the user
    *   grants permission to access their location and the map appears.
    * @private 
-  */
+   */
   createMapState_() {
     const returnToAdButton = document.createElement("button");
     returnToAdButton.textContent = "Return To Ad";
@@ -124,7 +124,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @param {!Element} returnToAdButton Refers to the button that takes
    *   a user back to the video ad. 
    * @private 
-  */
+   */
   playAd_(returnToAdButton) {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PLAY);
     returnToAdButton.classList.add("hidden");
@@ -134,7 +134,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
   /**
    * Returns to video content if user clicks on Skip To Content button.
    * @private 
-  */
+   */
   playContent_() {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_SKIP);
   }
@@ -145,7 +145,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * TODO(kristenmason@): implement grant location access and modify
    * function to pass in current position (currently coords default to GooglePlex)
    * @private 
-  */
+   */
   loadMap_(coordinates = new google.maps.LatLng(37.422004,-122.081402)) { 
     const map = new google.maps.Map(document.getElementById('map'), {
       zoom: DEFAULT_ZOOM,
