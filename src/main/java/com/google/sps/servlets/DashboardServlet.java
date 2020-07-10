@@ -57,7 +57,11 @@ public class DashboardServlet extends HttpServlet {
   }
 
  /**
-  * This function queries for and calculates the percentages of each interaction.
+  * This function queries for and calculates the percentages of each
+  * interaction.
+  *
+  * @param startTimestamp Timestamp for the beginning of the date range that is requested.
+  * @param endTimestamp Timestamp for the end of the date range that is requested.
   * @return A hashmap with the interactions as keys and the percentages as values.
   */
   public HashMap<String, Double> calculatePercentages(String startTimestamp, String endTimestamp) throws IllegalAccessException {
@@ -99,6 +103,13 @@ public class DashboardServlet extends HttpServlet {
     return dataToSend;
   }
 
+ /**
+  * Given the data to convert to json, this function returns a json
+  * representation.
+  *
+  * @param data A hashmap from a string to a double to be converted to a json format.
+  * @return A json representation of the input data.
+  */
   private String convertToJson(HashMap<String, Double> data) {
     Gson gson = new Gson();
     String json = gson.toJson(data);
