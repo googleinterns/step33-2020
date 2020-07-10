@@ -98,6 +98,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
  * @private 
 */
 loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
+  console.log("Map should be visible");
   this.map = new google.maps.Map(document.getElementById('map'), {
     zoom: DEFAULT_ZOOM,
     center: coordinates
@@ -119,6 +120,7 @@ loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
  * @private 
 */
 findNearby_(searchParameter, coordinates) {
+  console.log("Searching for nearby businesses");
   const request = {
     location: coordinates,
     name: searchParameter,
@@ -127,29 +129,36 @@ findNearby_(searchParameter, coordinates) {
   };
   const service = new google.maps.places.PlacesService(map);
   //TODO(kristenmason@) Add helper functions to shorten findNearby_
-  service.nearbySearch(request, function(results, status){
+  service.nearbySearch(request, this.displayResults.bind(this));
+}
+
+displayResults(results, status) {
+  console.log("Getting closest 4 results");
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
-        const place = results[i];
-        const placeIcon = {
-          url: this.markerImage,
-          size: new google.maps.Size(71, 71),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(17, 34),
-          scaledSize: new google.maps.Size(25, 25)
-        };
-        const placeMarker = new google.maps.Marker({
-          map: this.map,
-          position: place.geometry.location,
-          icon: placeIcon
-        });
-        google.maps.event.addListener(placeMarker, 'click', function () {
-          const infowindow = new google.maps.InfoWindow;
-          infowindow.setContent(place.name);
-          infowindow.open(map, this);
-        });
+        this.designMapMarker_(results[i]);
       }
     }
+}
+
+designMapMarker_(place) {
+  console.log("Should be making a marker here :)");
+  const placeIcon = {
+    url: this.markerImage,
+    size: new google.maps.Size(71, 71),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(17, 34),
+    scaledSize: new google.maps.Size(25, 25)
+  };
+  const placeMarker = new google.maps.Marker({
+    map: this.map,
+    position: place.geometry.location,
+    icon: placeIcon
+  });
+  google.maps.event.addListener(placeMarker, 'click', function () {
+    const infowindow = new google.maps.InfoWindow;
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
   });
 }
 }
