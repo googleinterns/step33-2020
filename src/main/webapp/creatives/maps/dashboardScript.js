@@ -65,6 +65,8 @@ function createQueryByDateForm(){
 }
 
 document.getElementById("submit-button").addEventListener("click", () => {
-  const chosenDateTimestamp = document.getElementById("input-day").valueAsNumber;
-  drawChart(`timestamp=${chosenDateTimestamp}`);
+  const chosenStartDateTimestamp = document.getElementById("start-date").valueAsNumber;
+  const chosenEndDateTimestamp = document.getElementById("end-date").valueAsNumber;
+  
+  drawChart(`startTime=${chosenStartDateTimestamp}&endTime=${chosenEndDateTimestamp}`);
 })
