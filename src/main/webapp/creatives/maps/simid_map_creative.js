@@ -127,10 +127,10 @@ findNearby_(searchParameter, coordinates) {
   };
   const service = new google.maps.places.PlacesService(this.map);
   //TODO(kristenmason@) Add helper functions to shorten findNearby_
-  service.nearbySearch(request, this.displayResults.bind(this));
+  service.nearbySearch(request, this.displayResults_.bind(this));
 }
 
-displayResults(results, status) {
+displayResults_(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
         this.designMapMarker_(results[i]);
