@@ -115,7 +115,6 @@ loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
  * Searches for the closest corresponding businesses based off of the given search parameter,
  * and places pins on the map that represent the 4 closest locations.
  * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
- * Currently defaults to GooglePlex coords, will take in user's current location.
  * @param {String} searchParameter A string with the business's name to use in the query.
  * @private 
 */
@@ -127,7 +126,6 @@ findNearby_(searchParameter, coordinates) {
     rankBy: google.maps.places.RankBy.DISTANCE
   };
   const service = new google.maps.places.PlacesService(this.map);
-  //TODO(kristenmason@) Add helper functions to shorten findNearby_
   service.nearbySearch(request, this.displayResults_.bind(this));
 }
 
