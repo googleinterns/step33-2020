@@ -30,9 +30,9 @@ function drawChart(parameter = "") {
   });
 }
 
-document.getElementById("form-container").appendChild(createQueryForm());
+document.getElementById("form-container").appendChild(createQueryByDateForm());
 
-function createQueryForm(){
+function createQueryByDateForm(){
   let queryDiv = document.createElement("div");
 
   let input = document.createElement("input");
