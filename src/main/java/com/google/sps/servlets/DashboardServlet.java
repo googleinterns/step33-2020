@@ -49,6 +49,9 @@ public class DashboardServlet extends HttpServlet {
       
       String jsonToSend = convertToJson(dataToSend);
 
+      response.setHeader("Access-Control-Allow-Origin", "*");
+      response.setHeader("Access-Control-Allow-Methods", "GET");
+
       response.setContentType("application/json; charset=UTF-8");
       response.getWriter().println(jsonToSend);
     
@@ -76,12 +79,13 @@ public class DashboardServlet extends HttpServlet {
     PreparedQuery interactions = datastore.prepare(timedQuery);
 
     Field[] allFields = Property.class.getDeclaredFields();
+    Property classInstance = new Property();    
   
     HashMap<String, Double> dataToSend = new HashMap<>();
 
-    // skip the timestamp and correlator properties
+    // start iterating at 2 to skip timestamp and correlator properties.
     for (int i = 2; i < allFields.length; ++i){
-      String property = (String) allFields[i].get(new Property()); // gets the value of the field variable
+      String property = (String) allFields[i].get(classInstance); // gets the value of the field variable
 
       Filter propertyFilter =  new FilterPredicate(property, FilterOperator.EQUAL, true);
       Query filteredQuery = new Query(DBUtilities.INTERACTION_TABLE);

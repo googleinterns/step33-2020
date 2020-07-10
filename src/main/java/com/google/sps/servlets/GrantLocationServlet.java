@@ -31,6 +31,9 @@ public class GrantLocationServlet extends HttpServlet {
 
     DBUtilities.setToTrue(correlator, Property.GRANTS_LOCATION);
 
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Methods", "GET");
+
     response.setStatus(HttpServletResponse.SC_OK); 
   }
 }

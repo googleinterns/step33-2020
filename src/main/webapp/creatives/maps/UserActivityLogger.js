@@ -1,7 +1,7 @@
 
 import {generateSessionId, URL} from './utils.js';
 
-class UserActivityLogger {
+export class UserActivityLogger {
 
   constructor() {
     /**
@@ -16,7 +16,7 @@ class UserActivityLogger {
    * @param {string} url A URL to send the request to.
    */
   sendRequest_(url) {
-    fetch(`/${url}?correlator="${this.correlator_}"`);
+    fetch(`http://step-capstone-team33-2020.appspot.com/${url}?correlator=${this.correlator_}`);
   }
 
   userInitializes() {

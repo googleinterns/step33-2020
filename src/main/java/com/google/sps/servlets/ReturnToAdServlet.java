@@ -31,6 +31,9 @@ public class ReturnToAdServlet extends HttpServlet {
 
     DBUtilities.setToTrue(correlator, Property.RETURN_TO_AD);
 
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Access-Control-Allow-Methods", "GET");
+
     response.setStatus(HttpServletResponse.SC_OK); 
   }
 }
