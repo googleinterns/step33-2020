@@ -12,8 +12,6 @@ public class HomeServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html;");
-    response.setHeader("Access-Control-Allow-Origin", "*");
-    response.setHeader("Access-Control-Allow-Methods", "GET");
     response.sendRedirect("creatives/maps/dashboard.html");
   }
 }

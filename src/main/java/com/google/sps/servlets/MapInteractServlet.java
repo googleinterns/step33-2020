@@ -31,9 +31,6 @@ public class MapInteractServlet extends HttpServlet {
 
     DBUtilities.setToTrue(correlator, Property.INTERACTS_WITH_MAP);
 
-    response.setHeader("Access-Control-Allow-Origin", "*");
-    response.setHeader("Access-Control-Allow-Methods", "GET");
-
     response.setStatus(HttpServletResponse.SC_OK); 
   }
 }

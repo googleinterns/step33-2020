@@ -49,9 +49,6 @@ public class DashboardServlet extends HttpServlet {
       
       String jsonToSend = convertToJson(dataToSend);
 
-      response.setHeader("Access-Control-Allow-Origin", "*");
-      response.setHeader("Access-Control-Allow-Methods", "GET");
-
       response.setContentType("application/json; charset=UTF-8");
       response.getWriter().println(jsonToSend);
     

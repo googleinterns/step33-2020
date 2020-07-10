@@ -45,9 +45,6 @@ public class InitializeServlet extends HttpServlet {
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     dataStore.put(interaction);
 
-    response.setHeader("Access-Control-Allow-Origin", "*");
-    response.setHeader("Access-Control-Allow-Methods", "GET");
-    
     response.setStatus(HttpServletResponse.SC_OK); 
   }
 }

@@ -32,9 +32,6 @@ public class FindLocationServlet extends HttpServlet {
 
     DBUtilities.setToTrue(correlator, Property.FIND_NEAREST_LOCATION);
 
-    response.setHeader("Access-Control-Allow-Origin", "*");
-    response.setHeader("Access-Control-Allow-Methods", "GET");
-
     response.setStatus(HttpServletResponse.SC_OK); 
   }
 }

@@ -31,9 +31,6 @@ public class SkipToContentServlet extends HttpServlet {
 
     DBUtilities.setToTrue(correlator, Property.SKIP_TO_CONTENT);
 
-    response.setHeader("Access-Control-Allow-Origin", "*");
-    response.setHeader("Access-Control-Allow-Methods", "GET");
-
     response.setStatus(HttpServletResponse.SC_OK);
   }
 }
