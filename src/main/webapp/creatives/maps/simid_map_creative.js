@@ -36,7 +36,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @param eventData an object that contains information details for a particular event
    *   such as event type, unique Ids, creativeData and environmentData.
    * @private 
-  */ 
+   */ 
   validateAndParseAdParams_(eventData) {
     if (this.creativeData.adParameters == "") {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
@@ -78,7 +78,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    *   category and can be specified by the advertisers. If the value is not specified, 
    *   then BUTTON_LABEL's value will default to Location.
    * @private 
-  */   
+   */   
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
@@ -88,7 +88,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
   /**
    * Prompts the users to grant or deny access to their current location.
    * @private 
-  */
+   */
  grantLocationAccess_() {
   this.loadMap_();
 }
@@ -97,7 +97,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
  * Loads a map object that currently defaults to a hardcoded location.
  * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
  * @private 
-*/
+ */
 loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
   this.map = new google.maps.Map(document.getElementById('map'), {
     zoom: DEFAULT_ZOOM,
@@ -117,7 +117,7 @@ loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
  * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
  * @param {String} searchParameter A string with the business's name to use in the query.
  * @private 
-*/
+ */
 findNearby_(searchParameter, coordinates) {
   const request = {
     location: coordinates,
@@ -135,7 +135,7 @@ findNearby_(searchParameter, coordinates) {
  * @param {!google.maps.places.PlacesServiceStatus} status The status returned 
  *  by the PlacesService on the completion of its searches.
  * @private 
-*/
+ */
 displayResults_(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
@@ -148,7 +148,7 @@ displayResults_(results, status) {
  * Creates and displays a marker on the map representing a given place.
  * @param {!Object} place A Place Result object.
  * @private 
-*/
+ */
 designMapMarker_(place) {
   const placeIcon = {
     url: this.markerImage,
