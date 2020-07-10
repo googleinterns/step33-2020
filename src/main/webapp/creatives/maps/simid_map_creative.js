@@ -12,6 +12,7 @@ const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
 const DEFAULT_BUTTON_LABEL = "Location";
 const DEFAULT_ZOOM = 13;
 const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
+const MARKER_SIZE = 25;
 
 /**
  * A sample SIMID ad that shows a map of nearby locations.
@@ -153,10 +154,7 @@ displayResults_(results, status) {
 designMapMarker_(place) {
   const placeIcon = {
     url: this.markerImage,
-    size: new google.maps.Size(71, 71),
-    origin: new google.maps.Point(0, 0),
-    anchor: new google.maps.Point(17, 34),
-    scaledSize: new google.maps.Size(25, 25)
+    scaledSize: new google.maps.Size(MARKER_SIZE, MARKER_SIZE)
   };
   const placeMarker = new google.maps.Marker({
     map: this.map,
