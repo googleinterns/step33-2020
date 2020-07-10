@@ -35,15 +35,30 @@ document.getElementById("form-container").appendChild(createQueryByDateForm());
 function createQueryByDateForm(){
   let queryDiv = document.createElement("div");
 
-  let input = document.createElement("input");
-  input.type = "date";
-  input.id = "input-day";
+  let startDateInput = document.createElement("input");
+  startDateInput.type = "date";
+  startDateInput.id = "start-date";
+    
+  let startDateLabel = document.createElement("label");
+  startDateLabel.for = "start-date";
+  startDateLabel.textContent = "Start date";
+
+  let endDateInput = document.createElement("input");
+  endDateInput.type = "date";
+  endDateInput.id = "end-date";
+    
+  let endDateLabel = document.createElement("label");
+  endDateLabel.for = "end-date";
+  endDateLabel.textContent = "End date";
 
   let queryButton = document.createElement("button");
   queryButton.id = "submit-button";
-  queryButton.textContent = "Query by Date";
+  queryButton.textContent = "Query by Date Range";
 
-  queryDiv.appendChild(input);
+  queryDiv.appendChild(startDateLabel);
+  queryDiv.appendChild(startDateInput);
+  queryDiv.appendChild(endDateLabel);
+  queryDiv.appendChild(endDateInput);
   queryDiv.appendChild(queryButton);
 
   return queryDiv;
