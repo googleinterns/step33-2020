@@ -130,6 +130,13 @@ findNearby_(searchParameter, coordinates) {
   service.nearbySearch(request, this.displayResults_.bind(this));
 }
 
+/**
+ * Displays the 4 closest business locations to a user's current location.
+ * @param {!Object} results An array of Place Results from the search query.
+ * @param {!google.maps.places.PlacesServiceStatus} status The status returned 
+ *  by the PlacesService on the completion of its searches.
+ * @private 
+*/
 displayResults_(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
@@ -138,6 +145,11 @@ displayResults_(results, status) {
     }
 }
 
+/**
+ * Creates and displays a marker on the map representing a given place.
+ * @param {!Object} place A Place Result object.
+ * @private 
+*/
 designMapMarker_(place) {
   const placeIcon = {
     url: this.markerImage,
