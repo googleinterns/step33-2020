@@ -1,5 +1,6 @@
 import BaseSimidCreative from '../base_simid_creative.js';
 import {CreativeMessage, CreativeErrorCode} from '../constants.js';
+import UserActivityLogger from './UserActivityLogger.js';
 
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
@@ -18,13 +19,15 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
   constructor() {
     super();
+    this.newUserSession = new UserActivityLogger();
   }
-
-  /** @override */
-  onInit(eventData) {
-    this.updateInternalOnInit(eventData);
-    this.validateAndParseAdParams_(eventData);
-  }
+ 
+ /** @override */
+ onInit(eventData) {
+  this.updateInternalOnInit(eventData);
+  this.validateAndParseAdParams_(eventData);
+  this.newUserSession.userInitializes();
+}
 
   /**
    * Checks validity of ad parameters and rejects with proper message if invalid.
@@ -84,7 +87,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   prepareCreative_() {
-    //ToDo(kristenmason@): implement the Google Maps request access functionality
+    this.newUserSession.userClicksNearestLocation();
     findNearest.classList.add("hidden");
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
       this.createMapState_();
@@ -126,6 +129,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   playAd_(returnToAdButton) {
+    this.newUserSession.userClicksReturnToAd();
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PLAY);
     returnToAdButton.classList.add("hidden");
     //ToDo(kristenmason@): hide map
@@ -136,6 +140,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   playContent_() {
+    this.newUserSession.userClicksSkipToContent();
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_SKIP);
   }
 
@@ -157,4 +162,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
       title: 'Current Position'
     });
   }
-}
+  //TODO:(@kristenmason): see if user interacts with map then call
+  //newUserSession.userInteractsWithMap()
+ }
+ 

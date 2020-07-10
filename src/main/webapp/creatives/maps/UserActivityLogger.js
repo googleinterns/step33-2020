@@ -1,7 +1,7 @@
 
 import {generateSessionId, URL} from './utils.js';
 
-class UserActivityLogger {
+export default class UserActivityLogger {
 
   constructor() {
     /**
