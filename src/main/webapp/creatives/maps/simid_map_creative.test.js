@@ -7,15 +7,26 @@ mockSendMessage.mockResolvedValue(true);
 const mockReject = jest.fn();
 jest.mock('../simid_protocol.js', () => {
     return jest.fn().mockImplementation(() => {
-    return {sendMessage: mockSendMessage,
-        addListener: () => {},
-        reject: mockReject,
-        resolve: () => {},
+        return {sendMessage: mockSendMessage,
+            addListener: () => {},
+            reject: mockReject,
+            resolve: () => {},
         };
-});
+    });
 });
 let testMap;
 let startData;
+
+/**
+ * Makes Jest wait for all asynchronous pending promises to finish executing 
+ *  before asserting expectations.
+ * @return {!Promise} Promise that is used to break up long running operations 
+ *  and run a callback function immediately after the browser has completed other 
+ *  operations. 
+ */
+function drivePromisesToCompletion() {
+    const flushPromises = () => new Promise(setImmediate);
+}
 
 /**
  * Creates an object containing the test event data used in the SIMID protocol.
@@ -206,8 +217,7 @@ test('instance of map is instantiated if ad paused', async () => {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
 
-    const flushPromises = () => new Promise(setImmediate);
-    await flushPromises();
+    await drivePromisesToCompletion();
 
     const returnButton = document.getElementById("returnToAd");
     expect(returnButton.textContent).toBe('Return To Ad');
@@ -224,8 +234,7 @@ test('marker is added to map when map loads', async () => {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
 
-    const flushPromises = () => new Promise(setImmediate);
-    await flushPromises();
+    await drivePromisesToCompletion();
 
     expect(window.google.maps.Marker.mock.instances.length).toBe(1);
 });
@@ -238,8 +247,7 @@ test('LatLng coordinates constructor is called by default when map loads', async
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
 
-    const flushPromises = () => new Promise(setImmediate);
-    await flushPromises();
+    await drivePromisesToCompletion();
 
     expect(window.google.maps.LatLng.mock.instances.length).toBe(1);
 });
