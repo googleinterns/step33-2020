@@ -33,14 +33,15 @@ public class DashboardServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    String startTimestamp = RequestUtils.getParameter(request, Property.TIMESTAMP);
-    String endTimestamp;
+    String startTimestamp = RequestUtils.getParameter(request, "startTime");
+    String endTimestamp = RequestUtils.getParameter(request, "endTime");
 
-    if (startTimestamp.isEmpty()) {
+    // endTimestamp should include the entire second date requested
+    endTimestamp = String.valueOf(Long.valueOf(endTimestamp) + MILLISECONDS_IN_DAY);
+    
+    if (startTimestamp.isEmpty() || endTimestamp.isEmpty()) {
       startTimestamp = DEFAULT_START_TIMESTAMP;
       endTimestamp = DEFAULT_END_TIMESTAMP;
-    } else {
-      endTimestamp = String.valueOf(Long.valueOf(startTimestamp) + MILLISECONDS_IN_DAY);
     }
     
     try {
@@ -89,12 +90,7 @@ public class DashboardServlet extends HttpServlet {
       int numUsersInteracted = datastore.prepare(filteredQuery).countEntities();
       int totalInteractions = interactions.countEntities();
 
-      double percentage;
-      if (totalInteractions == 0) {
-        percentage = 0;
-      } else {
-        percentage = numUsersInteracted / (double) totalInteractions;
-      }
+      double percentage = totalInteractions == 0 ? 0 : numUsersInteracted / (double) totalInteractions;
 
       dataToSend.put(property, percentage);
     }
