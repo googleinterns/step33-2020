@@ -2,7 +2,7 @@
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
-const BASE_URL = "http://step-capstone-team33-2020.appspot.com"
+const BASE_URL = "https://step-capstone-team33-2020.appspot.com"
 
 /** Fetches interaction data from server and uses it to create a chart. */
 function drawChart(parameter = "") {
