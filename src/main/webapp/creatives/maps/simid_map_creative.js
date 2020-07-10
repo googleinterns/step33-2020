@@ -98,7 +98,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
  * @private 
 */
 loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
-  console.log("Map should be visible");
   this.map = new google.maps.Map(document.getElementById('map'), {
     zoom: DEFAULT_ZOOM,
     center: coordinates
@@ -120,20 +119,18 @@ loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
  * @private 
 */
 findNearby_(searchParameter, coordinates) {
-  console.log("Searching for nearby businesses");
   const request = {
     location: coordinates,
     name: searchParameter,
     openNow: true,
     rankBy: google.maps.places.RankBy.DISTANCE
   };
-  const service = new google.maps.places.PlacesService(map);
+  const service = new google.maps.places.PlacesService(this.map);
   //TODO(kristenmason@) Add helper functions to shorten findNearby_
   service.nearbySearch(request, this.displayResults.bind(this));
 }
 
 displayResults(results, status) {
-  console.log("Getting closest 4 results");
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
         this.designMapMarker_(results[i]);
@@ -142,7 +139,6 @@ displayResults(results, status) {
 }
 
 designMapMarker_(place) {
-  console.log("Should be making a marker here :)");
   const placeIcon = {
     url: this.markerImage,
     size: new google.maps.Size(71, 71),
@@ -158,7 +154,7 @@ designMapMarker_(place) {
   google.maps.event.addListener(placeMarker, 'click', function () {
     const infowindow = new google.maps.InfoWindow;
     infowindow.setContent(place.name);
-    infowindow.open(map, this);
+    infowindow.open(this.map, this);
   });
 }
 }
