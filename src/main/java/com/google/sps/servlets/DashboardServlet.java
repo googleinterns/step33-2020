@@ -45,6 +45,7 @@ public class DashboardServlet extends HttpServlet {
       
       String jsonToSend = convertToJson(dataToSend);
 
+      response.addHeader("Access-Control-Allow-Origin", "*");
       response.setStatus(HttpServletResponse.SC_OK);
       response.setContentType("application/json; charset=UTF-8");
       response.getWriter().println(jsonToSend);
@@ -63,7 +64,7 @@ public class DashboardServlet extends HttpServlet {
   * @param endTimestamp Timestamp for the end of the date range that is requested.
   * @return A hashmap with the interactions as keys and the percentages as values.
   */
-  public HashMap<String, Double> calculatePercentages() throws IllegalAccessException {
+  private HashMap<String, Double> calculatePercentages() throws IllegalAccessException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
     final Filter startTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.GREATER_THAN_OR_EQUAL, this.startTimestamp);
@@ -119,21 +120,16 @@ public class DashboardServlet extends HttpServlet {
   * @param startTimestamp A string containing the requested start time as a UNIX timestamp
   * @param endTimestamp A string containing the requested end time as a UNIX timestamp
   */
-  private void validateAndSetVariables(String startTimestamp, String endTimestamp){
+  private void validateAndSetVariables(String requestStartTimestamp, String requestEndTimestamp){
 
     if (requestStartTimestamp.isEmpty() || requestEndTimestamp.isEmpty()) {
       this.startTimestamp = DEFAULT_START_TIMESTAMP;
       this.endTimestamp = DEFAULT_END_TIMESTAMP;
     
     } else {  
-      // swap if they're in the wrong order
-      if (Long.valueOf(requestEndTimestamp) < Long.valueOf(requestStartTimestamp)) {
-        this.startTimestamp = requestEndTimestamp;
-        this.endTimestamp = requestStartTimestamp;
-      } else {
-        this.startTimestamp = requestStartTimestamp;
-        this.endTimestamp = requestEndTimestamp;
-      }
+      this.startTimestamp = requestStartTimestamp;
+      this.endTimestamp = requestEndTimestamp;
+    
       // endTimestamp should include the entire second date requested
       this.endTimestamp = String.valueOf(Long.valueOf(this.endTimestamp) + MILLISECONDS_IN_DAY);
     }
