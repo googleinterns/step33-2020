@@ -326,7 +326,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
         destination: end,
         travelMode: [selectedMode]
       },
-      function (response, status) {
+      (response, status) => {
         if (status == "OK") {
           renderer.setDirections(response);
         } else {
