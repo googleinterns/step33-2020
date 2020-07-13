@@ -271,7 +271,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
   createTravelChoices_() {
     const travelChoicesContainer = document.getElementById("button_container")
     const travelMethod = document.createElement('select');
-    travelMethod.id = "travel-method";
+    travelMethod.id = "travel_method";
     const walkOption = this.createTravelOption_("Walking");
     const driveOption = this.createTravelOption_("Driving");
     const bikeOption = this.createTravelOption_("Bicycling");
@@ -280,7 +280,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     travelMethod.add(walkOption);
     travelMethod.add(bikeOption);
     travelMethod.add(publicTransitOption);
-    travelMethod.classList.add("travelMethod");
+    travelMethod.classList.add("travel_method");
     travelChoicesContainer.append(travelMethod);
   }
 
