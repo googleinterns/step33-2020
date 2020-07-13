@@ -68,33 +68,27 @@ export default class SimidMapCreative extends BaseSimidCreative {
    */
   validateAndParseAdParams_(eventData) {
     if (this.creativeData.adParameters == "") {
-      this.simidProtocol.reject(eventData, {
-        errorCode: CreativeErrorCode.UNSPECIFIED,
-        message: "Ad parameters not found"
-      });
-      return;
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED,
+        message: "Ad parameters not found"});
+        return;
     }
 
     let adParams = "";
     try {
       adParams = JSON.parse(this.creativeData.adParameters);
     } catch (exception) {
-      this.simidProtocol.reject(eventData, {
-        errorCode: CreativeErrorCode.CREATIVE_INTERNAL_ERROR,
-        message: "Invalid JSON input for ad parameters"
-      });
-      return;
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.CREATIVE_INTERNAL_ERROR,
+        message: "Invalid JSON input for ad parameters"});
+        return;
     }
     const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL];
     this.searchQuery_ = adParams[AdParamKeys.SEARCH_QUERY];
     this.markerImage_ = adParams[AdParamKeys.MARKER];
 
     if (!this.searchQuery_) {
-      this.simidProtocol.reject(eventData, {
-        errorCode: CreativeErrorCode.UNSPECIFIED,
-        message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`
-      });
-      return;
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED,
+        message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`});
+        return;
     }
 
     this.simidProtocol.resolve(eventData, {});
@@ -130,11 +124,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
       this.createMapState_();
     }).catch(() => {
-      const pauseErrorMessage = {
-        message: "WARNING: Request to pause ad failed",
-      };
-      this.simidProtocol.sendMessage(CreativeMessage.LOG, pauseErrorMessage);
-    });
+        const pauseErrorMessage = {
+          message: "WARNING: Request to pause ad failed",
+        };
+        this.simidProtocol.sendMessage(CreativeMessage.LOG, pauseErrorMessage);
+      });
   }
 
   /**
