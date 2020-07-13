@@ -1,3 +1,7 @@
+/**
+ * All code in this file is from https://github.com/InteractiveAdvertisingBureau/SIMID/blob/master/examples/player/simid_player.js
+ */
+
 const NO_REQUESTED_DURATION = 0;
 const UNLIMITED_DURATION = -2;
 /** 
