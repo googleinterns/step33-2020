@@ -31,6 +31,6 @@ public class SkipToContentServlet extends HttpServlet {
 
     DBUtilities.setToTrue(correlator, Property.SKIP_TO_CONTENT);
 
-    response.setStatus(HttpServletResponse.SC_OK);
+    response.setStatus(HttpServletResponse.SC_NO_CONTENT);
   }
 }

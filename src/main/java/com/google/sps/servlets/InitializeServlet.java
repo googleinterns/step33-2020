@@ -45,6 +45,6 @@ public class InitializeServlet extends HttpServlet {
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     dataStore.put(interaction);
 
-    response.setStatus(HttpServletResponse.SC_OK); 
+    response.setStatus(HttpServletResponse.SC_NO_CONTENT); 
   }
 }

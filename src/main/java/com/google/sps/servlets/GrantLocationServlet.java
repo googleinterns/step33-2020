@@ -31,6 +31,6 @@ public class GrantLocationServlet extends HttpServlet {
 
     DBUtilities.setToTrue(correlator, Property.GRANTS_LOCATION);
 
-    response.setStatus(HttpServletResponse.SC_OK); 
+    response.setStatus(HttpServletResponse.SC_NO_CONTENT); 
   }
 }

@@ -39,7 +39,7 @@ public final class GrantLocationServletTest {
 
     new GrantLocationServlet().doGet(request, response);
 
-    Mockito.verify(response).setStatus(HttpServletResponse.SC_OK);
+    Mockito.verify(response).setStatus(HttpServletResponse.SC_NO_CONTENT);
   }
 
   @Test
