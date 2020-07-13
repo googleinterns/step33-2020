@@ -198,6 +198,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
       title: 'Current Position'
     });
     this.findNearby_(this.searchQuery_, coordinates);
+    this.createTravelChoices_();
   }
 
   /**
@@ -264,7 +265,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
   */
   displayDirections_(destination, startingLocation) {
-    this.createTravelChoices_();
     const directionsService = new google.maps.DirectionsService();
     this.directionsRenderer_.setMap(this.map_);
     this.calculateRoute_(directionsService, this.directionsRenderer_, startingLocation, destination);
@@ -282,10 +282,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
   */
   createTravelChoices_() {
     const adContainer = document.getElementById("button_container");
-    if(document.getElementById("travel-method"!= null)) {
-      const extraElement = document.getElementById("travel-method");
-      adContainer.removeChild(extraElement);
-    }
     const travelMethod = document.createElement('select');
     travelMethod.setAttribute("id", "travel-method");
     const walkOption = this.createTravelOption_("Walking");
