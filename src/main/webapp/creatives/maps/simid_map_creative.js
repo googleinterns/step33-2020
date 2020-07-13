@@ -169,6 +169,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
  * @private 
  */
   displayMap_(coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
+    this.currentLocation = coordinates;
     this.map_ = new google.maps.Map(document.getElementById('map'), {
       zoom: DEFAULT_ZOOM,
       center: coordinates
