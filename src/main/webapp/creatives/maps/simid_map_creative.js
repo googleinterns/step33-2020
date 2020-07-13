@@ -24,7 +24,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
  
  /** @override */
  onInit(eventData) {
-  debugger;
   this.updateInternalOnInit(eventData);
   this.validateAndParseAdParams_(eventData);
   this.newUserSession.userInitializes();
