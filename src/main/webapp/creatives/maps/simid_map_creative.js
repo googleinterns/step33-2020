@@ -46,6 +46,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private {?google.maps.LatLng}
      */
     this.currentLocation_ = null;
+    this.directionsRenderer_ = new google.maps.DirectionsRenderer();
   }
 
   /** @override */
@@ -244,6 +245,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
       position: place.geometry.location,
       icon: placeIcon
     });
+    placeMarker.addListener('click', () => {
+      this.closestLocation_ = place.geometry.location;
+      this.displayDirections_(this.currentLocation_, this.closestLocation_);
+    });
   }
 
   /**
@@ -255,12 +260,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
   */
   displayDirections_(destination, startingLocation) {
     this.createTravelChoices_();
-    const directionsRenderer = new google.maps.DirectionsRenderer();
     const directionsService = new google.maps.DirectionsService();
-    directionsRenderer.setMap(this.map_);
-    this.calculateRoute_(directionsService, directionsRenderer, startingLocation, destination);
+    this.directionsRenderer_.setMap(this.map_);
+    this.calculateRoute_(directionsService, this.directionsRenderer_, startingLocation, destination);
     document.getElementById("travel-method").addEventListener("change", () => {
-      this.calculateRoute_(directionsService, directionsRenderer, startingLocation, destination);
+      this.calculateRoute_(directionsService, this.directionsRenderer_, startingLocation, destination);
     });
   }
 
@@ -273,33 +277,38 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const adContainer = document.getElementById("button_container")
     const travelMethod = document.createElement('select');
     travelMethod.setAttribute("id", "travel-method");
-    const walkOption = document.createElement("option");
-    walkOption.value = "WALKING";
-    walkOption.text = "Walking";
-    const driveOption = document.createElement("option");
-    driveOption.value = "DRIVING";
-    driveOption.text = "Driving";
+    const walkOption = this.createTravelOption_("Walking");
+    const driveOption = this.createTravelOption_("Driving");
+    const bikeOption = this.createTravelOption_("Bicycling");
     travelMethod.add(driveOption);
     travelMethod.add(walkOption);
+    travelMethod.add(bikeOption);
     travelMethod.classList.add("travel-method");
     adContainer.append(travelMethod);
+  }
+
+  createTravelOption_(travelMode) {
+    const travelOption = document.createElement("option");
+    travelOption.value = travelMode.toUpperCase();
+    travelOption.text = travelMode;
+    return travelOption;
   }
 
 
   /**
    * Displays the route between the starting loaction and destination
    * based off of the selected travel mode.
-   * @param {!google.maps.DirectionsRenderer} directionsRenderer Object that displays
+   * @param {!google.maps.DirectionsRenderer} renderer Object that displays
    * the directions retrieved by the request.
-   * @param {!google.maps.DirectionsService} directionsService Object that communicates
+   * @param {!google.maps.DirectionsService} service Object that communicates
    * with the Google Maps API Directions Service.
    * @param {!google.maps.LatLng} start The LatLng coordinates of the start location.
    * @param {!google.maps.LatLng} end The LatLng coordinates of the end location.
    * @private 
   */
-  calculateRoute_(directionsService, directionsRenderer, start, end) {
+  calculateRoute_(service, renderer, start, end) {
     const selectedMode = document.getElementById("travel-method").value;
-    directionsService.route(
+    service.route(
       {
         origin: start,
         destination: end,
@@ -307,7 +316,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
       },
       function (response, status) {
         if (status == "OK") {
-          directionsRenderer.setDirections(response);
+          renderer.setDirections(response);
         } else {
           window.alert("Directions request failed due to " + status);
         }
