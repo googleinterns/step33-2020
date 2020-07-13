@@ -36,6 +36,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private {?string}
      */
     this.searchQuery_ = null;
+
+    this.closestLocation = null;
+    this.currentLocation = null;
   }
 
   /** @override */
