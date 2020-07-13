@@ -1,0 +1,25 @@
+indexes:
+- kind: Interactions
+  properties:
+  - name: clicksFindNearestLocation
+  - name: timestamp
+
+- kind: Interactions
+  properties:
+  - name: clicksReturnToAd
+  - name: timestamp
+
+- kind: Interactions
+  properties:
+  - name: clicksSkipToContent
+  - name: timestamp
+
+- kind: Interactions
+  properties:
+  - name: grantsLocation
+  - name: timestamp
+  
+- kind: Interactions
+  properties:
+  - name: interactsWithMap
+  - name: timestamp
