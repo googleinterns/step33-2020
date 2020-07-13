@@ -287,9 +287,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const walkOption = this.createTravelOption_("Walking");
     const driveOption = this.createTravelOption_("Driving");
     const bikeOption = this.createTravelOption_("Bicycling");
+    const transitOption = this.createTravelOption_("Transit");
     travelMethod.add(driveOption);
     travelMethod.add(walkOption);
     travelMethod.add(bikeOption);
+    travelMethod.add(transitOption);
     travelMethod.classList.add("travel-method");
     adContainer.append(travelMethod);
   }
@@ -339,9 +341,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
         destinations: [destination],
         travelMode: [travelMode],
         unitSystem: google.maps.UnitSystem.IMPERIAL
-      }, callback);
+      }, getTravelTime);
 
-    function callback(response, status) {
+    function getTravelTime(response, status) {
       if (status == 'OK') {
         let distance = -1;
         let duration = -1;
