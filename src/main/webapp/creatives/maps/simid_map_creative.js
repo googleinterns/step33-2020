@@ -259,11 +259,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   displayDirections_(destination, startingLocation) {
-    const directionsService = new google.maps.DirectionsService();
     this.directionsRenderer_.setMap(this.map_);
-    this.calculateRoute_(directionsService, this.directionsRenderer_, startingLocation, destination);
+    this.calculateRoute_(startingLocation, destination);
     document.getElementById("travel-method").addEventListener("change", () => {
-      this.calculateRoute_(directionsService, this.directionsRenderer_, startingLocation, destination);
+      this.calculateRoute_(startingLocation, destination);
     });
   }
 
@@ -304,17 +303,14 @@ export default class SimidMapCreative extends BaseSimidCreative {
   /**
    * Displays the route between the starting loaction and destination
    * based off of the selected travel mode.
-   * @param {!google.maps.DirectionsRenderer} renderer Object that displays
-   * the directions retrieved by the request.
-   * @param {!google.maps.DirectionsService} service Object that communicates
-   * with the Google Maps API Directions Service.
    * @param {!google.maps.LatLng} start The LatLng coordinates of the start location.
    * @param {!google.maps.LatLng} end The LatLng coordinates of the end location.
    * @private 
    */
-  calculateRoute_(service, renderer, start, end) {
+  calculateRoute_(start, end) {
+    const directionsService = new google.maps.DirectionsService();
     const selectedMode = document.getElementById("travel-method").value;
-    service.route(
+    directionsService.route(
       {
         origin: start,
         destination: end,
@@ -322,7 +318,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
       },
       (response, status) => {
         if (status == "OK") {
-          renderer.setDirections(response);
+          this.directionsRenderer_.setDirections(response);
         } else {
           window.alert("Directions request failed due to " + status);
         }
