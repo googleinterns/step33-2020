@@ -24,6 +24,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
  
  /** @override */
  onInit(eventData) {
+  debugger;
   this.updateInternalOnInit(eventData);
   this.validateAndParseAdParams_(eventData);
   this.newUserSession.userInitializes();
@@ -87,7 +88,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   prepareCreative_() {
-    this.newUserSession.userClicksNearestLocation();
+    this.newUserSession.userClicksFindNearestLocation();
     findNearest.classList.add("hidden");
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
       this.createMapState_();

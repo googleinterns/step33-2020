@@ -1,23 +1,30 @@
-
-import {URL} from './utils.js'
-
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
+const BASE_URL = "http://step-capstone-team33-2020.appspot.com"
+
 /** Fetches interaction data from server and uses it to create a chart. */
-function drawChart() {
-  fetch(`/${URL.DASHBOARD}`).then(response => response.json())
+function drawChart(parameter = "") {
+  fetch(`${BASE_URL}/dashboard?${parameter}`, 
+  {
+    headers : { 
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    mode:'no-cors',
+  }).then(response => response.json())
   .then((dataPercentages) => {
     const data = new google.visualization.DataTable();
     data.addColumn('string', 'Interaction Type');
     data.addColumn('number', 'Percentage');
-    Object.keys(dataPercentages).forEach((interactionType, index) => {
-      if (index > 0) {  // skip the correlator property
+    Object.keys(dataPercentages).forEach((interactionType) => {
+      if (interactionType != "totalInteractions") {
         data.addRow([interactionType, 100 * dataPercentages[interactionType]]);
       }
     });
 
     const options = {
+      'title': `Total Interactions: ${dataPercentages["totalInteractions"]}`,
       'width': 1500,
       'height': 700,
       vAxis: {
@@ -30,3 +37,44 @@ function drawChart() {
     chart.draw(data, options);
   });
 }
+
+document.getElementById("form-container").appendChild(createQueryByDateForm());
+
+function createQueryByDateForm(){
+  let queryDiv = document.createElement("div");
+
+  let startDateInput = document.createElement("input");
+  startDateInput.type = "date";
+  startDateInput.id = "start-date";
+    
+  let startDateLabel = document.createElement("label");
+  startDateLabel.for = "start-date";
+  startDateLabel.textContent = "Start date";
+
+  let endDateInput = document.createElement("input");
+  endDateInput.type = "date";
+  endDateInput.id = "end-date";
+    
+  let endDateLabel = document.createElement("label");
+  endDateLabel.for = "end-date";
+  endDateLabel.textContent = "End date";
+
+  let queryButton = document.createElement("button");
+  queryButton.id = "submit-button";
+  queryButton.textContent = "Query by Date Range";
+
+  queryDiv.appendChild(startDateLabel);
+  queryDiv.appendChild(startDateInput);
+  queryDiv.appendChild(endDateLabel);
+  queryDiv.appendChild(endDateInput);
+  queryDiv.appendChild(queryButton);
+
+  return queryDiv;
+}
+
+document.getElementById("submit-button").addEventListener("click", () => {
+  const chosenStartDateTimestamp = document.getElementById("start-date").valueAsNumber;
+  const chosenEndDateTimestamp = document.getElementById("end-date").valueAsNumber;
+  
+  drawChart(`startTime=${chosenStartDateTimestamp}&endTime=${chosenEndDateTimestamp}`);
+})
