@@ -192,21 +192,23 @@ test('LatLng coordinates constructor is called by default when map loads', async
     expect(window.google.maps.LatLng.mock.instances.length).toBe(1);
 });
 
-test('PlacesService object is initialized when map loads', () => {
+test('PlacesService object is initialized when map loads', async () => {
     const eventData = createInitData();
     testMap.onInit(eventData);
     testMap.onStart(startData);
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
+    await drivePromisesToCompletion();
     expect(window.google.maps.places.PlacesService.mock.instances.length).toBe(1);
 });
 
-test('nearbySearch function is called when map loads', () => {
+test('nearbySearch function is called when map loads', async () => {
     const eventData = createInitData();
     testMap.onInit(eventData);
     testMap.onStart(startData);
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
+    await drivePromisesToCompletion();
     expect(window.google.maps.places.PlacesService.mock.results[0].
         value.nearbySearch.mock.instances.length).toBe(1);
 });
