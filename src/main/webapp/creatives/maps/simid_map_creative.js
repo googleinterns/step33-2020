@@ -37,7 +37,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
      */
     this.searchQuery_ = null;
     /**
-     * The LatLng coordinates representing the closest business location.
+     * The LatLng coordinates representing the closest advertised location.
      * @private {?google.maps.LatLng}
      */
     this.closestLocation_ = null;
@@ -190,9 +190,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   /**
-   * Searches for the closest corresponding businesses based off of the given search parameter,
+   * Searches for the closest corresponding locations based off of the given search parameter,
    * and places pins on the map that represent the 4 closest locations.
-   * @param {String} searchParameter A string with the business's name to use in the query.
+   * @param {String} searchParameter A string with the advertiser's name to use in the query.
    * @param {!google.maps.LatLng} coordinates The LatLng object of user's current location.
    * @private 
    */
@@ -209,7 +209,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   /**
-   * Displays the closest business locations to a user's current location.
+   * Displays the closest advertisement's locations to a user's current location.
    * @param {!Object} results An array of Place Results from the search query.
    * @param {!google.maps.places.PlacesServiceStatus} status The status returned 
    *  by the PlacesService on the completion of its searches.
@@ -240,6 +240,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
       position: place.geometry.location,
       icon: placeIcon
     });
+    ///Recalculate directions if new marker is clicked.
     placeMarker.addListener('click', () => {
       this.closestLocation_ = place.geometry.location;
       this.displayDirections_(this.currentLocation_, this.closestLocation_);
@@ -256,6 +257,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
   displayDirections_(destination, startingLocation) {
     this.directionsRenderer_.setMap(this.map_);
     this.calculateRoute_(startingLocation, destination);
+    //If travel method changes, recalculate directions.
     document.getElementById("travel-method").addEventListener("change", () => {
       this.calculateRoute_(startingLocation, destination);
     });
@@ -267,19 +269,19 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   createTravelChoices_() {
-    const adContainer = document.getElementById("button_container")
+    const travelChoicesContainer = document.getElementById("button_container")
     const travelMethod = document.createElement('select');
-    travelMethod.setAttribute("id", "travel-method");
+    travelMethod.id = "travel-method";
     const walkOption = this.createTravelOption_("Walking");
     const driveOption = this.createTravelOption_("Driving");
     const bikeOption = this.createTravelOption_("Bicycling");
-    const transitOption = this.createTravelOption_("Transit");
+    const publicTransitOption = this.createTravelOption_("Transit");
     travelMethod.add(driveOption);
     travelMethod.add(walkOption);
     travelMethod.add(bikeOption);
-    travelMethod.add(transitOption);
-    travelMethod.classList.add("travel-method");
-    adContainer.append(travelMethod);
+    travelMethod.add(publicTransitOption);
+    travelMethod.classList.add("travelMethod");
+    travelChoicesContainer.append(travelMethod);
   }
 
   /**
@@ -296,7 +298,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   /**
-   * Displays the route between the starting loaction and destination
+   * Displays the route between the starting location and destination
    * based off of the selected travel mode.
    * @param {!google.maps.LatLng} start The LatLng coordinates of the start location.
    * @param {!google.maps.LatLng} end The LatLng coordinates of the end location.
