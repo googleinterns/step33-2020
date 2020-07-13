@@ -15,8 +15,6 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
-import com.google.sps.servlets.Property;
-import java.lang.reflect.Field; 
 import java.util.HashMap;
 import com.google.sps.servlets.RequestUtils;
 
@@ -24,6 +22,14 @@ import com.google.sps.servlets.RequestUtils;
 public class DashboardServlet extends HttpServlet {
 
   private final long MILLISECONDS_IN_DAY = 86400000;
+  private final String[] properties = new String[] {
+    Property.FIND_NEAREST_LOCATION, 
+    Property.GRANTS_LOCATION, 
+    Property.INTERACTS_WITH_MAP, 
+    Property.SKIP_TO_CONTENT, 
+    Property.RETURN_TO_AD
+  };
+
   private String startTimestamp;
   private String endTimestamp;
 
@@ -68,16 +74,12 @@ public class DashboardServlet extends HttpServlet {
     final Filter endTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.LESS_THAN_OR_EQUAL, this.endTimestamp);
     
     final Query timedQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(CompositeFilterOperator.and(startTimestampFilter, endTimestampFilter));
-    PreparedQuery interactions = datastore.prepare(timedQuery);
-
-    Field[] allFields = Property.class.getDeclaredFields();
-    Property classInstance = new Property();    
+    PreparedQuery interactions = datastore.prepare(timedQuery);  
   
     HashMap<String, Double> dataToSend = new HashMap<>();
 
-    // start iterating at 2 to skip timestamp and correlator properties
-    for (int i = 2; i < allFields.length; ++i){
-      String property = (String) allFields[i].get(classInstance); // gets the value of the field variable
+    for (int i = 0; i < properties.length; ++i){
+      String property = properties[i];
 
       Filter propertyFilter =  new FilterPredicate(property, FilterOperator.EQUAL, true);
       Query filteredQuery = new Query(DBUtilities.INTERACTION_TABLE);
