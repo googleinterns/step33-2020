@@ -125,11 +125,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const skipAdButton = document.createElement("button");
     skipAdButton.id = "skipAd";
     skipAdButton.textContent = "Skip Ad";
-    const skipAdLogo = document.createElement("img");
-    skipAdLogo.id = "skipAdLogo";
-    skipAdLogo.src = "https://img.icons8.com/ios/100/000000/end.png";
-    skipAdButton.appendChild(skipAdLogo);
-    skipAdButton.id = "skipAd";
     skipAdButton.onclick = () => this.playContent_();
 
     const adContainer = document.getElementById('adContainer');

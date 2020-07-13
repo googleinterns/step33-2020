@@ -15,6 +15,7 @@ button {
     text-align: center;
     transition: opacity .5s cubic-bezier(0.0,0.0,0.2,1);
     text-shadow: 0 0 4px rgba(0,0,0,0.75);
+    cursor: pointer;
 }
 
 button:hover {
@@ -25,7 +26,6 @@ button:hover {
     position: absolute;
     bottom: 65px;
     padding: 15px;
-    cursor: pointer;
 }
 
 .hidden {
@@ -36,7 +36,6 @@ button:hover {
     position: absolute;
     bottom: 65px;
     padding: 15px;
-    cursor: pointer;
 }
 
 #skipAd {
@@ -44,18 +43,9 @@ button:hover {
     bottom: 65px;
     right: 0px;
     padding: 15px;
-    cursor: pointer;
-    padding-right: 15px;
-    padding-left: 15px;
-    display: inline;
+    padding-right: 30px;
+    padding-left: 30px;
 }
-
-#skipAdLogo {
-    height: 30px;
-    vertical-align: middle;
-    margin: -14px -6px -12px 5px;
-    filter: invert(1);
-} 
 
 /*Allows map to display*/
 html, body {
@@ -73,7 +63,7 @@ html, body {
     width: 100%;
     margin: auto;
     position: relative;
-    top: 215;
+    top: 170px;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
     overflow: inherit !important;
