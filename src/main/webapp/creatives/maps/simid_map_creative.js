@@ -102,7 +102,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
  grantLocationAccess_() {
-  this.loadMap_();
+  this.displayMap_();
 }
 
 /**
@@ -110,7 +110,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
  * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
  * @private 
  */
-loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
+displayMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
   this.map_ = new google.maps.Map(document.getElementById('map'), {
     zoom: DEFAULT_ZOOM,
     center: coordinates
@@ -142,7 +142,7 @@ findNearby_(searchParameter, coordinates) {
 }
 
 /**
- * Displays the 4 closest business locations to a user's current location.
+ * Displays the closest business locations to a user's current location.
  * @param {!Object} results An array of Place Results from the search query.
  * @param {!google.maps.places.PlacesServiceStatus} status The status returned 
  *  by the PlacesService on the completion of its searches.
@@ -151,7 +151,7 @@ findNearby_(searchParameter, coordinates) {
 displayResults_(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
-        this.designMapMarker_(results[i]);
+        this.placeMapMarker_(results[i]);
       }
     }
 }
@@ -161,7 +161,7 @@ displayResults_(results, status) {
  * @param {!Object} place A Place Result object.
  * @private 
  */
-designMapMarker_(place) {
+placeMapMarker_(place) {
   const placeIcon = {
     url: this.markerImage_,
     scaledSize: new google.maps.Size(MARKER_SIZE, MARKER_SIZE)
@@ -171,7 +171,7 @@ designMapMarker_(place) {
     position: place.geometry.location,
     icon: placeIcon
   });
-  google.maps.event.addListener(placeMarker, 'click', function () {
+  google.maps.event.addListener(placeMarker, 'click', () => {
     const infowindow = new google.maps.InfoWindow;
     infowindow.setContent(place.name);
     infowindow.open(this.map_, this);
