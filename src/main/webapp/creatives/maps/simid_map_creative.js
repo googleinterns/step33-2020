@@ -36,9 +36,16 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private {?string}
      */
     this.searchQuery_ = null;
-
-    this.closestLocation = null;
-    this.currentLocation = null;
+    /**
+     * The LatLng coordinates representing the closest business location.
+     * @private {?google.maps.LatLng}
+     */
+    this.closestLocation_ = null;
+    /**
+     * The LatLng coordinates representing the user's current location.
+     * @private {?google.maps.LatLng}
+     */
+    this.currentLocation_ = null;
   }
 
   /** @override */
@@ -152,7 +159,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
   playAd_(returnToAdButton) {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PLAY);
     returnToAdButton.classList.add("hidden");
-    //ToDo(kristenmason@): hide map
+    const mapDiv = document.getElementById("map");
+    mapDiv.classList.add("hidden");
   }
 
   /**
@@ -169,7 +177,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
  * @private 
  */
   displayMap_(coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
-    this.currentLocation = coordinates;
+    this.currentLocation_ = coordinates;
     this.map_ = new google.maps.Map(document.getElementById('map'), {
       zoom: DEFAULT_ZOOM,
       center: coordinates
@@ -212,8 +220,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
         this.placeMapMarker_(results[i]);
       }
-      this.closestLocation = results[0].geometry.location;
-      this.displayDirections_(this.closestLocation, this.currentLocation);
+      this.closestLocation_ = results[0].geometry.location;
+      this.displayDirections_(this.closestLocation_, this.currentLocation_);
     }
   }
 
@@ -231,11 +239,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
       map: this.map_,
       position: place.geometry.location,
       icon: placeIcon
-    });
-    google.maps.event.addListener(placeMarker, 'click', () => {
-      const infowindow = new google.maps.InfoWindow;
-      infowindow.setContent(place.name);
-      infowindow.open(this.map_, this);
     });
   }
 
