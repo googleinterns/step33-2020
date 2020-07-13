@@ -20,9 +20,21 @@ const MARKER_SIZE = 25;
 export default class SimidMapCreative extends BaseSimidCreative {
   constructor() {
     super();
-    this.map = null;
-    this.markerImage = null;
-    this.searchQuery = null;
+    /**
+     * A map object from the Google Maps API.
+     * @private {?google.maps.Map}
+     */
+    this.map_ = null;
+    /**
+     * The desired marker image's string URL.
+     * @private {?string}
+     */
+    this.markerImage_ = null;
+    /**
+     * The string representing the search query.
+     * @private {?string}
+     */
+    this.searchQuery_ = null;
   }
 
   /** @override */
@@ -53,10 +65,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
         return;
     }
     const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
-    this.searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
-    this.markerImage = adParams[AdParamKeys.MARKER];
+    this.searchQuery_ = adParams[AdParamKeys.SEARCH_QUERY];
+    this.markerImage_ = adParams[AdParamKeys.MARKER];
 
-    if (!this.searchQuery) {
+    if (!this.searchQuery_) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
         message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`});
         return;
@@ -99,23 +111,23 @@ export default class SimidMapCreative extends BaseSimidCreative {
  * @private 
  */
 loadMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
-  this.map = new google.maps.Map(document.getElementById('map'), {
+  this.map_ = new google.maps.Map(document.getElementById('map'), {
     zoom: DEFAULT_ZOOM,
     center: coordinates
   });
   const marker = new google.maps.Marker({
     position: coordinates,
-    map: this.map,
+    map: this.map_,
     title: 'Current Position'
   });
-  this.findNearby_(this.searchQuery, coordinates);
+  this.findNearby_(this.searchQuery_, coordinates);
 }
 
 /**
  * Searches for the closest corresponding businesses based off of the given search parameter,
  * and places pins on the map that represent the 4 closest locations.
- * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
  * @param {String} searchParameter A string with the business's name to use in the query.
+ * @param {!google.maps.LatLng} coordinates The LatLng object of user's current location.
  * @private 
  */
 findNearby_(searchParameter, coordinates) {
@@ -125,7 +137,7 @@ findNearby_(searchParameter, coordinates) {
     openNow: true,
     rankBy: google.maps.places.RankBy.DISTANCE
   };
-  const service = new google.maps.places.PlacesService(this.map);
+  const service = new google.maps.places.PlacesService(this.map_);
   service.nearbySearch(request, this.displayResults_.bind(this));
 }
 
@@ -151,18 +163,18 @@ displayResults_(results, status) {
  */
 designMapMarker_(place) {
   const placeIcon = {
-    url: this.markerImage,
+    url: this.markerImage_,
     scaledSize: new google.maps.Size(MARKER_SIZE, MARKER_SIZE)
   };
   const placeMarker = new google.maps.Marker({
-    map: this.map,
+    map: this.map_,
     position: place.geometry.location,
     icon: placeIcon
   });
   google.maps.event.addListener(placeMarker, 'click', function () {
     const infowindow = new google.maps.InfoWindow;
     infowindow.setContent(place.name);
-    infowindow.open(this.map, this);
+    infowindow.open(this.map_, this);
   });
 }
 }
