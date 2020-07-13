@@ -143,7 +143,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
   playAd_(returnToAdButton) {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PLAY);
     returnToAdButton.classList.add("hidden");
-    //ToDo(kristenmason@): hide map
+    const mapDiv = document.getElementById("map");
+    mapDiv.classList.add("hidden");
   }
 
   /**
