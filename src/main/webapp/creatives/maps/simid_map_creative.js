@@ -1,5 +1,5 @@
 import BaseSimidCreative from '../base_simid_creative.js';
-import {CreativeMessage, CreativeErrorCode} from '../constants.js';
+import { CreativeMessage, CreativeErrorCode } from '../constants.js';
 
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
@@ -49,32 +49,38 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @param eventData an object that contains information details for a particular event
    *   such as event type, unique Ids, creativeData and environmentData.
    * @private 
-   */ 
+   */
   validateAndParseAdParams_(eventData) {
     if (this.creativeData.adParameters == "") {
-      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
-        message: "Ad parameters not found"});
-        return;
+      this.simidProtocol.reject(eventData, {
+        errorCode: CreativeErrorCode.UNSPECIFIED,
+        message: "Ad parameters not found"
+      });
+      return;
     }
 
     let adParams = "";
     try {
       adParams = JSON.parse(this.creativeData.adParameters);
     } catch (exception) {
-      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.CREATIVE_INTERNAL_ERROR, 
-        message: "Invalid JSON input for ad parameters"});
-        return;
+      this.simidProtocol.reject(eventData, {
+        errorCode: CreativeErrorCode.CREATIVE_INTERNAL_ERROR,
+        message: "Invalid JSON input for ad parameters"
+      });
+      return;
     }
-    const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
+    const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL];
     this.searchQuery_ = adParams[AdParamKeys.SEARCH_QUERY];
     this.markerImage_ = adParams[AdParamKeys.MARKER];
 
     if (!this.searchQuery_) {
-      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
-        message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`});
-        return;
+      this.simidProtocol.reject(eventData, {
+        errorCode: CreativeErrorCode.UNSPECIFIED,
+        message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`
+      });
+      return;
     }
-    
+
     this.simidProtocol.resolve(eventData, {});
   }
 
@@ -91,7 +97,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    *   category and can be specified by the advertisers. If the value is not specified, 
    *   then BUTTON_LABEL's value will default to Location.
    * @private 
-   */   
+   */
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
@@ -104,10 +110,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
       this.createMapState_();
     }).catch(() => {
-        const pauseErrorMessage = {
-          message: "WARNING: Request to pause ad failed",
-        };
-        this.simidProtocol.sendMessage(CreativeMessage.LOG, pauseErrorMessage);
+      const pauseErrorMessage = {
+        message: "WARNING: Request to pause ad failed",
+      };
+      this.simidProtocol.sendMessage(CreativeMessage.LOG, pauseErrorMessage);
     });
   }
 
@@ -120,7 +126,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const returnToAdButton = document.createElement("button");
     returnToAdButton.textContent = "Return To Ad";
     returnToAdButton.id = "returnToAd";
-    returnToAdButton.onclick = () => this.playAd_(returnToAdButton); 
+    returnToAdButton.onclick = () => this.playAd_(returnToAdButton);
 
     const skipAdButton = document.createElement("button");
     skipAdButton.textContent = "Skip Ad";
@@ -153,77 +159,130 @@ export default class SimidMapCreative extends BaseSimidCreative {
   playContent_() {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_SKIP);
   }
-  
+
   /**
  * Loads a map object that currently defaults to a hardcoded location.
  * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
  * @private 
  */
-displayMap_(coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
-  this.map_ = new google.maps.Map(document.getElementById('map'), {
-    zoom: DEFAULT_ZOOM,
-    center: coordinates
-  });
-  new google.maps.Marker({
-    position: coordinates,
-    map: this.map_,
-    title: 'Current Position'
-  });
-  this.findNearby_(this.searchQuery_, coordinates);
-}
+  displayMap_(coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
+    this.map_ = new google.maps.Map(document.getElementById('map'), {
+      zoom: DEFAULT_ZOOM,
+      center: coordinates
+    });
+    new google.maps.Marker({
+      position: coordinates,
+      map: this.map_,
+      title: 'Current Position'
+    });
+    this.findNearby_(this.searchQuery_, coordinates);
+  }
 
-/**
- * Searches for the closest corresponding businesses based off of the given search parameter,
- * and places pins on the map that represent the 4 closest locations.
- * @param {String} searchParameter A string with the business's name to use in the query.
- * @param {!google.maps.LatLng} coordinates The LatLng object of user's current location.
- * @private 
- */
-findNearby_(searchParameter, coordinates) {
-  const request = {
-    location: coordinates,
-    name: searchParameter,
-    openNow: true,
-    rankBy: google.maps.places.RankBy.DISTANCE
-  };
-  const service = new google.maps.places.PlacesService(this.map_);
-  service.nearbySearch(request, this.displayResults_.bind(this));
-}
+  /**
+   * Searches for the closest corresponding businesses based off of the given search parameter,
+   * and places pins on the map that represent the 4 closest locations.
+   * @param {String} searchParameter A string with the business's name to use in the query.
+   * @param {!google.maps.LatLng} coordinates The LatLng object of user's current location.
+   * @private 
+   */
+  findNearby_(searchParameter, coordinates) {
+    const request = {
+      location: coordinates,
+      name: searchParameter,
+      openNow: true,
+      rankBy: google.maps.places.RankBy.DISTANCE
+    };
+    const service = new google.maps.places.PlacesService(this.map_);
+    service.nearbySearch(request, this.displayResults_.bind(this));
+  }
 
-/**
- * Displays the closest business locations to a user's current location.
- * @param {!Object} results An array of Place Results from the search query.
- * @param {!google.maps.places.PlacesServiceStatus} status The status returned 
- *  by the PlacesService on the completion of its searches.
- * @private 
- */
-displayResults_(results, status) {
+  /**
+   * Displays the closest business locations to a user's current location.
+   * @param {!Object} results An array of Place Results from the search query.
+   * @param {!google.maps.places.PlacesServiceStatus} status The status returned 
+   *  by the PlacesService on the completion of its searches.
+   * @private 
+   */
+  displayResults_(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
         this.placeMapMarker_(results[i]);
       }
     }
+  }
+
+  /**
+   * Creates and displays a marker on the map representing a given place.
+   * @param {!Object} place A Place Result object.
+   * @private 
+   */
+  placeMapMarker_(place) {
+    const placeIcon = {
+      url: this.markerImage_,
+      scaledSize: new google.maps.Size(MARKER_SIZE, MARKER_SIZE)
+    };
+    const placeMarker = new google.maps.Marker({
+      map: this.map_,
+      position: place.geometry.location,
+      icon: placeIcon
+    });
+    google.maps.event.addListener(placeMarker, 'click', () => {
+      const infowindow = new google.maps.InfoWindow;
+      infowindow.setContent(place.name);
+      infowindow.open(this.map_, this);
+    });
+  }
+
+  /**
+   * Creates and displays a marker on the map representing a given place.
+   * @param {!Object} place A Place Result object.
+   * @private 
+  */
+  displayDirections_(destination, startingLocation) {
+    console.log(destination);
+    console.log(startingLocation);
+    this.createTravelChoices_();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
+    const directionsService = new google.maps.DirectionsService();
+    directionsRenderer.setMap(this.map);
+    this.calculateRoute_(directionsService, directionsRenderer, startingLocation, destination);
+    document.getElementById("travel-method").addEventListener("change", () => {
+      this.calculateRoute_(directionsService, directionsRenderer, startingLocation, destination);
+    });
+  }
+
+  createTravelChoices_() {
+    const adContainer = document.getElementById("button_container")
+    const travelMethod = document.createElement('select');
+    travelMethod.setAttribute("id", "travel-method");
+    const walkOption = document.createElement("option");
+    walkOption.value = "WALKING";
+    walkOption.text = "Walking";
+    const driveOption = document.createElement("option");
+    driveOption.value = "DRIVING";
+    driveOption.text = "Driving";
+    travelMethod.add(driveOption);
+    travelMethod.add(walkOption);
+    travelMethod.classList.add("travel-method");
+    adContainer.append(travelMethod);
+  }
+
+  calculateRoute_(directionsService, directionsRenderer, start, end) {
+    const selectedMode = document.getElementById("travel-method").value;
+    directionsService.route(
+      {
+        origin: start,
+        destination: end,
+        travelMode: [selectedMode]
+      },
+      function (response, status) {
+        if (status == "OK") {
+          directionsRenderer.setDirections(response);
+        } else {
+          window.alert("Directions request failed due to " + status);
+        }
+      }
+    );
+  }
 }
 
-/**
- * Creates and displays a marker on the map representing a given place.
- * @param {!Object} place A Place Result object.
- * @private 
- */
-placeMapMarker_(place) {
-  const placeIcon = {
-    url: this.markerImage_,
-    scaledSize: new google.maps.Size(MARKER_SIZE, MARKER_SIZE)
-  };
-  const placeMarker = new google.maps.Marker({
-    map: this.map_,
-    position: place.geometry.location,
-    icon: placeIcon
-  });
-  google.maps.event.addListener(placeMarker, 'click', () => {
-    const infowindow = new google.maps.InfoWindow;
-    infowindow.setContent(place.name);
-    infowindow.open(this.map_, this);
-  });
-}
-}
