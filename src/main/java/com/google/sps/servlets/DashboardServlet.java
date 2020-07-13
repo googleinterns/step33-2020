@@ -121,15 +121,18 @@ public class DashboardServlet extends HttpServlet {
   */
   private void validateAndSetVariables(String startTimestamp, String endTimestamp){
 
-    if (startTimestamp.isEmpty() || endTimestamp.isEmpty()) {
+    if (requestStartTimestamp.isEmpty() || requestEndTimestamp.isEmpty()) {
       this.startTimestamp = DEFAULT_START_TIMESTAMP;
       this.endTimestamp = DEFAULT_END_TIMESTAMP;
     
     } else {  
       // swap if they're in the wrong order
-      if (Long.valueOf(endTimestamp) < Long.valueOf(startTimestamp)) {
-        this.startTimestamp = endTimestamp;
-        this.endTimestamp = startTimestamp;
+      if (Long.valueOf(requestEndTimestamp) < Long.valueOf(requestStartTimestamp)) {
+        this.startTimestamp = requestEndTimestamp;
+        this.endTimestamp = requestStartTimestamp;
+      } else {
+        this.startTimestamp = requestStartTimestamp;
+        this.endTimestamp = requestEndTimestamp;
       }
       // endTimestamp should include the entire second date requested
       this.endTimestamp = String.valueOf(Long.valueOf(this.endTimestamp) + MILLISECONDS_IN_DAY);
