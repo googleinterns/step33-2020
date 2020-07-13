@@ -216,6 +216,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     };
     const service = new google.maps.places.PlacesService(this.map_);
     service.nearbySearch(request, this.displayResults_.bind(this));
+    this.createTravelChoices_();
   }
 
   /**
@@ -264,7 +265,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   displayDirections_(destination, startingLocation) {
-    this.createTravelChoices_();
     const directionsService = new google.maps.DirectionsService();
     this.directionsRenderer_.setMap(this.map_);
     this.calculateRoute_(directionsService, this.directionsRenderer_, startingLocation, destination);
@@ -285,9 +285,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const walkOption = this.createTravelOption_("Walking");
     const driveOption = this.createTravelOption_("Driving");
     const bikeOption = this.createTravelOption_("Bicycling");
+    const transitOption = this.createTravelOption_("Transit");
     travelMethod.add(driveOption);
     travelMethod.add(walkOption);
     travelMethod.add(bikeOption);
+    travelMethod.add(transitOption);
     travelMethod.classList.add("travel-method");
     adContainer.append(travelMethod);
   }
