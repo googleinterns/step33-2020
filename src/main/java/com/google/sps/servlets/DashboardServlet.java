@@ -130,7 +130,7 @@ public class DashboardServlet extends HttpServlet {
       this.startTimestamp = requestStartTimestamp;
       this.endTimestamp = requestEndTimestamp;
     
-      // endTimestamp should include the entire second date requested
+      // When displaying the range of dates, the latter date is included
       this.endTimestamp = String.valueOf(Long.valueOf(this.endTimestamp) + MILLISECONDS_IN_DAY);
     }
 
