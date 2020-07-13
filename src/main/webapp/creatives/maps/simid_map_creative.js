@@ -232,7 +232,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
         this.placeMapMarker_(results[i]);
       }
       this.closestLocation_ = results[0].geometry.location;
-      this.displayDirections_(this.closestLocation_, this.currentLocation_);
+      this.displayDirections_(this.currentLocation_, this.closestLocation_);
     }
   }
 
@@ -260,11 +260,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
   /**
    * Displays the route between the starting loaction and destination
    * based off of the selected travel mode.
-   * @param {!google.maps.LatLng} destination The LatLng coordinates of the destination.
    * @param {!google.maps.LatLng} startingLocation The LatLng coordinates of the start location.
+   * @param {!google.maps.LatLng} destination The LatLng coordinates of the destination.
    * @private 
    */
-  displayDirections_(destination, startingLocation) {
+  displayDirections_(startingLocation, destination) {
     const directionsService = new google.maps.DirectionsService();
     this.directionsRenderer_.setMap(this.map_);
     this.calculateRoute_(directionsService, this.directionsRenderer_, startingLocation, destination);
