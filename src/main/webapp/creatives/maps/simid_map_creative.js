@@ -1,5 +1,5 @@
 import BaseSimidCreative from '../base_simid_creative.js';
-import { CreativeMessage, CreativeErrorCode } from '../constants.js';
+import {CreativeMessage, CreativeErrorCode} from '../constants.js';
 
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
@@ -90,7 +90,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
         message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`});
         return;
     }
-
     this.simidProtocol.resolve(eventData, {});
   }
 
@@ -107,17 +106,13 @@ export default class SimidMapCreative extends BaseSimidCreative {
    *   category and can be specified by the advertisers. If the value is not specified, 
    *   then BUTTON_LABEL's value will default to Location.
    * @private 
-   */
+   */ 
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
     findNearest.onclick = () => this.prepareCreative_();
   }
 
-  /**
-   * 
-   * @private 
-   */
   prepareCreative_() {
     //ToDo(kristenmason@): implement the Google Maps request access functionality
     findNearest.classList.add("hidden");
