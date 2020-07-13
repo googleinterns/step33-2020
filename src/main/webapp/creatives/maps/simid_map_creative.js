@@ -1,6 +1,5 @@
-
 import BaseSimidCreative from '../base_simid_creative.js';
-import {CreativeErrorCode} from '../constants.js';
+import {CreativeMessage, CreativeErrorCode} from '../constants.js';
 
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
@@ -96,18 +95,66 @@ export default class SimidMapCreative extends BaseSimidCreative {
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
-    findNearest.onclick = () => this.grantLocationAccess_();
+    findNearest.onclick = () => this.prepareCreative_();
   }
- 
+
+  prepareCreative_() {
+    //ToDo(kristenmason@): implement the Google Maps request access functionality
+    findNearest.classList.add("hidden");
+    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
+      this.createMapState_();
+    }).catch(() => {
+        const pauseErrorMessage = {
+          message: "WARNING: Request to pause ad failed",
+        };
+        this.simidProtocol.sendMessage(CreativeMessage.LOG, pauseErrorMessage);
+    });
+  }
+
   /**
-   * Prompts the users to grant or deny access to their current location.
+   * Creates the Skip To Content and Return To Ad buttons once the user
+   *   grants permission to access their location and the map appears.
    * @private 
    */
- grantLocationAccess_() {
-  this.displayMap_();
-}
+  createMapState_() {
+    const returnToAdButton = document.createElement("button");
+    returnToAdButton.textContent = "Return To Ad";
+    returnToAdButton.id = "returnToAd";
+    returnToAdButton.onclick = () => this.playAd_(returnToAdButton); 
 
-/**
+    const skipAdButton = document.createElement("button");
+    skipAdButton.textContent = "Skip Ad";
+    skipAdButton.id = "skipAd";
+    skipAdButton.onclick = () => this.playContent_();
+
+    const adContainer = document.getElementById('adContainer');
+    adContainer.appendChild(returnToAdButton);
+    adContainer.appendChild(skipAdButton);
+
+    this.displayMap_();
+  }
+
+  /**
+   * Continues to play the ad if user clicks on Return To Ad button.
+   * @param {!Element} returnToAdButton Refers to the button that takes
+   *   a user back to the video ad. 
+   * @private 
+   */
+  playAd_(returnToAdButton) {
+    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PLAY);
+    returnToAdButton.classList.add("hidden");
+    //ToDo(kristenmason@): hide map
+  }
+
+  /**
+   * Returns to video content if user clicks on Skip To Content button.
+   * @private 
+   */
+  playContent_() {
+    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_SKIP);
+  }
+  
+  /**
  * Loads a map object that currently defaults to a hardcoded location.
  * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
  * @private 
