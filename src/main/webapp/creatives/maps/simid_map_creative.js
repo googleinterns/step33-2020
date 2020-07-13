@@ -115,7 +115,7 @@ displayMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
     zoom: DEFAULT_ZOOM,
     center: coordinates
   });
-  const marker = new google.maps.Marker({
+  new google.maps.Marker({
     position: coordinates,
     map: this.map_,
     title: 'Current Position'
