@@ -10,6 +10,7 @@ const AdParamKeys = {
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
 const DEFAULT_BUTTON_LABEL = "Location";
 const DEFAULT_ZOOM = 13;
+const SKIP_LOGO = "<img src='https://raw.githubusercontent.com/penge/skip-ad/master/icon128.png'>";
 
 /**
  * A sample SIMID ad that shows a map of nearby locations.
@@ -107,8 +108,12 @@ export default class SimidMapCreative extends BaseSimidCreative {
     returnToAdButton.onclick = () => this.playAd_(returnToAdButton); 
 
     const skipAdButton = document.createElement("button");
-    skipAdButton.textContent = "Skip Ad";
     skipAdButton.id = "skipAd";
+    skipAdButton.textContent = "Skip Ad";
+    const skipAdLogo = document.createElement("img");
+    skipAdLogo.id = "skipAdLogo";
+    skipAdLogo.src = "https://img.icons8.com/ios/100/000000/end.png";
+    skipAdButton.appendChild(skipAdLogo);
     skipAdButton.onclick = () => this.playContent_();
 
     const adContainer = document.getElementById('adContainer');
