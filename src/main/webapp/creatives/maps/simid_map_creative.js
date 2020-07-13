@@ -182,10 +182,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   /**
- * Loads a map object that currently defaults to a hardcoded location.
- * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
- * @private 
- */
+   * Loads a map object that currently defaults to a hardcoded location.
+   * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
+   * @private 
+   */
   displayMap_(coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
     this.currentLocation_ = coordinates;
     this.map_ = new google.maps.Map(document.getElementById('map'), {
@@ -262,7 +262,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @param {!google.maps.LatLng} destination The LatLng coordinates of the destination.
    * @param {!google.maps.LatLng} startingLocation The LatLng coordinates of the start location.
    * @private 
-  */
+   */
   displayDirections_(destination, startingLocation) {
     this.createTravelChoices_();
     const directionsService = new google.maps.DirectionsService();
@@ -277,7 +277,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * Creates a drop down menu where users can choose between
    * different modes of travel to display directions for.
    * @private 
-  */
+   */
   createTravelChoices_() {
     const adContainer = document.getElementById("button_container")
     const travelMethod = document.createElement('select');
@@ -292,6 +292,12 @@ export default class SimidMapCreative extends BaseSimidCreative {
     adContainer.append(travelMethod);
   }
 
+  /**
+   * Creates an option element representing a mode of travel.
+   * @param {!string} travelMode A string representing the
+   * given mode of travel.
+   * @private 
+   */
   createTravelOption_(travelMode) {
     const travelOption = document.createElement("option");
     travelOption.value = travelMode.toUpperCase();
@@ -309,7 +315,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @param {!google.maps.LatLng} start The LatLng coordinates of the start location.
    * @param {!google.maps.LatLng} end The LatLng coordinates of the end location.
    * @private 
-  */
+   */
   calculateRoute_(service, renderer, start, end) {
     const selectedMode = document.getElementById("travel-method").value;
     service.route(
