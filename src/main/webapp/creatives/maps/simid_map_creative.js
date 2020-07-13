@@ -13,6 +13,8 @@ const DEFAULT_BUTTON_LABEL = "Location";
 const DEFAULT_ZOOM = 13;
 const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 const MARKER_SIZE = 25;
+const DEFAULT_MAP_LAT = 37.422004;
+const DEFAULT_MAP_LNG = -122.081402;
 
 /**
  * A sample SIMID ad that shows a map of nearby locations.
@@ -110,7 +112,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
  * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
  * @private 
  */
-displayMap_(coordinates = new google.maps.LatLng(37.422004, -122.081402)) {
+displayMap_(coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
   this.map_ = new google.maps.Map(document.getElementById('map'), {
     zoom: DEFAULT_ZOOM,
     center: coordinates
