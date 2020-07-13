@@ -51,12 +51,24 @@ function createInitData(adParameters){
 }
 
 beforeEach(() => {
+    const fakeNearbySearch = jest.fn();
     window.google = {
         maps: {
             LatLng: jest.fn(), 
             Map: jest.fn(),
             Marker: jest.fn(),
-            Autocomplete: class {}
+            Size: jest.fn(),
+            Point: jest.fn(),
+            InfoWindow: jest.fn(),
+            Autocomplete: class {},
+            places: {
+                PlacesService: jest.fn(() => ({nearbySearch: fakeNearbySearch})),
+                RankBy: jest.fn(),
+                PlacesServiceStatus: jest.fn()
+            },
+            event: {
+                addListener: jest.fn()
+            }
         }
       };
     SimidProtocol.mockClear();
@@ -178,6 +190,27 @@ test('LatLng coordinates constructor is called by default when map loads', async
     await drivePromisesToCompletion();
 
     expect(window.google.maps.LatLng.mock.instances.length).toBe(1);
+});
+
+test('PlacesService object is initialized when map loads', async () => {
+    const eventData = createInitData();
+    testMap.onInit(eventData);
+    testMap.onStart(startData);
+    const findNearestButton = document.getElementById('findNearest');
+    findNearestButton.dispatchEvent(new Event('click'));
+    await drivePromisesToCompletion();
+    expect(window.google.maps.places.PlacesService.mock.instances.length).toBe(1);
+});
+
+test('nearbySearch function is called when map loads', async () => {
+    const eventData = createInitData();
+    testMap.onInit(eventData);
+    testMap.onStart(startData);
+    const findNearestButton = document.getElementById('findNearest');
+    findNearestButton.dispatchEvent(new Event('click'));
+    await drivePromisesToCompletion();
+    expect(window.google.maps.places.PlacesService.mock.results[0].
+        value.nearbySearch.mock.instances.length).toBe(1);
 });
 
 
