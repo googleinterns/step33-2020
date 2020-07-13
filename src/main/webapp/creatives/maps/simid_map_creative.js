@@ -254,12 +254,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
   */
   displayDirections_(destination, startingLocation) {
-    console.log(destination);
-    console.log(startingLocation);
     this.createTravelChoices_();
     const directionsRenderer = new google.maps.DirectionsRenderer();
     const directionsService = new google.maps.DirectionsService();
-    directionsRenderer.setMap(this.map);
+    directionsRenderer.setMap(this.map_);
     this.calculateRoute_(directionsService, directionsRenderer, startingLocation, destination);
     document.getElementById("travel-method").addEventListener("change", () => {
       this.calculateRoute_(directionsService, directionsRenderer, startingLocation, destination);
@@ -307,7 +305,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
         destination: end,
         travelMode: [selectedMode]
       },
-      (response, status) => {
+      function (response, status) {
         if (status == "OK") {
           directionsRenderer.setDirections(response);
         } else {
