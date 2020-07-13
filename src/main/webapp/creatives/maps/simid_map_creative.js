@@ -220,10 +220,5 @@ placeMapMarker_(place) {
     position: place.geometry.location,
     icon: placeIcon
   });
-  google.maps.event.addListener(placeMarker, 'click', () => {
-    const infowindow = new google.maps.InfoWindow;
-    infowindow.setContent(place.name);
-    infowindow.open(this.map_, this);
-  });
 }
 }
