@@ -214,8 +214,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
       openNow: true,
       rankBy: google.maps.places.RankBy.DISTANCE
     };
-    const service = new google.maps.places.PlacesService(this.map_);
-    service.nearbySearch(request, this.displayResults_.bind(this));
+    const placeService = new google.maps.places.PlacesService(this.map_);
+    placeService.nearbySearch(request, this.displayResults_.bind(this));
   }
 
   /**
@@ -268,8 +268,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const directionsService = new google.maps.DirectionsService();
     this.directionsRenderer_.setMap(this.map_);
     this.calculateRoute_(directionsService, this.directionsRenderer_, startingLocation, destination);
+    this.calculateTravelTime_(startingLocation, destination);
     document.getElementById("travel-method").addEventListener("change", () => {
       this.calculateRoute_(directionsService, this.directionsRenderer_, startingLocation, destination);
+      this.calculateTravelTime_(startingLocation, destination);
     });
   }
 
@@ -279,7 +281,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
   */
   createTravelChoices_() {
-    const adContainer = document.getElementById("button_container")
+    const adContainer = document.getElementById("button_container");
+    if(document.getElementById("travel-method"!= null)) {
+      const extraElement = document.getElementById("travel-method");
+      adContainer.removeChild(extraElement);
+    }
     const travelMethod = document.createElement('select');
     travelMethod.setAttribute("id", "travel-method");
     const walkOption = this.createTravelOption_("Walking");
@@ -304,15 +310,15 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * based off of the selected travel mode.
    * @param {!google.maps.DirectionsRenderer} renderer Object that displays
    * the directions retrieved by the request.
-   * @param {!google.maps.DirectionsService} service Object that communicates
+   * @param {!google.maps.DirectionsService} dirService Object that communicates
    * with the Google Maps API Directions Service.
    * @param {!google.maps.LatLng} start The LatLng coordinates of the start location.
    * @param {!google.maps.LatLng} end The LatLng coordinates of the end location.
    * @private 
   */
-  calculateRoute_(service, renderer, start, end) {
+  calculateRoute_(dirService, renderer, start, end) {
     const selectedMode = document.getElementById("travel-method").value;
-    service.route(
+    dirService.route(
       {
         origin: start,
         destination: end,
@@ -327,5 +333,35 @@ export default class SimidMapCreative extends BaseSimidCreative {
       }
     );
   }
+
+  calculateTravelTime_(origin, destination) {
+    const travelMode = document.getElementById("travel-method").value;
+    const matrixService = new google.maps.DistanceMatrixService();
+    matrixService.getDistanceMatrix(
+      {
+        origins: [origin],
+        destinations:[destination],
+        travelMode: [travelMode],
+        unitSystem: google.maps.UnitSystem.IMPERIAL
+      }, callback);
+
+    function callback(response, status) {
+      // See Parsing the Results for
+      // the basics of a callback function.
+      if (status == 'OK') {
+        let distance = -1;
+        let duration = -1;
+        const results = response.rows[0].elements;
+        for (let j = 0; j < results.length; j++) {
+          const element = results[j];
+          distance = element.distance.text;
+          duration = element.duration.text;
+        }
+        console.log(distance + " " + duration);
+      }
+    }
+
+  }
+
 }
 
