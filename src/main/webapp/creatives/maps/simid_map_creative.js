@@ -1,6 +1,5 @@
-
 import BaseSimidCreative from '../base_simid_creative.js';
-import {CreativeErrorCode} from '../constants.js';
+import {CreativeMessage, CreativeErrorCode} from '../constants.js';
 
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
@@ -32,7 +31,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @param eventData an object that contains information details for a particular event
    *   such as event type, unique Ids, creativeData and environmentData.
    * @private 
-  */ 
+   */ 
   validateAndParseAdParams_(eventData) {
     if (this.creativeData.adParameters == "") {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
@@ -73,19 +72,71 @@ export default class SimidMapCreative extends BaseSimidCreative {
    *   category and can be specified by the advertisers. If the value is not specified, 
    *   then BUTTON_LABEL's value will default to Location.
    * @private 
-  */   
+   */   
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
-    findNearest.onclick = () => this.grantLocationAccess_();
+    findNearest.onclick = () => this.prepareCreative_();
   }
  
   /**
-   * Prompts the users to grant or deny access to their current location.
+   * Requests player to pause, if accepted generate map.
    * @private 
-  */
-  grantLocationAccess_() {
+   */
+  prepareCreative_() {
+    //ToDo(kristenmason@): implement the Google Maps request access functionality
+    findNearest.classList.add("hidden");
+    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
+      this.createMapState_();
+    }).catch(() => {
+        const pauseErrorMessage = {
+          message: "WARNING: Request to pause ad failed",
+        };
+        this.simidProtocol.sendMessage(CreativeMessage.LOG, pauseErrorMessage);
+    });
+  }
+
+  /**
+   * Creates the Skip To Content and Return To Ad buttons once the user
+   *   grants permission to access their location and the map appears.
+   * @private 
+   */
+  createMapState_() {
+    const returnToAdButton = document.createElement("button");
+    returnToAdButton.textContent = "Return To Ad";
+    returnToAdButton.id = "returnToAd";
+    returnToAdButton.onclick = () => this.playAd_(returnToAdButton); 
+
+    const skipAdButton = document.createElement("button");
+    skipAdButton.textContent = "Skip Ad";
+    skipAdButton.id = "skipAd";
+    skipAdButton.onclick = () => this.playContent_();
+
+    const adContainer = document.getElementById('adContainer');
+    adContainer.appendChild(returnToAdButton);
+    adContainer.appendChild(skipAdButton);
+
     this.loadMap_();
+  }
+
+  /**
+   * Continues to play the ad if user clicks on Return To Ad button.
+   * @param {!Element} returnToAdButton Refers to the button that takes
+   *   a user back to the video ad. 
+   * @private 
+   */
+  playAd_(returnToAdButton) {
+    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PLAY);
+    returnToAdButton.classList.add("hidden");
+    //ToDo(kristenmason@): hide map
+  }
+
+  /**
+   * Returns to video content if user clicks on Skip To Content button.
+   * @private 
+   */
+  playContent_() {
+    this.simidProtocol.sendMessage(CreativeMessage.REQUEST_SKIP);
   }
 
   /**
@@ -94,7 +145,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * TODO(kristenmason@): implement grant location access and modify
    * function to pass in current position (currently coords default to GooglePlex)
    * @private 
-  */
+   */
   loadMap_(coordinates = new google.maps.LatLng(37.422004,-122.081402)) { 
     const map = new google.maps.Map(document.getElementById('map'), {
       zoom: DEFAULT_ZOOM,

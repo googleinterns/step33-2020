@@ -39,6 +39,7 @@ export const CreativeMessage = {
   FATAL_ERROR: 'Creative:fatalError',
   GET_MEDIA_STATE: 'Creative:getMediaState',
   REQUEST_FULL_SCREEN: 'Creative:requestFullScreen',
+  LOG: 'Creative:log',
   REQUEST_SKIP: 'Creative:requestSkip',
   REQUEST_STOP: 'Creative:requestStop',
   REQUEST_PAUSE: 'Creative:requestPause',

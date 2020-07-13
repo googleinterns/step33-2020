@@ -2,9 +2,31 @@
 import SimidMapCreative from './simid_map_creative.js';
 import SimidProtocol from '../simid_protocol.js';
 
-jest.mock('../simid_protocol.js');
+const mockSendMessage = jest.fn();
+mockSendMessage.mockResolvedValue(true);
+const mockReject = jest.fn();
+jest.mock('../simid_protocol.js', () => {
+    return jest.fn().mockImplementation(() => {
+        return {sendMessage: mockSendMessage,
+            addListener: () => {},
+            reject: mockReject,
+            resolve: () => {},
+        };
+    });
+});
 let testMap;
 let startData;
+
+/**
+ * Makes Jest wait for all asynchronous pending promises to finish executing 
+ *  before asserting expectations.
+ * @return {!Promise} Promise that is used to break up long running operations 
+ *  and run a callback function immediately after the browser has completed other 
+ *  operations. 
+ */
+function drivePromisesToCompletion() {
+    const flushPromises = () => new Promise(setImmediate);
+}
 
 /**
  * Creates an object containing the test event data used in the SIMID protocol.
@@ -12,11 +34,11 @@ let startData;
  * If the field is left blank, passes in the default parameters.
  * @return {!Object} an object containing the event data and corresponding AdParameters.
  */
-function createInitData(adParameters = ""){
+function createInitData(adParameters){
     const eventData = {
         args: {
             creativeData: {
-                adParameters: '{'+adParameters+'}',
+                adParameters: adParameters,
             },
             environmentData: {},
         },
@@ -38,8 +60,10 @@ beforeEach(() => {
         }
       };
     SimidProtocol.mockClear();
+    mockReject.mockReset();
     testMap = new SimidMapCreative();
     document.body.innerHTML = `
+    <div id="adContainer"></div>
     <button id="findNearest"></button>
     <div id="map"></div>`;
     startData = {
@@ -51,19 +75,7 @@ beforeEach(() => {
 });
 
 test('testing button text updates from ad params', () => {
-    const eventData = {
-        args: {
-            creativeData: {
-                adParameters: "{'buttonLabel': 'Place'}",
-            },
-            environmentData: {},
-        },
-        messageId: 0,
-        sessionId: "test-session-id",
-        timestamp: 0,
-        type: "SIMID:Player:init",
-    };
-    testMap.onInit(eventData);
+    testMap.onInit(createInitData("{'buttonLabel': 'Place'}"));
 
     const buttonLabel = "Place";
     const startData = {
@@ -79,19 +91,7 @@ test('testing button text updates from ad params', () => {
 });
 
 test('testing button text updates with default ad params', () => {
-    const eventData = {
-        args: {
-            creativeData: {
-                adParameters: '{}',
-            },
-            environmentData: {},
-        },
-        messageId: 0,
-        sessionId: "test-session-id",
-        timestamp: 0,
-        type: "SIMID:Player:init",
-    };
-    testMap.onInit(eventData);
+    testMap.onInit(createInitData('{}'));
 
     const startData = {
         messageId: 1,
@@ -106,111 +106,77 @@ test('testing button text updates with default ad params', () => {
 });
 
 test('testing that rejection for ad params not found is working', () => {
-    const eventData = {
-        args: {
-            creativeData: {
-                adParameters: "",
-            },
-            environmentData: {},
-        },
-        messageId: 0,
-        sessionId: "test-session-id",
-        timestamp: 0,
-        type: "SIMID:Player:init",
-    };
-    testMap.onInit(eventData);
-    
-    const instance = SimidProtocol.mock.instances[0];
-    const rejectMessageObject = instance.reject.mock.calls[0][1];
+    testMap.onInit(createInitData(""));
+
+    expect(mockReject.mock.calls.length).toBe(1);
+    const rejectMessageObject = mockReject.mock.calls[0][1];
     expect(rejectMessageObject.message).toBe("Ad parameters not found");
 });
 
 test('testing that rejection for searchQuery not found is working when given empty string', () => {
-    const eventData = {
-        args: {
-            creativeData: {
-                adParameters: '{"searchQuery": ""}',
-            },
-            environmentData: {},
-        },
-        messageId: 0,
-        sessionId: "test-session-id",
-        timestamp: 0,
-        type: "SIMID:Player:init",
-    };
-    testMap.onInit(eventData);
-    
-    const instance = SimidProtocol.mock.instances[0];
-    expect(instance.reject).toHaveBeenCalledTimes(1);
-    const rejectMessageObject = instance.reject.mock.calls[0][1];
+    testMap.onInit(createInitData('{"searchQuery": ""}'));
+
+    expect(mockReject.mock.calls.length).toBe(1);
+    const rejectMessageObject = mockReject.mock.calls[0][1];
     expect(rejectMessageObject.message).toBe("Required field searchQuery not found");
 });
 
 test('testing that rejection for searchQuery not found is working when search query not included', () => {
-    const eventData = {
-        args: {
-            creativeData: {
-                adParameters: '{"buttonLabel": "Location", "marker": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg.png"}'
-            },
-            environmentData: {},
-        },
-        messageId: 0,
-        sessionId: "test-session-id",
-        timestamp: 0,
-        type: "SIMID:Player:init",
-    };
-    testMap.onInit(eventData);
-    
-    const instance = SimidProtocol.mock.instances[0];
-    expect(instance.reject).toHaveBeenCalledTimes(1);
-    const rejectMessageObject = instance.reject.mock.calls[0][1];
+    testMap.onInit(createInitData('{"buttonLabel": "Location", "marker": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg.png"}'));
+
+    expect(mockReject.mock.calls.length).toBe(1);
+    const rejectMessageObject = mockReject.mock.calls[0][1];
     expect(rejectMessageObject.message).toBe("Required field searchQuery not found");
 });
 
 test('testing that rejection for JSON parsing errors is working', () => {
-    const eventData = {
-        args: {
-            creativeData: {
-                adParameters: 'test',
-            },
-            environmentData: {},
-        },
-        messageId: 0,
-        sessionId: "test-session-id",
-        timestamp: 0,
-        type: "SIMID:Player:init",
-    };
-    testMap.onInit(eventData);
-    
-    const instance = SimidProtocol.mock.instances[0];
-    const rejectMessageObject = instance.reject.mock.calls[0][1];
+    testMap.onInit(createInitData('test'));
+
+    expect(mockReject.mock.calls.length).toBe(1);
+    const rejectMessageObject = mockReject.mock.calls[0][1];
     expect(rejectMessageObject.message).toBe("Invalid JSON input for ad parameters");
 });
 
-test('instance of map is instantiated on button click', () => {
+test('instance of map is instantiated if ad paused', async () => {
     const eventData = createInitData();
     testMap.onInit(eventData);
     testMap.onStart(startData);
+
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
+
+    await drivePromisesToCompletion();
+
+    const returnButton = document.getElementById("returnToAd");
+    expect(returnButton.textContent).toBe('Return To Ad');
+    const skipButton = document.getElementById("skipAd");
+    expect(skipButton.textContent).toBe('Skip Ad');
     expect(window.google.maps.Map.mock.instances.length).toBe(1);
 });
 
-test('marker is added to map when map loads', () => {
+test('marker is added to map when map loads', async () => {
     const eventData = createInitData();
     testMap.onInit(eventData);
     testMap.onStart(startData);
+
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
+
+    await drivePromisesToCompletion();
+
     expect(window.google.maps.Marker.mock.instances.length).toBe(1);
 });
 
-test('LatLng coordinates constructor is called by default', () => {
+test('LatLng coordinates constructor is called by default when map loads', async () => {
     const eventData = createInitData();
     testMap.onInit(eventData);
     testMap.onStart(startData);
+
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
+
+    await drivePromisesToCompletion();
+
     expect(window.google.maps.LatLng.mock.instances.length).toBe(1);
 });
 
