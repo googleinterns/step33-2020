@@ -114,6 +114,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
     findNearest.onclick = () => this.prepareCreative_();
   }
 
+  /**
+   * 
+   * @private 
+   */
   prepareCreative_() {
     //ToDo(kristenmason@): implement the Google Maps request access functionality
     findNearest.classList.add("hidden");
@@ -243,8 +247,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   /**
-   * Creates and displays a marker on the map representing a given place.
-   * @param {!Object} place A Place Result object.
+   * Displays the route between the starting loaction and destination
+   * based off of the selected travel mode.
+   * @param {!google.maps.LatLng} destination The LatLng coordinates of the destination.
+   * @param {!google.maps.LatLng} startingLocation The LatLng coordinates of the start location.
    * @private 
   */
   displayDirections_(destination, startingLocation) {
@@ -260,6 +266,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
     });
   }
 
+  /**
+   * Creates a drop down menu where users can choose between
+   * different modes of travel to display directions for.
+   * @private 
+  */
   createTravelChoices_() {
     const adContainer = document.getElementById("button_container")
     const travelMethod = document.createElement('select');
@@ -276,6 +287,18 @@ export default class SimidMapCreative extends BaseSimidCreative {
     adContainer.append(travelMethod);
   }
 
+
+  /**
+   * Displays the route between the starting loaction and destination
+   * based off of the selected travel mode.
+   * @param {!google.maps.DirectionsRenderer} directionsRenderer Object that displays
+   * the directions retrieved by the request.
+   * @param {!google.maps.DirectionsService} directionsService Object that communicates
+   * with the Google Maps API Directions Service.
+   * @param {!google.maps.LatLng} start The LatLng coordinates of the start location.
+   * @param {!google.maps.LatLng} end The LatLng coordinates of the end location.
+   * @private 
+  */
   calculateRoute_(directionsService, directionsRenderer, start, end) {
     const selectedMode = document.getElementById("travel-method").value;
     directionsService.route(
@@ -284,7 +307,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
         destination: end,
         travelMode: [selectedMode]
       },
-      function (response, status) {
+      (response, status) => {
         if (status == "OK") {
           directionsRenderer.setDirections(response);
         } else {
