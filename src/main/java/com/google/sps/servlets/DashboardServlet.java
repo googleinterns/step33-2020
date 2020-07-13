@@ -24,8 +24,6 @@ import com.google.sps.servlets.RequestUtils;
 public class DashboardServlet extends HttpServlet {
 
   private final long MILLISECONDS_IN_DAY = 86400000;
-  private final String DEFAULT_START_TIMESTAMP = "0";
-  private final String DEFAULT_END_TIMESTAMP = String.valueOf(System.currentTimeMillis());
   private String startTimestamp;
   private String endTimestamp;
 
@@ -45,7 +43,6 @@ public class DashboardServlet extends HttpServlet {
       
       String jsonToSend = convertToJson(dataToSend);
 
-      response.addHeader("Access-Control-Allow-Origin", "*");
       response.setStatus(HttpServletResponse.SC_OK);
       response.setContentType("application/json; charset=UTF-8");
       response.getWriter().println(jsonToSend);
@@ -123,8 +120,8 @@ public class DashboardServlet extends HttpServlet {
   private void validateAndSetVariables(String requestStartTimestamp, String requestEndTimestamp){
 
     if (requestStartTimestamp.isEmpty() || requestEndTimestamp.isEmpty()) {
-      this.startTimestamp = DEFAULT_START_TIMESTAMP;
-      this.endTimestamp = DEFAULT_END_TIMESTAMP;
+      this.startTimestamp = "0";
+      this.endTimestamp = String.valueOf(System.currentTimeMillis());
     
     } else {  
       this.startTimestamp = requestStartTimestamp;
