@@ -6,13 +6,8 @@ const BASE_URL = "https://step-capstone-team33-2020.appspot.com"
 
 /** Fetches interaction data from server and uses it to create a chart. */
 function drawChart(parameter = "") {
-  fetch(`${BASE_URL}/dashboard?${parameter}`, {
-    headers : { 
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    mode:'no-cors',
-  }).then((dataPercentages) => {
+  fetch(`${BASE_URL}/dashboard?${parameter}`).then((response) => response.json())
+  .then((dataPercentages) => {
     const data = new google.visualization.DataTable();
     data.addColumn('string', 'Interaction Type');
     data.addColumn('number', 'Percentage');
