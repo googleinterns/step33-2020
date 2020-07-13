@@ -65,6 +65,27 @@
       }
       document.getElementById('ad_params').value = adParams;
     }
+
+    function getLocationPermission(){
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        let adParamObject = document.getElementById('ad_params').value;
+        let adParams = JSON.parse(adParamObject);
+        adParams.userCoordinates = pos;
+        adParamObject =  JSON.stringify(adParams);
+        document.getElementById('ad_params').value = adParamObject;
+      }, function(error) { //callback function that takes a GeolocationPositionError 
+        console.log(error);
+            });
+    } else {
+      // Browser doesn't support Geolocation
+      console.log("browser doesn't support geolocation");
+    }
+  }
   </script>
 </head>
 
