@@ -212,6 +212,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
         this.placeMapMarker_(results[i]);
       }
+      this.closestLocation = results[0].geometry.location;
+      this.displayDirections_(this.closestLocation, this.currentLocation);
     }
   }
 
