@@ -3,8 +3,6 @@
 <html>
 <head>
   <title> A very simple SIMID player</title>
-  <script src="../simid_protocol.js"></script>
-  <script src="simid_player.js"></script>
   <style>
     .simid_creative {
       position: absolute;
@@ -24,7 +22,8 @@
       height: 480px;
     }
   </style>
-  <script>
+  <script type="module">
+    import SimidPlayer from './simid_player.js';
     let simidPlayer;
     function initAd() {
       // clean old ad if it exists
@@ -33,7 +32,8 @@
       }
 
       // Init ad should be called before playad.
-      simidPlayer = new SimidPlayer(() => {simidPlayer = null;});
+      simidPlayer = new SimidPlayer();
+      simidPlayer.ready();
       simidPlayer.initializeAd();
     }
 
