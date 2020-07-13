@@ -46,6 +46,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private {?google.maps.LatLng}
      */
     this.currentLocation_ = null;
+    /**
+     * The DirectionsRenderer object that displays directions from
+     * the given request.
+     * @private {?google.maps.DirectionsRenderer}
+     */
     this.directionsRenderer_ = new google.maps.DirectionsRenderer();
   }
 
@@ -293,7 +298,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
     travelOption.text = travelMode;
     return travelOption;
   }
-
 
   /**
    * Displays the route between the starting loaction and destination
