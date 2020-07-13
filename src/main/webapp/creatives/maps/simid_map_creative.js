@@ -65,10 +65,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @param eventData an object that contains information details for a particular event
    *   such as event type, unique Ids, creativeData and environmentData.
    * @private 
-   */
+   */ 
   validateAndParseAdParams_(eventData) {
     if (this.creativeData.adParameters == "") {
-      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED,
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
         message: "Ad parameters not found"});
         return;
     }
@@ -77,16 +77,16 @@ export default class SimidMapCreative extends BaseSimidCreative {
     try {
       adParams = JSON.parse(this.creativeData.adParameters);
     } catch (exception) {
-      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.CREATIVE_INTERNAL_ERROR,
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.CREATIVE_INTERNAL_ERROR, 
         message: "Invalid JSON input for ad parameters"});
         return;
     }
-    const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL];
+    const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
     this.searchQuery_ = adParams[AdParamKeys.SEARCH_QUERY];
     this.markerImage_ = adParams[AdParamKeys.MARKER];
 
     if (!this.searchQuery_) {
-      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED,
+      this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
         message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`});
         return;
     }
@@ -128,7 +128,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
           message: "WARNING: Request to pause ad failed",
         };
         this.simidProtocol.sendMessage(CreativeMessage.LOG, pauseErrorMessage);
-      });
+    });
   }
 
   /**
@@ -140,7 +140,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const returnToAdButton = document.createElement("button");
     returnToAdButton.textContent = "Return To Ad";
     returnToAdButton.id = "returnToAd";
-    returnToAdButton.onclick = () => this.playAd_(returnToAdButton);
+    returnToAdButton.onclick = () => this.playAd_(returnToAdButton); 
 
     const skipAdButton = document.createElement("button");
     skipAdButton.textContent = "Skip Ad";
