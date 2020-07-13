@@ -56,7 +56,6 @@ public final class DashboardServletTest {
 
     new DashboardServlet().doGet(request, response);
 
-    // Mockito.when(request.getWriter().println())
     Mockito.verify(response).setStatus(HttpServletResponse.SC_OK);
   }
 

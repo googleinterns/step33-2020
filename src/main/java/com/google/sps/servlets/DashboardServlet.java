@@ -67,7 +67,6 @@ public class DashboardServlet extends HttpServlet {
     final Filter startTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.GREATER_THAN_OR_EQUAL, this.startTimestamp);
     final Filter endTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.LESS_THAN_OR_EQUAL, this.endTimestamp);
     
-    // combine the two filters with the 'and' operator 
     final Query timedQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(CompositeFilterOperator.and(startTimestampFilter, endTimestampFilter));
     PreparedQuery interactions = datastore.prepare(timedQuery);
 
