@@ -2,7 +2,7 @@
  * All code in this file is from https://github.com/InteractiveAdvertisingBureau/SIMID/blob/master/examples/player/simid_player.js
  */
 
- import SimidProtocol from "./creatives/simid__protocol.js";
+import SimidProtocol from "../creatives/simid_protocol.js";
 
 
 const NO_REQUESTED_DURATION = 0;
@@ -10,7 +10,7 @@ const UNLIMITED_DURATION = -2;
 /** 
  * All the logic for a simple SIMID player
  */
-export class SimidPlayer {
+export default class SimidPlayer {
 
   /**
    * Sets up the creative iframe and starts listening for messages
