@@ -102,6 +102,10 @@
       } else {
         errorMessage += "Geolocation failed due to: "+error;
       }
+      /**
+       * Using console.error() in place of sendLog temporarily.
+       * Currently order of function calls makes sendLog ineffective.
+       */
       console.error(errorMessage);
     }
   </script>
