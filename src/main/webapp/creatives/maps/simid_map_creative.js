@@ -222,6 +222,12 @@ export default class SimidMapCreative extends BaseSimidCreative {
       }
       this.activeLocation_ = results[0].geometry.location;
       this.displayDirections_(this.activeLocation_, this.currentLocation_);
+    } else {
+      const statusErrorMessage = {
+        message: "ERROR: Places Service Status was: "+status,
+      };
+      this.simidProtocol.sendMessage(CreativeMessage.LOG, statusErrorMessage);
+      this.playContent_();
     }
   }
 
@@ -318,7 +324,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
         if (status == "OK") {
           this.directionsRenderer_.setDirections(response);
         } else {
-          window.alert("Directions request failed due to " + status);
+          const directionsErrorMessage = {
+            message: "ERROR: Directions request failed due to " + status,
+          };
+          this.simidProtocol.sendMessage(CreativeMessage.LOG, directionsErrorMessage);
         }
       }
     );
