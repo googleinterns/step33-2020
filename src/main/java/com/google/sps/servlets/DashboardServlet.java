@@ -124,7 +124,7 @@ public class DashboardServlet extends HttpServlet {
 
     ArrayList<String> validatedTimestamps = new ArrayList<>();
 
-    if (requestStartTimestamp.isEmpty() || requestEndTimestamp.isEmpty()) {
+    if (requestStartTimestamp.isEmpty() && requestEndTimestamp.isEmpty()) {
       String startTimestamp = "0";
       String endTimestamp = String.valueOf(System.currentTimeMillis());
 
