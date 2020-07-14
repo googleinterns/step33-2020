@@ -189,7 +189,7 @@ test('LatLng coordinates constructor is called by default when map loads', async
 
     await drivePromisesToCompletion();
 
-    expect(window.google.maps.LatLng.mock.instances.length).toBe(1);
+    expect(window.google.maps.LatLng.mock.instances.length).toBe(0);
 });
 
 test('PlacesService object is initialized when map loads', async () => {
