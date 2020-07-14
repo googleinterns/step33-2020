@@ -1,6 +1,7 @@
 <!--All code in this file is from
-  https://github.com/InteractiveAdvertisingBureau/SIMID/blob/master/examples/player/simid_player.html --> 
+  https://github.com/InteractiveAdvertisingBureau/SIMID/blob/master/examples/player/simid_player.html -->
 <html>
+
 <head>
   <title> A very simple SIMID player</title>
   <style>
@@ -11,12 +12,14 @@
       width: 640px;
       height: 480px;
     }
+
     .overlayed {
       position: absolute;
       top: 0;
       width: 640px;
       height: 480px;
     }
+
     .content {
       width: 640px;
       height: 480px;
@@ -52,12 +55,18 @@
           break;
         case 'survey.html':
           let adParamsObj = [
-            {'question':'Would you like a survey?',
-             'answers':['Yes', 'No', 'Not Sure']},
-            {'question':'Are you certain?',
-             'answers':['Of course', 'Not Really', 'Well...']},
-            {'question':'What animals do you like?',
-             'answers':['Cats', 'Dogs', 'Other']}
+            {
+              'question': 'Would you like a survey?',
+              'answers': ['Yes', 'No', 'Not Sure']
+            },
+            {
+              'question': 'Are you certain?',
+              'answers': ['Of course', 'Not Really', 'Well...']
+            },
+            {
+              'question': 'What animals do you like?',
+              'answers': ['Cats', 'Dogs', 'Other']
+            }
           ];
           adParams = JSON.stringify(adParamsObj);
           break;
@@ -66,58 +75,61 @@
     }
 
     window.getLocationPermission = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        const pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        let adParamObject = document.getElementById('ad_params').value;
-        let adParams = JSON.parse(adParamObject);
-        adParams.userCoordinates = pos;
-        adParamObject =  JSON.stringify(adParams);
-        document.getElementById('ad_params').value = adParamObject;
-      }, function(error) { //callback function that takes a GeolocationPositionError 
-        console.log(error);
-            });
-    } else {
-      // Browser doesn't support Geolocation
-      console.log("browser doesn't support geolocation");
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          let adParamObject = document.getElementById('ad_params').value;
+          let adParams = JSON.parse(adParamObject);
+          adParams.userCoordinates = pos;
+          adParamObject = JSON.stringify(adParams);
+          document.getElementById('ad_params').value = adParamObject;
+        }, function (error) { //callback function that takes a GeolocationPositionError 
+          console.log(error);
+        });
+      } else {
+        // Browser doesn't support Geolocation
+        console.log("browser doesn't support geolocation");
+      }
     }
-  }
   </script>
 </head>
 
 <body>
 
   <div>
-    <p><h1><center>SIMID Sample Ad Player</center></h1></p>
+    <p>
+    <h1>
+      <center>SIMID Sample Ad Player</center>
+    </h1>
+    </p>
     <table>
       <tr>
         <td>Choose Sample Creative Template</td>
         <td>
-        <button onclick="switchCreative('simid_overlay.html')">overlay</button>
-        <button onclick="switchCreative('survey.html')">survey</button>
-        <button onclick="switchCreative('selector.html')">selector</button>
-        <button onclick="switchCreative('extender.html')">extender</button>
-      </td>
+          <button onclick="switchCreative('simid_overlay.html')">overlay</button>
+          <button onclick="switchCreative('survey.html')">survey</button>
+          <button onclick="switchCreative('selector.html')">selector</button>
+          <button onclick="switchCreative('extender.html')">extender</button>
+        </td>
       </tr>
 
       <tr>
         <td>Interactive Creative File</td>
-        <td><input type="text" id="creative_url" size = 30 
-           value="https://step-capstone-team33-2020.appspot.com/creatives/maps/simid_map.html">
+        <td><input type="text" id="creative_url" size=30
+            value="https://step-capstone-team33-2020.appspot.com/creatives/maps/simid_map.html">
         </td>
       </tr>
       <tr>
         <td>Media File</td>
-        <td><input type="text" id="video_url" size = 30 
-           value="https://storage.googleapis.com/gvabox/media/red30s.mp4">
+        <td><input type="text" id="video_url" size=30 value="https://storage.googleapis.com/gvabox/media/red30s.mp4">
         </td>
       </tr>
       <tr>
         <td>AdParameters</td>
-        <td><textarea id="ad_params" rows = 5 cols = 50></textarea></td>
+        <td><textarea id="ad_params" rows=5 cols=50></textarea></td>
       </tr>
     </table>
     <button onclick="playAd()"> Start ad playback </button>
@@ -133,8 +145,6 @@
     <!-- SIMID creative will be here. -->
   </div>
 
-<script>
-</script>
-<body>
+  <body>
 
 </html>
