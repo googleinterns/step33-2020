@@ -3,7 +3,7 @@
  */
 
 import SimidProtocol from "../creatives/simid_protocol.js";
-import {CreativeMessage, ProtocolMessage, StopCode, PlayerMessage, MediaMessage} from '../creatives/constants.js';
+import {CreativeMessage, MediaMessage,PlayerMessage, ProtocolMessage, StopCode} from '../creatives/constants.js';
 
 
 const NO_REQUESTED_DURATION = 0;
