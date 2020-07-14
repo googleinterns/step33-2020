@@ -16,22 +16,21 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import java.util.HashMap;
+import java.util.ArrayList;
 import com.google.sps.servlets.RequestUtils;
 
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
 
   private final long MILLISECONDS_IN_DAY = 86400000;
-  private final String[] properties = new String[] {
+  
+  private final String[] searchableProperties = new String[] {
     Property.FIND_NEAREST_LOCATION, 
     Property.GRANTS_LOCATION, 
     Property.INTERACTS_WITH_MAP, 
     Property.SKIP_TO_CONTENT, 
     Property.RETURN_TO_AD
   };
-
-  private String startTimestamp;
-  private String endTimestamp;
 
  /**
   * This route will return a JSON with the percentages of each interaction
@@ -42,10 +41,12 @@ public class DashboardServlet extends HttpServlet {
     String requestStartTimestamp = RequestUtils.getParameter(request, "startTime");
     String requestEndTimestamp = RequestUtils.getParameter(request, "endTime");
 
-    validateAndSetVariables(requestStartTimestamp, requestEndTimestamp);    
-    
+    ArrayList<String> validatedTimestamps = validateTimestamps(requestStartTimestamp, requestEndTimestamp);    
+    String validatedStartTimestamp = validatedTimestamps.get(0);
+    String validatedEndTimestamp = validatedTimestamps.get(1);
+
     try {
-      HashMap<String, Double> dataToSend = calculatePercentages();
+      HashMap<String, Double> dataToSend = calculatePercentages(validatedStartTimestamp, validatedEndTimestamp);
       
       String jsonToSend = convertToJson(dataToSend);
 
@@ -78,8 +79,8 @@ public class DashboardServlet extends HttpServlet {
   
     HashMap<String, Double> dataToSend = new HashMap<>();
 
-    for (int i = 0; i < properties.length; ++i){
-      String property = properties[i];
+    for (int i = 0; i < searchableProperties.length; ++i){
+      String property = searchableProperties[i];
 
       Filter propertyFilter =  new FilterPredicate(property, FilterOperator.EQUAL, true);
       Query filteredQuery = new Query(DBUtilities.INTERACTION_TABLE);
@@ -117,20 +118,29 @@ public class DashboardServlet extends HttpServlet {
   *
   * @param startTimestamp A string containing the requested start time as a UNIX timestamp
   * @param endTimestamp A string containing the requested end time as a UNIX timestamp
+  * @return An arraylist with two entries - one for each validated start/end time
   */
-  private void validateAndSetVariables(String requestStartTimestamp, String requestEndTimestamp){
+  private ArrayList<String> validateTimestamps(String requestStartTimestamp, String requestEndTimestamp){
+
+    ArrayList<String> validatedTimestamps = new ArrayList<>();
 
     if (requestStartTimestamp.isEmpty() || requestEndTimestamp.isEmpty()) {
-      this.startTimestamp = "0";
-      this.endTimestamp = String.valueOf(System.currentTimeMillis());
-    
+      String startTimestamp = "0";
+      String endTimestamp = String.valueOf(System.currentTimeMillis());
+
+      validatedTimestamps.put(startTimestamp);
+      validatedTimestamps.put(endTimestamp);
     } else {  
-      this.startTimestamp = requestStartTimestamp;
-      this.endTimestamp = requestEndTimestamp;
+      String startTimestamp = requestStartTimestamp;
+      String endTimestamp = requestEndTimestamp;
     
       // When displaying the range of dates, the latter date is included
-      this.endTimestamp = String.valueOf(Long.valueOf(this.endTimestamp) + MILLISECONDS_IN_DAY);
+      endTimestamp = String.valueOf(Long.valueOf(endTimestamp) + MILLISECONDS_IN_DAY);
+      
+      validatedTimestamps.put(startTimestamp);
+      validatedTimestamps.put(endTimestamp);
     }
 
+    return validatedTimestamps;
   }
 }
