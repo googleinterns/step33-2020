@@ -217,7 +217,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     };
     const placeService = new google.maps.places.PlacesService(this.map_);
     placeService.nearbySearch(request, this.displayResults_.bind(this));
-    this.createTravelChoices_();
+    this.createTravelDisplay_();
   }
 
   /**
@@ -285,10 +285,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
   /**
    * Creates a drop down menu where users can choose between
-   * different modes of travel to display directions for.
+   * different modes of travel to display directions for, and
+   * creates area for travel time to be displayed.
    * @private 
    */
-  createTravelChoices_() {
+  createTravelDisplay_() {
     const travelChoicesContainer = document.getElementById("button_container")
     const travelMethod = document.createElement('select');
     travelMethod.id = "travel_method";
@@ -366,7 +367,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @param {!google.maps.DistanceMatrixResponse} response An object containing
    *   distance and duration information for the given origin & destination.
    * @param {!google.maps.DistanceMatrixStatus} travelStatus The status returned 
-   *  by the Distance Matrix on the completion of its calculations.
+   *   by the Distance Matrix on the completion of its calculations.
    * @private 
    */
     getTravelTime_(response, travelStatus) {
