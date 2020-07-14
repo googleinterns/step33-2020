@@ -86,13 +86,23 @@
           adParams.userCoordinates = pos;
           adParamObject = JSON.stringify(adParams);
           document.getElementById('ad_params').value = adParamObject;
-        }, function (error) { //callback function that takes a GeolocationPositionError 
-          console.log(error);
+        }, (error) => { //callback function that takes a GeolocationPositionError 
+          handleLocationError(error, true);
         });
       } else {
         // Browser doesn't support Geolocation
-        console.log("browser doesn't support geolocation");
+        handleLocationError(error, false);
       }
+    }
+
+    window.handleLocationError = (error, geolocationAllowed) => {
+      let errorMessage = "ERROR: ";
+      if(!geolocationAllowed) {
+        errorMessage += "Browser does not support Geolocation."
+      } else {
+        errorMessage += "Geolocation failed due to: "+error;
+      }
+      simidPlayer.sendLog(errorMessage);
     }
   </script>
 </head>
