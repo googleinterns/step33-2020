@@ -25,7 +25,7 @@
   <script type="module">
     import SimidPlayer from './simid_player.js';
     let simidPlayer;
-    function initAd() {
+    window.initAd = () => {
       // clean old ad if it exists
       if (simidPlayer) {
         simidPlayer.stopAd();
@@ -36,14 +36,14 @@
       simidPlayer.initializeAd();
     }
 
-    function playAd() {
+    window.playAd = () => {
       if (!simidPlayer) {
         initAd();
       }
       simidPlayer.playAd();
     }
 
-    function switchCreative(value) {
+    window.switchCreative = (value) => {
       document.getElementById('creative_url').value = '../creatives/' + value;
       // populate ad parameters with some hard coded values
       let adParams = '';
@@ -65,7 +65,7 @@
       document.getElementById('ad_params').value = adParams;
     }
 
-    function getLocationPermission(){
+    window.getLocationPermission = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
         const pos = {
@@ -106,13 +106,13 @@
       <tr>
         <td>Interactive Creative File</td>
         <td><input type="text" id="creative_url" size = 30 
-           value="../creatives/simid_overlay.html">
+           value="https://step-capstone-team33-2020.appspot.com/creatives/maps/simid_map.html">
         </td>
       </tr>
       <tr>
         <td>Media File</td>
         <td><input type="text" id="video_url" size = 30 
-           value="../media/IAB480-small.mp4">
+           value="https://storage.googleapis.com/gvabox/media/red30s.mp4">
         </td>
       </tr>
       <tr>
