@@ -344,12 +344,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
     );
   }
 
-  displayTravelTimes_(timeString){
-    const transportMethod = document.getElementById("travel_method").value.toLowerCase();
-    const timeDisplay = document.getElementById("time_display");
-    timeDisplay.innerText = "It will take "+timeString+" to get there by "+transportMethod;
-  }
-
+  /**
+   * Calculates the time it takes to travel from the origin to the destination.
+   * @param {!google.maps.LatLng} origin The LatLng coordinates of the start location.
+   * @param {!google.maps.LatLng} destination The LatLng coordinates of the end location.
+   */
   calculateTravelTime_(origin, destination) {
     const travelMode = document.getElementById("travel_method").value;
     const matrixService = new google.maps.DistanceMatrixService();
@@ -362,8 +361,16 @@ export default class SimidMapCreative extends BaseSimidCreative {
       }, this.getTravelTime_.bind(this));
     }
 
-    getTravelTime_(response, status) {
-      if (status == 'OK') {
+  /**
+   * Gets the travel time from the distanceMatrix response.
+   * @param {!google.maps.DistanceMatrixResponse} response An object containing
+   *   distance and duration information for the given origin & destination.
+   * @param {!google.maps.DistanceMatrixStatus} travelStatus The status returned 
+   *  by the Distance Matrix on the completion of its calculations.
+   * @private 
+   */
+    getTravelTime_(response, travelStatus) {
+      if (travelStatus == 'OK') {
         let distance = -1;
         let duration = -1;
         const results = response.rows[0].elements;
@@ -374,6 +381,16 @@ export default class SimidMapCreative extends BaseSimidCreative {
         }
         this.displayTravelTimes_(duration);
       }
+    }
+
+    /**
+     * Adds the travel time to the creative display.
+     * @param {!string} timeString The string object representing travel time.
+     */
+    displayTravelTimes_(timeString){
+      const transportMethod = document.getElementById("travel_method").value.toLowerCase();
+      const timeDisplay = document.getElementById("time_display");
+      timeDisplay.innerText = "It will take "+timeString+" to get there by "+transportMethod;
     }
 }
 
