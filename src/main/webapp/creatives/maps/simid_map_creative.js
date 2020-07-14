@@ -233,7 +233,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
         this.placeMapMarker_(results[i]);
       }
       this.activeLocation_ = results[0].geometry.location;
-      this.displayDirections_(this.currentLocation_, this.activeLocation_);
+      this.displayDirections_(this.activeLocation_, this.currentLocation_);
     } else {
       const statusErrorMessage = {
         message: "ERROR: Places Service Status was: "+status,
@@ -261,7 +261,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     ///Recalculate directions if new marker is clicked.
     placeMarker.addListener('click', () => {
       this.activeLocation_ = place.geometry.location;
-      this.displayDirections_(this.currentLocation_, this.activeLocation_);
+      this.displayDirections_(this.activeLocation_, this.currentLocation_);
     });
   }
 
@@ -289,9 +289,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   createTravelChoices_() {
-    const mainContainer = document.getElementById("adContainer");
-    const travelChoicesContainer = document.createElement('div');
-    travelChoicesContainer.id = "travel_display";
+    const travelChoicesContainer = document.getElementById("button_container")
     const travelMethod = document.createElement('select');
     travelMethod.id = "travel_method";
     for(let i = 0; i < this.transportMethods_.length; i++) {
@@ -299,7 +297,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
     }
     travelMethod.classList.add("travel_method");
     travelChoicesContainer.append(travelMethod);
-    mainContainer.appendChild(travelChoicesContainer);
   }
 
   /**
@@ -357,7 +354,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
         destinations: [destination],
         travelMode: [travelMode],
         unitSystem: google.maps.UnitSystem.IMPERIAL
-      }, this.getTravelTime_);
+      }, getTravelTime_());
     }
 
     getTravelTime_(response, status) {
