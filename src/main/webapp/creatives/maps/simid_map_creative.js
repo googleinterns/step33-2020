@@ -52,6 +52,18 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private @const {!google.maps.DirectionsRenderer}
      */
     this.directionsRenderer_ = new google.maps.DirectionsRenderer();
+
+    /**
+     * A list of the travel modes supported by the Google Maps API.
+     * @private @const {!array}
+     */
+    this.transportMethods_ = [
+      this.createTravelOption_("Driving"),
+      this.createTravelOption_("Walking"),
+      this.createTravelOption_("Bicycling"),
+      //Maps API designates Transit as bus, train, tram, light rail, and subway.
+      this.createTravelOption_("Transit")
+    ];
   }
 
   /** @override */
@@ -264,7 +276,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.directionsRenderer_.setMap(this.map_);
     this.calculateRoute_(startingLocation, destination);
     //If travel method changes, recalculate directions.
-    document.getElementById("travel-method").addEventListener("change", () => {
+    document.getElementById("travel_method").addEventListener("change", () => {
       this.calculateRoute_(startingLocation, destination);
     });
   }
@@ -278,15 +290,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const travelChoicesContainer = document.getElementById("button_container")
     const travelMethod = document.createElement('select');
     travelMethod.id = "travel_method";
-    const walkOption = this.createTravelOption_("Walking");
-    const driveOption = this.createTravelOption_("Driving");
-    const bikeOption = this.createTravelOption_("Bicycling");
-    //Maps API designates Transit as bus, train, tram, light rail, and subway.
-    const publicTransitOption = this.createTravelOption_("Transit");
-    travelMethod.add(driveOption);
-    travelMethod.add(walkOption);
-    travelMethod.add(bikeOption);
-    travelMethod.add(publicTransitOption);
+    for(let i = 0; i < this.transportMethods_.length; i++) {
+      travelMethod.add(this.transportMethods_[i]);
+    }
     travelMethod.classList.add("travel_method");
     travelChoicesContainer.append(travelMethod);
   }
@@ -313,7 +319,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    */
   calculateRoute_(start, end) {
     const directionsService = new google.maps.DirectionsService();
-    const selectedMode = document.getElementById("travel-method").value;
+    const selectedMode = document.getElementById("travel_method").value;
     directionsService.route(
       {
         origin: start,
