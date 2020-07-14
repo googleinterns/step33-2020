@@ -68,11 +68,11 @@ public class DashboardServlet extends HttpServlet {
   * @param endTimestamp Timestamp for the end of the date range that is requested.
   * @return A hashmap with the interactions as keys and the percentages as values.
   */
-  private HashMap<String, Double> calculatePercentages() throws IllegalAccessException {
+  private HashMap<String, Double> calculatePercentages(String startTimestamp, String endTimestamp) throws IllegalAccessException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-    final Filter startTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.GREATER_THAN_OR_EQUAL, this.startTimestamp);
-    final Filter endTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.LESS_THAN_OR_EQUAL, this.endTimestamp);
+    final Filter startTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.GREATER_THAN_OR_EQUAL, startTimestamp);
+    final Filter endTimestampFilter =  new FilterPredicate(Property.TIMESTAMP, FilterOperator.LESS_THAN_OR_EQUAL, endTimestamp);
     
     final Query timedQuery = new Query(DBUtilities.INTERACTION_TABLE).setFilter(CompositeFilterOperator.and(startTimestampFilter, endTimestampFilter));
     PreparedQuery interactions = datastore.prepare(timedQuery);  
@@ -128,8 +128,8 @@ public class DashboardServlet extends HttpServlet {
       String startTimestamp = "0";
       String endTimestamp = String.valueOf(System.currentTimeMillis());
 
-      validatedTimestamps.put(startTimestamp);
-      validatedTimestamps.put(endTimestamp);
+      validatedTimestamps.add(startTimestamp);
+      validatedTimestamps.add(endTimestamp);
     } else {  
       String startTimestamp = requestStartTimestamp;
       String endTimestamp = requestEndTimestamp;
@@ -137,8 +137,8 @@ public class DashboardServlet extends HttpServlet {
       // When displaying the range of dates, the latter date is included
       endTimestamp = String.valueOf(Long.valueOf(endTimestamp) + MILLISECONDS_IN_DAY);
       
-      validatedTimestamps.put(startTimestamp);
-      validatedTimestamps.put(endTimestamp);
+      validatedTimestamps.add(startTimestamp);
+      validatedTimestamps.add(endTimestamp);
     }
 
     return validatedTimestamps;
