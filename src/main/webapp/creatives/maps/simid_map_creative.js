@@ -292,11 +292,14 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const travelChoicesContainer = document.getElementById("button_container")
     const travelMethod = document.createElement('select');
     travelMethod.id = "travel_method";
+    const timeDisplay = document.createElement("div");
+    timeDisplay.id= "time_display";
     for(let i = 0; i < this.transportMethods_.length; i++) {
       travelMethod.add(this.transportMethods_[i]);
     }
     travelMethod.classList.add("travel_method");
     travelChoicesContainer.append(travelMethod);
+    travelChoicesContainer.append(timeDisplay);
   }
 
   /**
@@ -342,7 +345,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   displayTravelTimes_(timeString){
-    document.getElementById("travel_method");
+    const transportMethod = document.getElementById("travel_method").value.toLowerCase();
+    const timeDisplay = document.getElementById("time_display");
+    timeDisplay.innerText = "It will take "+timeString+" to get there by "+transportMethod;
   }
 
   calculateTravelTime_(origin, destination) {
@@ -354,7 +359,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
         destinations: [destination],
         travelMode: [travelMode],
         unitSystem: google.maps.UnitSystem.IMPERIAL
-      }, this.getTravelTime_);
+      }, this.getTravelTime_.bind(this));
     }
 
     getTravelTime_(response, status) {
@@ -367,7 +372,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
           distance = element.distance.text;
           duration = element.duration.text;
         }
-        console.log(distance + " " + duration);
+        this.displayTravelTimes_(duration);
       }
     }
 }
