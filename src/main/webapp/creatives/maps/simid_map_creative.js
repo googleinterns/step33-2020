@@ -275,9 +275,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
   displayDirections_(destination, startingLocation) {
     this.directionsRenderer_.setMap(this.map_);
     this.calculateRoute_(startingLocation, destination);
+    this.calculateTravelTime_(startingLocation, destination);
     //If travel method changes, recalculate directions.
     document.getElementById("travel_method").addEventListener("change", () => {
       this.calculateRoute_(startingLocation, destination);
+      this.calculateTravelTime_(startingLocation, destination);
     });
   }
 
