@@ -1,5 +1,11 @@
 /** Contains all constants common across SIMID */
 
+export const ProtocolMessage = {
+  CREATE_SESSION: 'createSession',
+  RESOLVE: 'resolve',
+  REJECT: 'reject'
+};
+
 /**
  * Messages from the media element.
  * @enum {string}
