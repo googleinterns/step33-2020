@@ -12,7 +12,6 @@ function drawChart(parameter = "") {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
-    mode:'no-cors',
   }).then(response => response.json())
   .then((dataPercentages) => {
     const data = new google.visualization.DataTable();
