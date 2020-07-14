@@ -39,7 +39,7 @@ public final class FindLocationServletTest {
 
     new FindLocationServlet().doGet(request, response);
 
-    Mockito.verify(response).setStatus(HttpServletResponse.SC_NO_CONTENT);
+    Mockito.verify(response).setStatus(HttpServletResponse.SC_OK);
   }
 
   @Test
