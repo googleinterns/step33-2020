@@ -14,6 +14,7 @@ jest.mock('../simid_protocol.js', () => {
         };
     });
 });
+jest.mock('./UserActivityLogger.js');
 let testMap;
 let startData;
 
