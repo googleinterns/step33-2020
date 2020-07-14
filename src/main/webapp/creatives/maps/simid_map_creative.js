@@ -1,11 +1,10 @@
 import BaseSimidCreative from '../base_simid_creative.js';
-import {CreativeMessage, CreativeErrorCode} from '../constants.js';
+import { CreativeMessage, CreativeErrorCode } from '../constants.js';
 
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
   SEARCH_QUERY: 'searchQuery',
   MARKER: 'marker',
-  COORDINATES: 'userCoordinates',
 };
 
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
@@ -37,11 +36,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private {?string}
      */
     this.searchQuery_ = null;
-    /**
-     * The string representing the search query.
-     * @private {?string}
-     */
-    this.userCoordinates_ = null;
   }
 
   /** @override */
@@ -55,7 +49,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @param eventData an object that contains information details for a particular event
    *   such as event type, unique Ids, creativeData and environmentData.
    * @private 
-   */ 
+   */
   validateAndParseAdParams_(eventData) {
     if (this.creativeData.adParameters == "") {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
@@ -74,7 +68,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
     this.searchQuery_ = adParams[AdParamKeys.SEARCH_QUERY];
     this.markerImage_ = adParams[AdParamKeys.MARKER];
-    this.userCoordinates_ = adParams[AdParamKeys.COORDINATES];
 
     if (!this.searchQuery_) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
@@ -160,24 +153,26 @@ export default class SimidMapCreative extends BaseSimidCreative {
   playContent_() {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_SKIP);
   }
-  
+
   /**
- * Loads a map object that currently defaults to a hardcoded location.
- * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
- * @private 
- */
-displayMap_(coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
-  this.map_ = new google.maps.Map(document.getElementById('map'), {
-    zoom: DEFAULT_ZOOM,
-    center: coordinates
-  });
-  new google.maps.Marker({
-    position: coordinates,
-    map: this.map_,
-    title: 'Current Position'
-  });
-  this.findNearby_(this.searchQuery_, coordinates);
-}
+   * Loads a map object that currently defaults to a hardcoded location.
+   * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
+   * @private 
+   */
+  displayMap_(coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
+    this.currentLocation_ = coordinates;
+    this.map_ = new google.maps.Map(document.getElementById('map'), {
+      zoom: DEFAULT_ZOOM,
+      center: coordinates
+    });
+    new google.maps.Marker({
+      position: coordinates,
+      map: this.map_,
+      title: 'Current Position'
+    });
+    this.findNearby_(this.searchQuery_, coordinates);
+    this.createTravelChoices_();
+  }
 
 /**
  * Searches for the closest corresponding businesses based off of the given search parameter,
@@ -197,20 +192,20 @@ findNearby_(searchParameter, coordinates) {
   service.nearbySearch(request, this.displayResults_.bind(this));
 }
 
-/**
- * Displays the closest business locations to a user's current location.
- * @param {!Object} results An array of Place Results from the search query.
- * @param {!google.maps.places.PlacesServiceStatus} status The status returned 
- *  by the PlacesService on the completion of its searches.
- * @private 
- */
-displayResults_(results, status) {
+  /**
+   * Displays the closest business locations to a user's current location.
+   * @param {!Object} results An array of Place Results from the search query. 
+   * @param {!google.maps.places.PlacesServiceStatus} status The status returned 
+   *  by the PlacesService on the completion of its searches.
+   * @private 
+   */
+  displayResults_(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
         this.placeMapMarker_(results[i]);
       }
     }
-}
+  }
 
 /**
  * Creates and displays a marker on the map representing a given place.
@@ -227,5 +222,5 @@ placeMapMarker_(place) {
     position: place.geometry.location,
     icon: placeIcon
   });
-}
+  }
 }
