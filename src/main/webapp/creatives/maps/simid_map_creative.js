@@ -215,8 +215,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
       openNow: true,
       rankBy: google.maps.places.RankBy.DISTANCE
     };
-    const service = new google.maps.places.PlacesService(this.map_);
-    service.nearbySearch(request, this.displayResults_.bind(this));
+    const placeService = new google.maps.places.PlacesService(this.map_);
+    placeService.nearbySearch(request, this.displayResults_.bind(this));
     this.createTravelChoices_();
   }
 
@@ -318,9 +318,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   calculateRoute_(start, end) {
-    const directionsService = new google.maps.DirectionsService();
+    const dirService = new google.maps.DirectionsService();
     const selectedMode = document.getElementById("travel_method").value;
-    directionsService.route(
+    dirService.route(
       {
         origin: start,
         destination: end,
