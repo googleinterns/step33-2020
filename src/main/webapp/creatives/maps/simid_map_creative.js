@@ -40,7 +40,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * The LatLng coordinates representing the closest advertised location.
      * @private {?google.maps.LatLng}
      */
-    this.closestLocation_ = null;
+    this.activeLocation_ = null;
     /**
      * The LatLng coordinates representing the user's current location.
      * @private {?google.maps.LatLng}
@@ -49,7 +49,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     /**
      * The DirectionsRenderer object that displays directions from
      * the given request.
-     * @private {?google.maps.DirectionsRenderer}
+     * @private @const {!google.maps.DirectionsRenderer}
      */
     this.directionsRenderer_ = new google.maps.DirectionsRenderer();
   }
@@ -220,8 +220,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
         this.placeMapMarker_(results[i]);
       }
-      this.closestLocation_ = results[0].geometry.location;
-      this.displayDirections_(this.closestLocation_, this.currentLocation_);
+      this.activeLocation_ = results[0].geometry.location;
+      this.displayDirections_(this.activeLocation_, this.currentLocation_);
     }
   }
 
@@ -242,8 +242,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
     });
     ///Recalculate directions if new marker is clicked.
     placeMarker.addListener('click', () => {
-      this.closestLocation_ = place.geometry.location;
-      this.displayDirections_(this.currentLocation_, this.closestLocation_);
+      this.activeLocation_ = place.geometry.location;
+      this.displayDirections_(this.currentLocation_, this.activeLocation_);
     });
   }
 
@@ -275,6 +275,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const walkOption = this.createTravelOption_("Walking");
     const driveOption = this.createTravelOption_("Driving");
     const bikeOption = this.createTravelOption_("Bicycling");
+    //Maps API designates Transit as bus, train, tram, light rail, and subway.
     const publicTransitOption = this.createTravelOption_("Transit");
     travelMethod.add(driveOption);
     travelMethod.add(walkOption);
@@ -287,7 +288,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
   /**
    * Creates an option element representing a mode of travel.
    * @param {!string} travelMode A string representing the
-   * given mode of travel.
+   *   given mode of travel.
    * @private 
    */
   createTravelOption_(travelMode) {
