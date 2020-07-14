@@ -342,7 +342,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   calculateTravelTime_(origin, destination) {
-    const travelMode = document.getElementById("travel-method").value;
+    const travelMode = document.getElementById("travel_method").value;
     const matrixService = new google.maps.DistanceMatrixService();
     matrixService.getDistanceMatrix(
       {
