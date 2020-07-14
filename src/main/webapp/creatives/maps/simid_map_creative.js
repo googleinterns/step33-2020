@@ -1,4 +1,5 @@
 import BaseSimidCreative from '../base_simid_creative.js';
+import UserActivityLogger from './UserActivityLogger.js';
 import {CreativeErrorCode, CreativeMessage} from '../constants.js';
 
 const AdParamKeys = {
@@ -164,8 +165,16 @@ export default class SimidMapCreative extends BaseSimidCreative {
       map: map,
       title: 'Current Position'
     });
+    let currentUserSession_ = this.newUserSession_;
+    map.addListener('zoom_changed', function() {
+      currentUserSession_.userInteractsWithMap();
+    });
+    map.addListener('click', function() {
+      currentUserSession_.userInteractsWithMap();
+    });
+    map.addListener('drag', function() {
+      currentUserSession_.userInteractsWithMap();
+    });
   }
-  //TODO:(@kristenmason): see if user interacts with map then call
-  //newUserSession.userInteractsWithMap()
  }
  
