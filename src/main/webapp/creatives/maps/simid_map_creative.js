@@ -268,11 +268,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
   /**
    * Displays the route between the starting loaction and destination
    * based off of the selected travel mode.
-   * @param {!google.maps.LatLng} destination The LatLng coordinates of the destination.
    * @param {!google.maps.LatLng} startingLocation The LatLng coordinates of the start location.
+   * @param {!google.maps.LatLng} destination The LatLng coordinates of the destination.
    * @private 
    */
-  displayDirections_(destination, startingLocation) {
+  displayDirections_(startingLocation, destination) {
     this.directionsRenderer_.setMap(this.map_);
     this.calculateRoute_(startingLocation, destination);
     this.calculateTravelTime_(startingLocation, destination);
