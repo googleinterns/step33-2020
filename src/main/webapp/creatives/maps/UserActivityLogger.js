@@ -1,6 +1,6 @@
 
 import {generateSessionId} from './utils.js';
-import {Urls} from './constants.js';
+import {Urls} from '../constants.js';
 
 export class UserActivityLogger {
 

@@ -100,3 +100,13 @@ export const CreativeErrorCode = {
   MESSAGES_NOT_FOLLOWING_SPEC: 1110,
   PLAYER_RESPONSE_TIMEOUT: 1111,
 };
+
+/** A list of server routes that keep track of each interaction when fetched. */
+export const Urls = {
+  INITIALIZE: "initialize",
+  FIND_NEAREST_LOCATION: "find-location",
+  GRANT_LOCATION_DATA: "grant-location",
+  MAP_INTERACT: "map-interact",
+  SKIP_TO_CONTENT: "skip-to-content",
+  RETURN_TO_AD: "return-to-ad",
+}
