@@ -338,5 +338,31 @@ export default class SimidMapCreative extends BaseSimidCreative {
       }
     );
   }
+
+  calculateTravelTime_(origin, destination) {
+    const travelMode = document.getElementById("travel-method").value;
+    const matrixService = new google.maps.DistanceMatrixService();
+    matrixService.getDistanceMatrix(
+      {
+        origins: [origin],
+        destinations: [destination],
+        travelMode: [travelMode],
+        unitSystem: google.maps.UnitSystem.IMPERIAL
+      }, getTravelTime);
+
+    function getTravelTime(response, status) {
+      if (status == 'OK') {
+        let distance = -1;
+        let duration = -1;
+        const results = response.rows[0].elements;
+        for (let j = 0; j < results.length; j++) {
+          const element = results[j];
+          distance = element.distance.text;
+          duration = element.duration.text;
+        }
+        console.log(distance + " " + duration);
+      }
+    }
+  }
 }
 
