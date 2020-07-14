@@ -16,6 +16,7 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.io.StringWriter;
 import java.io.PrintWriter;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.sps.servlets.Property;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
@@ -96,6 +97,17 @@ public final class DashboardServletTest {
 
     new DashboardServlet().doGet(request, response);
 
-    Assert.assertEquals(1, dataStore.prepare(timedQuery).countEntities());
+    PreparedQuery result = dataStore.prepare(timedQuery);
+
+    Assert.assertEquals(1, result.countEntities());
+
+    Entity returnedInteraction = result.asSingleEntity();
+
+    Assert.assertEquals(originalInteraction.getProperty(Property.FIND_NEAREST_LOCATION), returnedInteraction.getProperty(Property.FIND_NEAREST_LOCATION));
+    Assert.assertEquals(originalInteraction.getProperty(Property.GRANTS_LOCATION), returnedInteraction.getProperty(Property.GRANTS_LOCATION));
+    Assert.assertEquals(originalInteraction.getProperty(Property.INTERACTS_WITH_MAP), returnedInteraction.getProperty(Property.INTERACTS_WITH_MAP));
+    Assert.assertEquals(originalInteraction.getProperty(Property.SKIP_TO_CONTENT), returnedInteraction.getProperty(Property.SKIP_TO_CONTENT));
+    Assert.assertEquals(originalInteraction.getProperty(Property.RETURN_TO_AD), returnedInteraction.getProperty(Property.RETURN_TO_AD));   
+    
   }
 }
