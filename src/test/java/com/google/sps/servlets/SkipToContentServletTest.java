@@ -13,13 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
 @RunWith(JUnit4.class)
 public final class SkipToContentServletTest {
 
   private final LocalServiceTestHelper helper =
       new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
-
+  private PrintWriter printWriter  = new PrintWriter(new StringWriter());
+  
   @Before
   public void setUp() {
     helper.setUp();
@@ -36,6 +39,7 @@ public final class SkipToContentServletTest {
     HttpServletResponse response = Mockito.mock(HttpServletResponse.class);    
 
     Mockito.when(request.getParameter("correlator")).thenReturn("Person1");
+    Mockito.when(response.getWriter()).thenReturn(printWriter);
 
     new SkipToContentServlet().doGet(request, response);
 
@@ -48,6 +52,7 @@ public final class SkipToContentServletTest {
     HttpServletResponse response = Mockito.mock(HttpServletResponse.class);    
 
     Mockito.when(request.getParameter("correlator")).thenReturn(null);
+    Mockito.when(response.getWriter()).thenReturn(printWriter);
 
     new SkipToContentServlet().doGet(request, response);
 
@@ -60,7 +65,8 @@ public final class SkipToContentServletTest {
     HttpServletResponse response = Mockito.mock(HttpServletResponse.class);    
 
     Mockito.when(request.getParameter("correlator")).thenReturn("");
-
+    Mockito.when(response.getWriter()).thenReturn(printWriter);
+    
     new SkipToContentServlet().doGet(request, response);
 
     Mockito.verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);

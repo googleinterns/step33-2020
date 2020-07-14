@@ -30,13 +30,12 @@ public final class DashboardServletTest {
 
   private final LocalServiceTestHelper helper =
       new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
-  private PrintWriter printWriter;
+  private PrintWriter printWriter  = new PrintWriter(new StringWriter());
   private HttpServletRequest request;       
   private HttpServletResponse response; 
 
   @Before
   public void setUp() { 
-    printWriter  = new PrintWriter(new StringWriter());
     request = Mockito.mock(HttpServletRequest.class);
     response = Mockito.mock(HttpServletResponse.class); 
     helper.setUp();
