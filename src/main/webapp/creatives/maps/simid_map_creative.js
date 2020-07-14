@@ -233,7 +233,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
         this.placeMapMarker_(results[i]);
       }
       this.activeLocation_ = results[0].geometry.location;
-      this.displayDirections_(this.activeLocation_, this.currentLocation_);
+      this.displayDirections_(this.currentLocation_, this.activeLocation_);
     } else {
       const statusErrorMessage = {
         message: "ERROR: Places Service Status was: "+status,
@@ -289,7 +289,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   createTravelChoices_() {
-    const travelChoicesContainer = document.getElementById("button_container")
+    const mainContainer = document.getElementById("adContainer");
+    const travelChoicesContainer = document.createElement('div');
+    travelChoicesContainer.id = "travel_display";
     const travelMethod = document.createElement('select');
     travelMethod.id = "travel_method";
     for(let i = 0; i < this.transportMethods_.length; i++) {
@@ -297,6 +299,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     }
     travelMethod.classList.add("travel_method");
     travelChoicesContainer.append(travelMethod);
+    mainContainer.appendChild(travelChoicesContainer);
   }
 
   /**
@@ -341,6 +344,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
     );
   }
 
+  displayTravelTimes_(timeString){
+    document.getElementById("travel_method");
+  }
+
   calculateTravelTime_(origin, destination) {
     const travelMode = document.getElementById("travel_method").value;
     const matrixService = new google.maps.DistanceMatrixService();
@@ -350,9 +357,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
         destinations: [destination],
         travelMode: [travelMode],
         unitSystem: google.maps.UnitSystem.IMPERIAL
-      }, getTravelTime);
+      }, this.getTravelTime_);
+    }
 
-    function getTravelTime(response, status) {
+    getTravelTime_(response, status) {
       if (status == 'OK') {
         let distance = -1;
         let duration = -1;
@@ -365,6 +373,5 @@ export default class SimidMapCreative extends BaseSimidCreative {
         console.log(distance + " " + duration);
       }
     }
-  }
 }
 
