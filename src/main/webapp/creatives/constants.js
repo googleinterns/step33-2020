@@ -1,5 +1,9 @@
 /** Contains all constants common across SIMID */
 
+/**
+ * SIMID Protocol messages.
+ * @enum {string}
+ */
 export const ProtocolMessage = {
   CREATE_SESSION: 'createSession',
   RESOLVE: 'resolve',
