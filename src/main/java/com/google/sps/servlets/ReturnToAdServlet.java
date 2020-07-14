@@ -31,6 +31,7 @@ public class ReturnToAdServlet extends HttpServlet {
 
     DBUtilities.setToTrue(correlator, Property.RETURN_TO_AD);
 
-    response.setStatus(HttpServletResponse.SC_NO_CONTENT); 
+    response.getWriter().println(DBUtilities.SUCESS_MESSAGE);
+    response.setStatus(HttpServletResponse.SC_OK); 
   }
 }

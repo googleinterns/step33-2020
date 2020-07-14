@@ -32,6 +32,7 @@ public class FindLocationServlet extends HttpServlet {
 
     DBUtilities.setToTrue(correlator, Property.FIND_NEAREST_LOCATION);
 
-    response.setStatus(HttpServletResponse.SC_NO_CONTENT); 
+    response.getWriter().println(DBUtilities.SUCESS_MESSAGE);
+    response.setStatus(HttpServletResponse.SC_OK); 
   }
 }
