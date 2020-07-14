@@ -10,7 +10,7 @@ const UNLIMITED_DURATION = -2;
 /** 
  * All the logic for a simple SIMID player
  */
-class SimidPlayer {
+export default class SimidPlayer {
 
   /**
    * Sets up the creative iframe and starts listening for messages
