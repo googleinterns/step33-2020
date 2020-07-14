@@ -1,6 +1,5 @@
 import BaseSimidCreative from '../base_simid_creative.js';
 import {CreativeErrorCode, CreativeMessage} from '../constants.js';
-import UserActivityLogger from './UserActivityLogger.js';
 
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
