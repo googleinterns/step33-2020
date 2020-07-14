@@ -1,5 +1,5 @@
 import BaseSimidCreative from '../base_simid_creative.js';
-import {CreativeMessage, CreativeErrorCode} from '../constants.js';
+import {CreativeErrorCode, CreativeMessage} from '../constants.js';
 import UserActivityLogger from './UserActivityLogger.js';
 
 const AdParamKeys = {
@@ -19,14 +19,18 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
   constructor() {
     super();
-    this.newUserSession = new UserActivityLogger();
+    /**
+     * An instance of a user session
+     * @private {?UserActivityLogger}
+     */
+    this.newUserSession_ = new UserActivityLogger();
   }
  
  /** @override */
  onInit(eventData) {
   this.updateInternalOnInit(eventData);
   this.validateAndParseAdParams_(eventData);
-  this.newUserSession.userInitializes();
+  this.newUserSession_.userInitializes();
 }
 
   /**
@@ -87,7 +91,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   prepareCreative_() {
-    this.newUserSession.userClicksFindNearestLocation();
+    this.newUserSession_.userClicksFindNearestLocation();
     findNearest.classList.add("hidden");
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
       this.createMapState_();
@@ -129,7 +133,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   playAd_(returnToAdButton) {
-    this.newUserSession.userClicksReturnToAd();
+    this.newUserSession_.userClicksReturnToAd();
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PLAY);
     returnToAdButton.classList.add("hidden");
     //ToDo(kristenmason@): hide map
@@ -140,7 +144,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   playContent_() {
-    this.newUserSession.userClicksSkipToContent();
+    this.newUserSession_.userClicksSkipToContent();
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_SKIP);
   }
 
