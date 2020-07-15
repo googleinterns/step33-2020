@@ -37,6 +37,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private {?string}
      */
     this.searchQuery_ = null;
+    /**
+     * The LatLng object representing the user's current position.
+     * @private {?google.maps.LatLng}
+     */
     this.userCoordinates_ = null;
   }
 
