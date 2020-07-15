@@ -126,7 +126,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   createMapState_() {
-    console.log("In map state");
     const returnToAdButton = document.createElement("button");
     returnToAdButton.textContent = "Return To Ad";
     returnToAdButton.id = "returnToAd";
