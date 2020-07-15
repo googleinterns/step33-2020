@@ -17,7 +17,7 @@ const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 const MARKER_SIZE = 25;
 const DEFAULT_MAP_LAT = 37.422004;
 const DEFAULT_MAP_LNG = -122.081402;
-const TRANSPORT_METHODS = ["Driving","Walking","Bicycling","Transit"];
+const TRANSPORT_METHODS = ["Driving", "Walking", "Bicycling", "Transit"];
 
 /**
  * A sample SIMID ad that shows a map of nearby locations.
