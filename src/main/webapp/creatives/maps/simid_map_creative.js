@@ -65,7 +65,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
         message: "Invalid JSON input for ad parameters"});
         return;
     }
-    const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
+    this.buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
     this.searchQuery_ = adParams[AdParamKeys.SEARCH_QUERY];
     this.markerImage_ = adParams[AdParamKeys.MARKER];
 
@@ -79,9 +79,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   /** @override */
-  onStart(eventData, buttonLabel) {
+  onStart(eventData) {
+    debugger;
     super.onStart(eventData);
-    this.specifyButtonFeatures_(buttonLabel);
+    this.specifyButtonFeatures_(this.buttonLabel);
   }
 
   /**
