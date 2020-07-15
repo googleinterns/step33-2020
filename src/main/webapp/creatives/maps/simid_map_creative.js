@@ -17,6 +17,7 @@ const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 const MARKER_SIZE = 25;
 const DEFAULT_MAP_LAT = 37.422004;
 const DEFAULT_MAP_LNG = -122.081402;
+const TRANSPORT_METHODS = ["Driving", "Walking", "Bicycling", "Transit"];
 
 /**
  * A sample SIMID ad that shows a map of nearby locations.
@@ -45,6 +46,22 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private {?string}
      */
     this.searchQuery_ = null;
+    /**
+     * The LatLng coordinates representing the closest advertised location.
+     * @private {?google.maps.LatLng}
+     */
+    this.activeLocation_ = null;
+    /**
+     * The LatLng coordinates representing the user's current location.
+     * @private {?google.maps.LatLng}
+     */
+    this.currentLocation_ = null;
+    /**
+     * The DirectionsRenderer object that displays directions from
+     * the given request.
+     * @private @const {!google.maps.DirectionsRenderer}
+     */
+    this.directionsRenderer_ = new google.maps.DirectionsRenderer();
     /**
      * The LatLng object representing the user's current position.
      * @private {?google.maps.LatLng}
@@ -95,7 +112,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
         message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`});
         return;
     }
-    
     this.simidProtocol.resolve(eventData, {});
   }
 
@@ -112,7 +128,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    *   category and can be specified by the advertisers. If the value is not specified, 
    *   then BUTTON_LABEL's value will default to Location.
    * @private 
-   */   
+   */ 
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
@@ -179,13 +195,14 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.newUserSession_.userClicksSkipToContent();
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_SKIP);
   }
-  
+
   /**
    * Loads a map object that currently defaults to a hardcoded location.
    * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
    * @private 
    */
   displayMap_(coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
+    this.currentLocation_ = coordinates;
     this.map_ = new google.maps.Map(document.getElementById('map'), {
       zoom: DEFAULT_ZOOM,
       center: coordinates
@@ -200,9 +217,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   /**
-   * Searches for the closest corresponding businesses based off of the given search parameter,
-   * and places pins on the map that represent the 4 closest locations.
-   * @param {String} searchParameter A string with the business's name to use in the query.
+   * Searches for the closest corresponding locations based off of the given search parameter,
+   * and places pins on the map that represent the closest locations.
+   * @param {String} searchParameter A string with the location's name to use in the query.
    * @param {!google.maps.LatLng} coordinates The LatLng object of user's current location.
    * @private 
    */
@@ -215,21 +232,30 @@ export default class SimidMapCreative extends BaseSimidCreative {
     };
     const service = new google.maps.places.PlacesService(this.map_);
     service.nearbySearch(request, this.displayResults_.bind(this));
+    this.createTravelChoices_();
   }
 
   /**
-   * Displays the closest business locations to a user's current location.
+   * Displays the closest advertisement's locations to a user's current location.
    * @param {!Object} results An array of Place Results from the search query.
    * @param {!google.maps.places.PlacesServiceStatus} status The status returned 
    *  by the PlacesService on the completion of its searches.
    * @private 
    */
   displayResults_(results, status) {
-      if (status == google.maps.places.PlacesServiceStatus.OK) {
-        for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
-          this.placeMapMarker_(results[i]);
-        }
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      this.activeLocation_ = results[0].geometry.location;
+      for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
+        this.placeMapMarker_(results[i]);
       }
+      this.displayDirections_();
+    } else {
+      const statusErrorMessage = {
+        message: "ERROR: Failed to complete search: "+status,
+      };
+      this.simidProtocol.sendMessage(CreativeMessage.LOG, statusErrorMessage);
+      this.playAd_();
+    }
   }
 
   /**
@@ -247,6 +273,80 @@ export default class SimidMapCreative extends BaseSimidCreative {
       position: place.geometry.location,
       icon: placeIcon
     });
+    ///Recalculate directions if a different active marker is selected.
+    placeMarker.addListener('click', () => {
+      this.activeLocation_ = place.geometry.location;
+      this.displayDirections_();
+    });
+  }
+
+  /**
+   * Displays the directions between the user's current location and current active location.
+   * @private 
+   */
+  displayDirections_() {
+    this.directionsRenderer_.setMap(this.map_);
+    this.calculateRoute_();
+  }
+
+  /**
+   * Creates a drop down menu where users can choose between
+   * different modes of travel to display directions for.
+   * @private 
+   */
+  createTravelChoices_() {
+    const travelChoicesContainer = document.getElementById("button_container")
+    const travelMethod = document.createElement('select');
+    travelMethod.id = "travel_method";
+    TRANSPORT_METHODS.forEach((transportType) =>{
+      const newOption = this.createTravelOption_(transportType);
+      travelMethod.add(newOption);
+    });
+    travelMethod.classList.add("travel_method");
+    travelMethod.addEventListener("change", () => {
+      this.calculateRoute_();
+    });
+    travelChoicesContainer.append(travelMethod);
+  }
+
+  /**
+   * Creates an option element representing a mode of travel.
+   * @param {!string} travelMode A string representing the
+   *   given mode of travel.
+   * @private 
+   */
+  createTravelOption_(travelMode) {
+    const travelOption = document.createElement("option");
+    travelOption.value = travelMode.toUpperCase();
+    travelOption.text = travelMode;
+    return travelOption;
+  }
+
+  /**
+   * Calculates the route between the user's current location and current
+   * active location based off of the selected travel mode.
+   * @private 
+   */
+  calculateRoute_() {
+    const directionsService = new google.maps.DirectionsService();
+    const selectedMode = document.getElementById("travel_method").value;
+    directionsService.route(
+      {
+        origin: this.currentLocation_,
+        destination: this.activeLocation_,
+        travelMode: [selectedMode]
+      },
+      (response, status) => {
+        if (status == "OK") {
+          this.directionsRenderer_.setDirections(response);
+        } else {
+          const directionsErrorMessage = {
+            message: "ERROR: Failed to load directions: " + status,
+          };
+          this.simidProtocol.sendMessage(CreativeMessage.LOG, directionsErrorMessage);
+        }
+      }
+    );
   }
 
   /**
@@ -261,3 +361,4 @@ export default class SimidMapCreative extends BaseSimidCreative {
     })); 
   }
 }
+
