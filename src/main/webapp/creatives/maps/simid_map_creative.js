@@ -10,14 +10,32 @@ const AdParamKeys = {
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
 const DEFAULT_BUTTON_LABEL = "Location";
 const DEFAULT_ZOOM = 13;
+const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
+const MARKER_SIZE = 25;
+const DEFAULT_MAP_LAT = 37.422004;
+const DEFAULT_MAP_LNG = -122.081402;
 
 /**
  * A sample SIMID ad that shows a map of nearby locations.
  */
 export default class SimidMapCreative extends BaseSimidCreative {
-
   constructor() {
     super();
+    /**
+     * A map object from the Google Maps API.
+     * @private {?google.maps.Map}
+     */
+    this.map_ = null;
+    /**
+     * The desired marker image's string URL.
+     * @private {?string}
+     */
+    this.markerImage_ = null;
+    /**
+     * The string representing the search query.
+     * @private {?string}
+     */
+    this.searchQuery_ = null;
   }
 
   /** @override */
@@ -47,10 +65,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
         message: "Invalid JSON input for ad parameters"});
         return;
     }
-    const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
-    const searchQuery = adParams[AdParamKeys.SEARCH_QUERY];
+    this.buttonLabel_ = adParams[AdParamKeys.BUTTON_LABEL]; 
+    this.searchQuery_ = adParams[AdParamKeys.SEARCH_QUERY];
+    this.markerImage_ = adParams[AdParamKeys.MARKER];
 
-    if (!searchQuery) {
+    if (!this.searchQuery_) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
         message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`});
         return;
@@ -60,9 +79,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   /** @override */
-  onStart(eventData, buttonLabel) {
+  onStart(eventData) {
     super.onStart(eventData);
-    this.specifyButtonFeatures_(buttonLabel);
+    this.specifyButtonFeatures_(this.buttonLabel_);
   }
 
   /**
@@ -76,13 +95,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
-    findNearest.onclick = () => this.prepareCreative_();
+    findNearestButton.focus();
+    findNearestButton.onclick = () => this.prepareCreative_();
   }
- 
-  /**
-   * Requests player to pause, if accepted generate map.
-   * @private 
-   */
+
   prepareCreative_() {
     //ToDo(kristenmason@): implement the Google Maps request access functionality
     findNearest.classList.add("hidden");
@@ -105,18 +121,19 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const returnToAdButton = document.createElement("button");
     returnToAdButton.textContent = "Return To Ad";
     returnToAdButton.id = "returnToAd";
+    returnToAdButton.focus();
     returnToAdButton.onclick = () => this.playAd_(returnToAdButton); 
 
     const skipAdButton = document.createElement("button");
-    skipAdButton.textContent = "Skip Ad";
     skipAdButton.id = "skipAd";
+    skipAdButton.textContent = "Skip Ad";
     skipAdButton.onclick = () => this.playContent_();
 
     const adContainer = document.getElementById('adContainer');
     adContainer.appendChild(returnToAdButton);
     adContainer.appendChild(skipAdButton);
 
-    this.loadMap_();
+    this.displayMap_();
   }
 
   /**
@@ -128,7 +145,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
   playAd_(returnToAdButton) {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PLAY);
     returnToAdButton.classList.add("hidden");
-    //ToDo(kristenmason@): hide map
+    const mapDiv = document.getElementById("map");
+    mapDiv.classList.add("hidden");
   }
 
   /**
@@ -138,23 +156,72 @@ export default class SimidMapCreative extends BaseSimidCreative {
   playContent_() {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_SKIP);
   }
-
+  
   /**
-   * Loads a map object that currently displays a hardcoded location.
-   * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
-   * TODO(kristenmason@): implement grant location access and modify
-   * function to pass in current position (currently coords default to GooglePlex)
-   * @private 
-   */
-  loadMap_(coordinates = new google.maps.LatLng(37.422004,-122.081402)) { 
-    const map = new google.maps.Map(document.getElementById('map'), {
-      zoom: DEFAULT_ZOOM,
-      center: coordinates
-    });
-    const marker = new google.maps.Marker({
-      position: coordinates,
-      map: map,
-      title: 'Current Position'
-    });
-  }
+ * Loads a map object that currently defaults to a hardcoded location.
+ * @param {!google.maps.LatLng=} coordinates The LatLng object of user's current location.
+ * @private 
+ */
+displayMap_(coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
+  this.map_ = new google.maps.Map(document.getElementById('map'), {
+    zoom: DEFAULT_ZOOM,
+    center: coordinates
+  });
+  new google.maps.Marker({
+    position: coordinates,
+    map: this.map_,
+    title: 'Current Position'
+  });
+  this.findNearby_(this.searchQuery_, coordinates);
+}
+
+/**
+ * Searches for the closest corresponding businesses based off of the given search parameter,
+ * and places pins on the map that represent the 4 closest locations.
+ * @param {String} searchParameter A string with the business's name to use in the query.
+ * @param {!google.maps.LatLng} coordinates The LatLng object of user's current location.
+ * @private 
+ */
+findNearby_(searchParameter, coordinates) {
+  const request = {
+    location: coordinates,
+    name: searchParameter,
+    openNow: true,
+    rankBy: google.maps.places.RankBy.DISTANCE
+  };
+  const service = new google.maps.places.PlacesService(this.map_);
+  service.nearbySearch(request, this.displayResults_.bind(this));
+}
+
+/**
+ * Displays the closest business locations to a user's current location.
+ * @param {!Object} results An array of Place Results from the search query.
+ * @param {!google.maps.places.PlacesServiceStatus} status The status returned 
+ *  by the PlacesService on the completion of its searches.
+ * @private 
+ */
+displayResults_(results, status) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
+        this.placeMapMarker_(results[i]);
+      }
+    }
+}
+
+/**
+ * Creates and displays a marker on the map representing a given place.
+ * @param {!Object} place A Place Result object.
+ * @private 
+ */
+placeMapMarker_(place) {
+  const placeIcon = {
+    url: this.markerImage_,
+    scaledSize: new google.maps.Size(MARKER_SIZE, MARKER_SIZE)
+  };
+  const placeMarker = new google.maps.Marker({
+    map: this.map_,
+    position: place.geometry.location,
+    icon: placeIcon
+  });
+}
 }

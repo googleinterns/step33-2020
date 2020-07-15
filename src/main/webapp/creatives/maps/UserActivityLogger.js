@@ -2,7 +2,7 @@
 import {generateSessionId} from './utils.js';
 import {Urls} from '../constants.js';
 
-export class UserActivityLogger {
+export default class UserActivityLogger {
 
   constructor() {
     /**
@@ -10,14 +10,26 @@ export class UserActivityLogger {
      * @private @const {string}
      */
     this.correlator_ = generateSessionId();
+
+    /** @private @const {string} */
+    this.baseUrl_ = Urls.DEFAULT_BASE_URL;
+  }
+
+  /**
+   * Updates the base URL when advertisers want to send the interactions to
+   * their own server.
+   * @param {string} newBaseUrl A base URL to send the request to.
+   */
+  updateBaseUrl(newBaseUrl) {
+    this.baseUrl_ = newBaseUrl;
   }
 
   /**
    * Makes a GET request to the given URL with the correlator as a parameter.
-   * @param {string} path A URL to send the request to.
+   * @param {string} route A route to send the request to.
    */
-  sendRequest_(path) {
-    fetch(`${Urls.BASE_URL}/${path}?correlator=${this.correlator_}`);
+  sendRequest_(route) {
+    fetch(`${this.baseUrl_}/${route}?correlator=${this.correlator_}`);
   }
 
   userInitializes() {
