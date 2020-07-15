@@ -1,10 +1,13 @@
 import BaseSimidCreative from '../base_simid_creative.js';
-import {CreativeMessage, CreativeErrorCode} from '../constants.js';
+import UserActivityLogger from './UserActivityLogger.js';
+import {CreativeErrorCode, CreativeMessage} from '../constants.js';
 
 const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
   SEARCH_QUERY: 'searchQuery',
   MARKER: 'marker',
+  COORDINATES: 'userCoordinates',
+  BASE_URL: 'baseUrl',
 };
 
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
@@ -22,7 +25,13 @@ const TRANSPORT_METHODS = ["Driving","Walking","Bicycling","Transit"];
 export default class SimidMapCreative extends BaseSimidCreative {
   constructor() {
     super();
+
     /**
+     * An instance of a user session
+     * @private @const {!UserActivityLogger}
+     */
+    this.newUserSession_ = new UserActivityLogger();
+    /** 
      * A map object from the Google Maps API.
      * @private {?google.maps.Map}
      */
@@ -53,12 +62,18 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private @const {!google.maps.DirectionsRenderer}
      */
     this.directionsRenderer_ = new google.maps.DirectionsRenderer();
+    /**
+     * The LatLng object representing the user's current position.
+     * @private {?google.maps.LatLng}
+     */
+    this.userCoordinates_ = null;
   }
-
+  
   /** @override */
   onInit(eventData) {
     this.updateInternalOnInit(eventData);
     this.validateAndParseAdParams_(eventData);
+    this.newUserSession_.userInitializes();
   }
 
   /**
@@ -82,9 +97,15 @@ export default class SimidMapCreative extends BaseSimidCreative {
         message: "Invalid JSON input for ad parameters"});
         return;
     }
-    const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
+    this.buttonLabel_ = adParams[AdParamKeys.BUTTON_LABEL]; 
     this.searchQuery_ = adParams[AdParamKeys.SEARCH_QUERY];
     this.markerImage_ = adParams[AdParamKeys.MARKER];
+    this.userCoordinates_ = adParams[AdParamKeys.COORDINATES];
+    const baseUrl = adParams[AdParamKeys.BASE_URL];
+
+    if (baseUrl){
+      this.newUserSession_.updateBaseUrl(baseUrl);
+    }
 
     if (!this.searchQuery_) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
@@ -95,9 +116,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   /** @override */
-  onStart(eventData, buttonLabel) {
+  onStart(eventData) {
     super.onStart(eventData);
-    this.specifyButtonFeatures_(buttonLabel);
+    this.specifyButtonFeatures_(this.buttonLabel_);
   }
 
   /**
@@ -111,11 +132,12 @@ export default class SimidMapCreative extends BaseSimidCreative {
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
-    findNearest.onclick = () => this.prepareCreative_();
+    findNearestButton.focus();
+    findNearestButton.onclick = () => this.prepareCreative_();
   }
 
   prepareCreative_() {
-    //ToDo(kristenmason@): implement the Google Maps request access functionality
+    this.newUserSession_.userClicksFindNearestLocation();
     findNearest.classList.add("hidden");
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
       this.createMapState_();
@@ -136,18 +158,19 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const returnToAdButton = document.createElement("button");
     returnToAdButton.textContent = "Return To Ad";
     returnToAdButton.id = "returnToAd";
+    returnToAdButton.focus();
     returnToAdButton.onclick = () => this.playAd_(returnToAdButton); 
 
     const skipAdButton = document.createElement("button");
-    skipAdButton.textContent = "Skip Ad";
     skipAdButton.id = "skipAd";
+    skipAdButton.textContent = "Skip Ad";
     skipAdButton.onclick = () => this.playContent_();
 
     const adContainer = document.getElementById('adContainer');
     adContainer.appendChild(returnToAdButton);
     adContainer.appendChild(skipAdButton);
 
-    this.displayMap_();
+    this.displayMap_(this.userCoordinates_);
   }
 
   /**
@@ -157,6 +180,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   playAd_(returnToAdButton) {
+    this.newUserSession_.userClicksReturnToAd();
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PLAY);
     returnToAdButton.classList.add("hidden");
     const mapDiv = document.getElementById("map");
@@ -168,6 +192,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   playContent_() {
+    this.newUserSession_.userClicksSkipToContent();
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_SKIP);
   }
 
@@ -188,12 +213,13 @@ export default class SimidMapCreative extends BaseSimidCreative {
       title: 'Current Position'
     });
     this.findNearby_(this.searchQuery_, coordinates);
+    this.addMapListener_(this.map_);
   }
 
   /**
    * Searches for the closest corresponding locations based off of the given search parameter,
-   * and places pins on the map that represent the 4 closest locations.
-   * @param {String} searchParameter A string with the advertiser's name to use in the query.
+   * and places pins on the map that represent the closest locations.
+   * @param {String} searchParameter A string with the location's name to use in the query.
    * @param {!google.maps.LatLng} coordinates The LatLng object of user's current location.
    * @private 
    */
@@ -321,6 +347,18 @@ export default class SimidMapCreative extends BaseSimidCreative {
         }
       }
     );
+  }
+
+  /**
+   * Adds map listeners to the map displayed.
+   * @param {!Object} map A Google Maps object.
+   * @private 
+   */
+  addMapListener_(map) {
+    const eventsArray = ['zoom_changed', 'click', 'drag'];
+    eventsArray.forEach(event => map.addListener(event, () => {
+      this.newUserSession_.userInteractsWithMap();
+    })); 
   }
 }
 
