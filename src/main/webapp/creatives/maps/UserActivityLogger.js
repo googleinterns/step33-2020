@@ -29,7 +29,7 @@ export default class UserActivityLogger {
    * @param {string} route A route to send the request to.
    */
   sendRequest_(route) {
-    fetch(`${this.baseUrl_}/${route}?correlator=${this.correlator_}`,{mode:'no-cors'});
+    fetch(`${this.baseUrl_}/${route}?correlator=${this.correlator_}`, {mode:'no-cors'});
   }
 
   userInitializes() {

@@ -7,6 +7,7 @@ const AdParamKeys = {
   SEARCH_QUERY: 'searchQuery',
   MARKER: 'marker',
   COORDINATES: 'userCoordinates',
+  BASE_URL: 'baseUrl',
 };
 
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
@@ -83,6 +84,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.searchQuery_ = adParams[AdParamKeys.SEARCH_QUERY];
     this.markerImage_ = adParams[AdParamKeys.MARKER];
     this.userCoordinates_ = adParams[AdParamKeys.COORDINATES];
+    const baseUrl = adParams[AdParamKeys.BASE_URL];
+
+    if (baseUrl){
+      this.newUserSession_.updateBaseUrl(baseUrl);
+    }
 
     if (!this.searchQuery_) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
