@@ -236,10 +236,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
       this.displayDirections_(this.activeLocation_, this.currentLocation_);
     } else {
       const statusErrorMessage = {
-        message: "ERROR: Places Service Status was: "+status,
+        message: "ERROR: Failed to complete search: "+status,
       };
       this.simidProtocol.sendMessage(CreativeMessage.LOG, statusErrorMessage);
-      this.playContent_();
+      this.playAd_();
     }
   }
 
@@ -258,7 +258,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
       position: place.geometry.location,
       icon: placeIcon
     });
-    ///Recalculate directions if new marker is clicked.
+    ///Recalculate directions if a different active marker is selected.
     placeMarker.addListener('click', () => {
       this.activeLocation_ = place.geometry.location;
       this.displayDirections_(this.currentLocation_, this.activeLocation_);
@@ -331,7 +331,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
           this.directionsRenderer_.setDirections(response);
         } else {
           const directionsErrorMessage = {
-            message: "ERROR: Directions request failed due to " + status,
+            message: "ERROR: Failed to load directions: " + status,
           };
           this.simidProtocol.sendMessage(CreativeMessage.LOG, directionsErrorMessage);
         }
