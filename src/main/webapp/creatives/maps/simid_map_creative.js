@@ -126,6 +126,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   createMapState_() {
+    console.log("In map state");
     const returnToAdButton = document.createElement("button");
     returnToAdButton.textContent = "Return To Ad";
     returnToAdButton.id = "returnToAd";
@@ -183,10 +184,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
       title: 'Current Position'
     });
     this.findNearby_(this.searchQuery_, coordinates);
-    const eventsArray = ['zoom_changed', 'click', 'drag'];
-    eventsArray.forEach(event => map.addListener(event, () => {
-      this.newUserSession_.userInteractsWithMap()
-    })); 
+    this.addMapListener_(this.map_);
   }
 
   /**
@@ -237,5 +235,17 @@ export default class SimidMapCreative extends BaseSimidCreative {
       position: place.geometry.location,
       icon: placeIcon
     });
+  }
+
+  /**
+   * Adds map listeners to the map displayed.
+   * @param {!Object} map A Google Maps object.
+   * @private 
+   */
+  addMapListener_(map) {
+    const eventsArray = ['zoom_changed', 'click', 'drag'];
+    eventsArray.forEach(event => map.addListener(event, () => {
+      this.newUserSession_.userInteractsWithMap();
+    })); 
   }
 }
