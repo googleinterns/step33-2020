@@ -65,7 +65,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
         message: "Invalid JSON input for ad parameters"});
         return;
     }
-    const buttonLabel = adParams[AdParamKeys.BUTTON_LABEL]; 
+    this.buttonLabel_ = adParams[AdParamKeys.BUTTON_LABEL]; 
     this.searchQuery_ = adParams[AdParamKeys.SEARCH_QUERY];
     this.markerImage_ = adParams[AdParamKeys.MARKER];
 
@@ -79,9 +79,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   /** @override */
-  onStart(eventData, buttonLabel) {
+  onStart(eventData) {
     super.onStart(eventData);
-    this.specifyButtonFeatures_(buttonLabel);
+    this.specifyButtonFeatures_(this.buttonLabel_);
   }
 
   /**
@@ -95,7 +95,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
-    findNearest.onclick = () => this.prepareCreative_();
+    findNearestButton.focus();
+    findNearestButton.onclick = () => this.prepareCreative_();
   }
 
   prepareCreative_() {
@@ -120,11 +121,12 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const returnToAdButton = document.createElement("button");
     returnToAdButton.textContent = "Return To Ad";
     returnToAdButton.id = "returnToAd";
+    returnToAdButton.focus();
     returnToAdButton.onclick = () => this.playAd_(returnToAdButton); 
 
     const skipAdButton = document.createElement("button");
-    skipAdButton.textContent = "Skip Ad";
     skipAdButton.id = "skipAd";
+    skipAdButton.textContent = "Skip Ad";
     skipAdButton.onclick = () => this.playContent_();
 
     const adContainer = document.getElementById('adContainer');

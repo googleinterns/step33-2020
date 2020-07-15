@@ -1,11 +1,31 @@
 /* Styling for maps creative */ 
 
 /*Styling for initial state */
+button {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-right: 0;
+    box-sizing: content-box;
+    color: #fff;
+    font-size: 18px;
+    line-height: normal;
+    min-width: 0;
+    padding: 10px 6px 8px 10px;
+    width: auto;
+    text-align: center;
+    transition: opacity .5s cubic-bezier(0.0,0.0,0.2,1);
+    text-shadow: 0 0 4px rgba(0,0,0,0.75);
+    cursor: pointer;
+}
+
+button:hover {
+    background: rgba(0,0,0,0.7);
+}
+
 #findNearest{
     position: absolute;
     bottom: 65px;
     padding: 15px;
-    cursor: pointer;
 }
 
 .hidden {
@@ -16,15 +36,15 @@
     position: absolute;
     bottom: 65px;
     padding: 15px;
-    cursor: pointer;
 }
 
 #skipAd {
     position: absolute;
     bottom: 65px;
-    right: 10px;
+    right: 0px;
     padding: 15px;
-    cursor: pointer;
+    padding-right: 30px;
+    padding-left: 30px;
 }
 
 /*Allows map to display*/
@@ -40,10 +60,11 @@ html, body {
  */
 #map {
     height: 80%;
-    width: 80%;
+    width: 100%;
     margin: auto;
     position: relative;
-    top: 215;
+    top: 170px;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
+    overflow: inherit !important;
 }
