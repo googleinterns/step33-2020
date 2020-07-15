@@ -22,7 +22,7 @@ public class ReturnToAdServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-    final String correlator = RequestUtils.getCorrelator(request);
+    final String correlator = RequestUtils.getParameter(request, Property.CORRELATOR);
 
     if (correlator.isEmpty()) {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -31,6 +31,7 @@ public class ReturnToAdServlet extends HttpServlet {
 
     DBUtilities.setToTrue(correlator, Property.RETURN_TO_AD);
 
+    response.getWriter().println(DBUtilities.SUCESS_MESSAGE);
     response.setStatus(HttpServletResponse.SC_OK); 
   }
 }

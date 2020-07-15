@@ -22,7 +22,7 @@ public class GrantLocationServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
  
-    final String correlator = RequestUtils.getCorrelator(request);
+    final String correlator = RequestUtils.getParameter(request, Property.CORRELATOR);
 
     if (correlator.isEmpty()) {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -31,6 +31,7 @@ public class GrantLocationServlet extends HttpServlet {
 
     DBUtilities.setToTrue(correlator, Property.GRANTS_LOCATION);
 
-    response.setStatus(HttpServletResponse.SC_OK); 
+    response.getWriter().println(DBUtilities.SUCESS_MESSAGE);
+    response.setStatus(HttpServletResponse.SC_OK);  
   }
 }

@@ -1,15 +1,4 @@
 
-/** A list of server routes that keep track of each interaction when fetched. */
-export const URL = {
-  INITIALIZE: "initialize",
-  FIND_NEAREST_LOCATION: "find-location",
-  GRANT_LOCATION_DATA: "grant-location",
-  MAP_INTERACT: "map-interact",
-  SKIP_TO_CONTENT: "skip-to-content",
-  RETURN_TO_AD: "return-to-ad",
-  DASHBOARD: "dashboard"
-}
-
 /**
  * @return {string} A standard UUID conforming to en.wikipedia.org/wiki/Universally_unique_identifier
  */

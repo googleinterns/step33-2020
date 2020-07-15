@@ -26,7 +26,8 @@ public class InitializeServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-    final String correlator = RequestUtils.getCorrelator(request);
+    final String correlator = RequestUtils.getParameter(request, Property.CORRELATOR);
+    final String timestamp = String.valueOf(System.currentTimeMillis());
 
     if (correlator.isEmpty()) {
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -34,6 +35,7 @@ public class InitializeServlet extends HttpServlet {
     }
 
     Entity interaction = new Entity(DBUtilities.INTERACTION_TABLE);
+    interaction.setProperty(Property.TIMESTAMP, timestamp);
     interaction.setProperty(Property.CORRELATOR, correlator);
     interaction.setProperty(Property.FIND_NEAREST_LOCATION, false);
     interaction.setProperty(Property.GRANTS_LOCATION, false);
@@ -44,6 +46,7 @@ public class InitializeServlet extends HttpServlet {
     DatastoreService dataStore = DatastoreServiceFactory.getDatastoreService();
     dataStore.put(interaction);
 
-    response.setStatus(HttpServletResponse.SC_OK); 
+    response.getWriter().println(DBUtilities.SUCESS_MESSAGE);
+    response.setStatus(HttpServletResponse.SC_OK);
   }
 }
