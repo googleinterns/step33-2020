@@ -14,6 +14,7 @@ const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 const MARKER_SIZE = 25;
 const DEFAULT_MAP_LAT = 37.422004;
 const DEFAULT_MAP_LNG = -122.081402;
+const TRANSPORT_METHODS = ["Driving","Walking","Bicycling","Transit"];
 
 /**
  * A sample SIMID ad that shows a map of nearby locations.
@@ -52,12 +53,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private @const {!google.maps.DirectionsRenderer}
      */
     this.directionsRenderer_ = new google.maps.DirectionsRenderer();
-
-    /**
-     * A list of the travel modes supported by the Google Maps API.
-     * @private @const {!Array<!string>}
-     */
-    this.transportMethods_ = [("Driving"),("Walking"),("Bicycling"),("Transit")];
   }
 
   /** @override */
@@ -277,7 +272,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const travelChoicesContainer = document.getElementById("button_container")
     const travelMethod = document.createElement('select');
     travelMethod.id = "travel_method";
-    this.transportMethods_.forEach((transportType) =>{
+    TRANSPORT_METHODS.forEach((transportType) =>{
       const newOption = this.createTravelOption_(transportType);
       travelMethod.add(newOption);
     });
