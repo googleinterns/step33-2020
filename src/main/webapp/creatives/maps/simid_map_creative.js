@@ -80,7 +80,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
   /** @override */
   onStart(eventData) {
-    debugger;
     super.onStart(eventData);
     this.specifyButtonFeatures_(this.buttonLabel);
   }
