@@ -1,0 +1,119 @@
+<!--All code in this file is from
+  https://github.com/InteractiveAdvertisingBureau/SIMID/blob/master/examples/player/simid_player.html --> 
+<html>
+<head>
+  <title> A very simple SIMID player</title>
+  <script src="../simid_protocol.js"></script>
+  <script src="simid_player.js"></script>
+  <style>
+    .simid_creative {
+      position: absolute;
+      top: 0;
+      border-width: 0px;
+      width: 640px;
+      height: 480px;
+    }
+    .overlayed {
+      position: absolute;
+      top: 0;
+      width: 640px;
+      height: 480px;
+    }
+    .content {
+      width: 640px;
+      height: 480px;
+    }
+  </style>
+  <script>
+    let simidPlayer;
+    function initAd() {
+      // clean old ad if it exists
+      if (simidPlayer) {
+        simidPlayer.stopAd();
+      }
+
+      // Init ad should be called before playad.
+      simidPlayer = new SimidPlayer(() => {simidPlayer = null;});
+      simidPlayer.initializeAd();
+    }
+
+    function playAd() {
+      if (!simidPlayer) {
+        initAd();
+      }
+      simidPlayer.playAd();
+    }
+
+    function switchCreative(value) {
+      document.getElementById('creative_url').value = '../creatives/' + value;
+      // populate ad parameters with some hard coded values
+      let adParams = '';
+      switch (value) {
+        case 'simid_overlay.html':
+          break;
+        case 'survey.html':
+          let adParamsObj = [
+            {'question':'Would you like a survey?',
+             'answers':['Yes', 'No', 'Not Sure']},
+            {'question':'Are you certain?',
+             'answers':['Of course', 'Not Really', 'Well...']},
+            {'question':'What animals do you like?',
+             'answers':['Cats', 'Dogs', 'Other']}
+          ];
+          adParams = JSON.stringify(adParamsObj);
+          break;
+      }
+      document.getElementById('ad_params').value = adParams;
+    }
+  </script>
+</head>
+
+<body>
+
+  <div>
+    <p><h1><center>SIMID Sample Ad Player</center></h1></p>
+    <table>
+      <tr>
+        <td>Choose Sample Creative Template</td>
+        <td>
+        <button onclick="switchCreative('simid_overlay.html')">overlay</button>
+        <button onclick="switchCreative('survey.html')">survey</button>
+        <button onclick="switchCreative('selector.html')">selector</button>
+        <button onclick="switchCreative('extender.html')">extender</button>
+      </td>
+      </tr>
+
+      <tr>
+        <td>Interactive Creative File</td>
+        <td><input type="text" id="creative_url" size = 30 
+           value="../creatives/simid_overlay.html">
+        </td>
+      </tr>
+      <tr>
+        <td>Media File</td>
+        <td><input type="text" id="video_url" size = 30 
+           value="../media/IAB480-small.mp4">
+        </td>
+      </tr>
+      <tr>
+        <td>AdParameters</td>
+        <td><textarea id="ad_params" rows = 5 cols = 50></textarea></td>
+      </tr>
+    </table>
+    <button onclick="playAd()"> Start ad playback </button>
+    <button onclick="initAd()"> Initialize the creative </button>
+  </div>
+
+  <div id="player_div" style="position:absolute;">
+    <video id="video_player" class="content" src="../media/Big_Buck_Bunny.mp4" controls> </video>
+    <div id="ad_video_div" class="overlayed" style="display:none;">
+      <video id="ad_video_player" class="overlayed" style="display:none;" src="">
+    </div>
+    <!-- SIMID creative will be here. -->
+  </div>
+
+<script>
+</script>
+<body>
+
+</html>
