@@ -21,7 +21,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     super();
     /**
      * An instance of a user session
-     * @private {?UserActivityLogger}
+     * @private @const {!UserActivityLogger}
      */
     this.newUserSession_ = new UserActivityLogger();
   }
@@ -165,16 +165,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
       map: map,
       title: 'Current Position'
     });
-    let currentUserSession_ = this.newUserSession_;
-    map.addListener('zoom_changed', function() {
-      currentUserSession_.userInteractsWithMap();
-    });
-    map.addListener('click', function() {
-      currentUserSession_.userInteractsWithMap();
-    });
-    map.addListener('drag', function() {
-      currentUserSession_.userInteractsWithMap();
-    });
+    const eventsArray = ['zoom_changed', 'click', 'drag'];
+    eventsArray.forEach(event => map.addListener(event, () => {
+      this.newUserSession_.userInteractsWithMap()
+    }));
   }
  }
  

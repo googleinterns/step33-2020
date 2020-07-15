@@ -6,13 +6,7 @@ const TOTAL_INTERACTIONS = "totalInteractions";
 
 /** Fetches interaction data from server and uses it to create a chart. */
 function drawChart(parameter = "") {
-  fetch(`${BASE_URL}/dashboard?${parameter}`, 
-  {
-    headers : { 
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-  }).then(response => response.json())
+  fetch(`${BASE_URL}/dashboard?${parameter}`).then(response => response.json())
   .then((dataPercentages) => {
     const data = new google.visualization.DataTable();
     data.addColumn('string', 'Interaction Type');
