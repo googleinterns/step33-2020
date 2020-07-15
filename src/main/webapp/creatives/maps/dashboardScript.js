@@ -1,24 +1,24 @@
-
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
-const BASE_URL = "https://step-capstone-team33-2020.appspot.com"
+const BASE_URL = "http://step-capstone-team33-2020.appspot.com";
+const TOTAL_INTERACTIONS = "totalInteractions";
 
 /** Fetches interaction data from server and uses it to create a chart. */
 function drawChart(parameter = "") {
-  fetch(`${BASE_URL}/dashboard?${parameter}`).then((response) => response.json())
+  fetch(`${BASE_URL}/dashboard?${parameter}`).then(response => response.json())
   .then((dataPercentages) => {
     const data = new google.visualization.DataTable();
     data.addColumn('string', 'Interaction Type');
     data.addColumn('number', 'Percentage');
     Object.keys(dataPercentages).forEach((interactionType) => {
-      if (interactionType != "totalInteractions") {
+      if (interactionType != TOTAL_INTERACTIONS) {
         data.addRow([interactionType, 100 * dataPercentages[interactionType]]);
       }
     });
 
     const options = {
-      'title': `Total Interactions: ${dataPercentages["totalInteractions"]}`,
+      'title': `Total Interactions: ${dataPercentages[TOTAL_INTERACTIONS]}`,
       'width': 1500,
       'height': 700,
       vAxis: {
