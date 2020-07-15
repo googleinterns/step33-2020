@@ -14,6 +14,7 @@ jest.mock('../simid_protocol.js', () => {
         };
     });
 });
+jest.mock('./UserActivityLogger.js');
 let testMap;
 let startData;
 
@@ -210,8 +211,5 @@ test('nearbySearch function is called when map loads', async () => {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
     await drivePromisesToCompletion();
-    expect(window.google.maps.places.PlacesService.mock.results[0].
-        value.nearbySearch.mock.instances.length).toBe(1);
+    expect(window.google.maps.places.PlacesService.mock.results[0].value.nearbySearch.mock.instances.length).toBe(1);
 });
-
-
