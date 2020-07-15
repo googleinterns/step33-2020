@@ -41,9 +41,8 @@ public class DashboardServlet extends HttpServlet {
     String requestStartTimestamp = RequestUtils.getParameter(request, "startTime");
     String requestEndTimestamp = RequestUtils.getParameter(request, "endTime");
 
-    ArrayList<String> validatedTimestamps = validateTimestamps(requestStartTimestamp, requestEndTimestamp);    
-    String validatedStartTimestamp = validatedTimestamps.get(0);
-    String validatedEndTimestamp = validatedTimestamps.get(1);
+    String validatedStartTimestamp = validateStartTimestamp(requestStartTimestamp);
+    String validatedStartTimestamp = validateStartTimestamp(requestEndTimestamp);
 
     try {
       HashMap<String, Double> dataToSend = calculatePercentages(validatedStartTimestamp, validatedEndTimestamp);
@@ -113,34 +112,30 @@ public class DashboardServlet extends HttpServlet {
   }
 
  /**
-  * Given the start and end timestamps requested, this function validates and sets 
-  * the instance variables.
+  * Given the start timestamp requested, this function validates it.
   *
   * @param startTimestamp A string containing the requested start time as a UNIX timestamp
-  * @param endTimestamp A string containing the requested end time as a UNIX timestamp
-  * @return An arraylist with two entries - one for each validated start/end time
+  * @return A validated start time.
   */
-  private ArrayList<String> validateTimestamps(String requestStartTimestamp, String requestEndTimestamp){
+  private String validateStartTimestamp(String requestStartTimestamp){
 
-    ArrayList<String> validatedTimestamps = new ArrayList<>();
-
-    if (requestStartTimestamp.isEmpty() && requestEndTimestamp.isEmpty()) {
-      String startTimestamp = "0";
-      String endTimestamp = String.valueOf(System.currentTimeMillis());
-
-      validatedTimestamps.add(startTimestamp);
-      validatedTimestamps.add(endTimestamp);
-    } else {  
-      String startTimestamp = requestStartTimestamp;
-      String endTimestamp = requestEndTimestamp;
-    
-      // When displaying the range of dates, the latter date is included
-      endTimestamp = String.valueOf(Long.valueOf(endTimestamp) + MILLISECONDS_IN_DAY);
-      
-      validatedTimestamps.add(startTimestamp);
-      validatedTimestamps.add(endTimestamp);
-    }
-
-    return validatedTimestamps;
+    return requestStartTimestamp.isEmpty() ? "0" : requestStartTimestamp;
   }
+
+ /**
+  * Given the end timestamp requested, this function validates it.
+  *
+  * @param endTimestamp A string containing the requested end time as a UNIX timestamp
+  * @return A validated end time.
+  */
+  private String validateEndTimestamp(String requestEndTimestamp){
+
+    if (requestEndTimestamp.isEmpty()) {
+      return String.valueOf(System.currentTimeMillis());
+
+    } else {
+      // When displaying the range of dates, the latter date is included
+      return String.valueOf(Long.valueOf(requestEndTimestamp) + MILLISECONDS_IN_DAY);
+    }
+  }  
 }
