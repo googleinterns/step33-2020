@@ -86,8 +86,12 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.userCoordinates_ = adParams[AdParamKeys.COORDINATES];
     const baseUrl = adParams[AdParamKeys.BASE_URL];
 
-    if (baseUrl){
+    if (baseUrl) {
       this.newUserSession_.updateBaseUrl(baseUrl);
+    }
+    
+    if (this.userCoordinates_) {
+      this.newUserSession_.userGrantsLocationData();
     }
 
     if (!this.searchQuery_) {
