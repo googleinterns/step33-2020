@@ -6,6 +6,7 @@ const AdParamKeys = {
   BUTTON_LABEL: 'buttonLabel',
   SEARCH_QUERY: 'searchQuery',
   MARKER: 'marker',
+  COORDINATES: 'userCoordinates',
 };
 
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
@@ -43,6 +44,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private {?string}
      */
     this.searchQuery_ = null;
+    /**
+     * The LatLng object representing the user's current position.
+     * @private {?google.maps.LatLng}
+     */
+    this.userCoordinates_ = null;
   }
   
   /** @override */
@@ -76,6 +82,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.buttonLabel_ = adParams[AdParamKeys.BUTTON_LABEL]; 
     this.searchQuery_ = adParams[AdParamKeys.SEARCH_QUERY];
     this.markerImage_ = adParams[AdParamKeys.MARKER];
+    this.userCoordinates_ = adParams[AdParamKeys.COORDINATES];
 
     if (!this.searchQuery_) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
@@ -141,7 +148,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     adContainer.appendChild(returnToAdButton);
     adContainer.appendChild(skipAdButton);
 
-    this.displayMap_();
+    this.displayMap_(this.userCoordinates_);
   }
 
   /**

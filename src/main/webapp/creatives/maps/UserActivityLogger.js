@@ -1,5 +1,6 @@
 
-import {generateSessionId, URL} from './utils.js';
+import {generateSessionId} from './utils.js';
+import {Urls} from '../constants.js';
 
 export default class UserActivityLogger {
 
@@ -9,37 +10,49 @@ export default class UserActivityLogger {
      * @private @const {string}
      */
     this.correlator_ = generateSessionId();
+
+    /** @private @const {string} */
+    this.baseUrl_ = Urls.DEFAULT_BASE_URL;
+  }
+
+  /**
+   * Updates the base URL when advertisers want to send the interactions to
+   * their own server.
+   * @param {string} newBaseUrl A base URL to send the request to.
+   */
+  updateBaseUrl(newBaseUrl) {
+    this.baseUrl_ = newBaseUrl;
   }
 
   /**
    * Makes a GET request to the given URL with the correlator as a parameter.
-   * @param {string} url A URL to send the request to.
+   * @param {string} route A route to send the request to.
    */
-  sendRequest_(url) {
-    fetch(`https://step-capstone-team33-2020.appspot.com/${url}?correlator=${this.correlator_}`, {mode:'no-cors'});
+  sendRequest_(route) {
+    fetch(`${this.baseUrl_}/${route}?correlator=${this.correlator_}`);
   }
 
   userInitializes() {
-    this.sendRequest_(URL.INITIALIZE);
+    this.sendRequest_(Urls.INITIALIZE);
   }
 
   userClicksFindNearestLocation() {
-    this.sendRequest_(URL.FIND_NEAREST_LOCATION);
+    this.sendRequest_(Urls.FIND_NEAREST_LOCATION);
   }
 
   userGrantsLocationData() {
-    this.sendRequest_(URL.GRANT_LOCATION_DATA);
+    this.sendRequest_(Urls.GRANT_LOCATION_DATA);
   }
 
   userInteractsWithMap() {
-    this.sendRequest_(URL.MAP_INTERACT);
+    this.sendRequest_(Urls.MAP_INTERACT);
   }
 
   userClicksSkipToContent() {
-    this.sendRequest_(URL.SKIP_TO_CONTENT);
+    this.sendRequest_(Urls.SKIP_TO_CONTENT);
   }
 
   userClicksReturnToAd() {
-    this.sendRequest_(URL.RETURN_TO_AD);
+    this.sendRequest_(Urls.RETURN_TO_AD);
   }
 }

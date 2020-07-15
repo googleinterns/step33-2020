@@ -3,8 +3,6 @@
 <html>
 <head>
   <title> A very simple SIMID player</title>
-  <script src="../simid_protocol.js"></script>
-  <script src="simid_player.js"></script>
   <style>
     .simid_creative {
       position: absolute;
@@ -24,27 +22,28 @@
       height: 480px;
     }
   </style>
-  <script>
+  <script type="module">
+    import SimidPlayer from './simid_player.js';
     let simidPlayer;
-    function initAd() {
+    window.initAd = () => {
       // clean old ad if it exists
       if (simidPlayer) {
         simidPlayer.stopAd();
       }
 
       // Init ad should be called before playad.
-      simidPlayer = new SimidPlayer(() => {simidPlayer = null;});
+      simidPlayer = new SimidPlayer();
       simidPlayer.initializeAd();
     }
 
-    function playAd() {
+    window.playAd = () => {
       if (!simidPlayer) {
         initAd();
       }
       simidPlayer.playAd();
     }
 
-    function switchCreative(value) {
+    window.switchCreative = (value) => {
       document.getElementById('creative_url').value = '../creatives/' + value;
       // populate ad parameters with some hard coded values
       let adParams = '';
@@ -64,6 +63,41 @@
           break;
       }
       document.getElementById('ad_params').value = adParams;
+    }
+
+    window.getLocationPermission = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          let adParamObject = document.getElementById('ad_params').value;
+          let adParams = JSON.parse(adParamObject);
+          adParams.userCoordinates = pos;
+          adParamObject = JSON.stringify(adParams);
+          document.getElementById('ad_params').value = adParamObject;
+        }, (error) => { //callback function that takes a GeolocationPositionError 
+          handleLocationError(error, true);
+        });
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(error, false);
+      }
+    }
+
+    function handleLocationError (error, geolocationAllowed) {
+      let errorMessage = "ERROR: ";
+      if(!geolocationAllowed) {
+        errorMessage += "Browser does not support Geolocation."
+      } else {
+        errorMessage += "Geolocation failed due to: " + error;
+      }
+      /**
+       * Using console.error() in place of sendLog temporarily.
+       * Currently order of function calls makes sendLog ineffective.
+       */
+      console.error(errorMessage);
     }
   </script>
 </head>
@@ -102,6 +136,7 @@
     </table>
     <button onclick="playAd()"> Start ad playback </button>
     <button onclick="initAd()"> Initialize the creative </button>
+    <button onclick="getLocationPermission()"> Allow Location Access </button>
   </div>
 
   <div id="player_div" style="position:absolute;">
