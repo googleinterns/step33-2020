@@ -42,7 +42,7 @@ public class DashboardServlet extends HttpServlet {
     String requestEndTimestamp = RequestUtils.getParameter(request, "endTime");
 
     String validatedStartTimestamp = validateStartTimestamp(requestStartTimestamp);
-    String validatedStartTimestamp = validateStartTimestamp(requestEndTimestamp);
+    String validatedEndTimestamp = validateEndTimestamp(requestEndTimestamp);
 
     try {
       HashMap<String, Double> dataToSend = calculatePercentages(validatedStartTimestamp, validatedEndTimestamp);
