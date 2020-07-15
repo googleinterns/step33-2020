@@ -55,15 +55,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
 
     /**
      * A list of the travel modes supported by the Google Maps API.
-     * @private @const {!array}
+     * @private @const {!Array<!string>}
      */
-    this.transportMethods_ = [
-      this.createTravelOption_("Driving"),
-      this.createTravelOption_("Walking"),
-      this.createTravelOption_("Bicycling"),
-      //Maps API designates Transit as bus, train, tram, light rail, and subway.
-      this.createTravelOption_("Transit")
-    ];
+    this.transportMethods_ = [("Driving"),("Walking"),("Bicycling"),("Transit")];
   }
 
   /** @override */
@@ -229,11 +223,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
    */
   displayResults_(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
+      this.activeLocation_ = results[0].geometry.location;
       for (let i = 0; i < DEFAULT_LOCATION_NUM_DISPLAYED; i++) {
         this.placeMapMarker_(results[i]);
       }
-      this.activeLocation_ = results[0].geometry.location;
-      this.displayDirections_(this.activeLocation_, this.currentLocation_);
+      this.displayDirections_();
     } else {
       const statusErrorMessage = {
         message: "ERROR: Failed to complete search: "+status,
@@ -261,24 +255,17 @@ export default class SimidMapCreative extends BaseSimidCreative {
     ///Recalculate directions if a different active marker is selected.
     placeMarker.addListener('click', () => {
       this.activeLocation_ = place.geometry.location;
-      this.displayDirections_(this.currentLocation_, this.activeLocation_);
+      this.displayDirections_();
     });
   }
 
   /**
-   * Displays the route between the starting loaction and destination
-   * based off of the selected travel mode.
-   * @param {!google.maps.LatLng} destination The LatLng coordinates of the destination.
-   * @param {!google.maps.LatLng} startingLocation The LatLng coordinates of the start location.
+   * Displays the directions between the user's current location and current active location.
    * @private 
    */
-  displayDirections_(destination, startingLocation) {
+  displayDirections_() {
     this.directionsRenderer_.setMap(this.map_);
-    this.calculateRoute_(startingLocation, destination);
-    //If travel method changes, recalculate directions.
-    document.getElementById("travel_method").addEventListener("change", () => {
-      this.calculateRoute_(startingLocation, destination);
-    });
+    this.calculateRoute_();
   }
 
   /**
@@ -290,10 +277,14 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const travelChoicesContainer = document.getElementById("button_container")
     const travelMethod = document.createElement('select');
     travelMethod.id = "travel_method";
-    for(let i = 0; i < this.transportMethods_.length; i++) {
-      travelMethod.add(this.transportMethods_[i]);
-    }
+    this.transportMethods_.forEach((transportType) =>{
+      const newOption = this.createTravelOption_(transportType);
+      travelMethod.add(newOption);
+    });
     travelMethod.classList.add("travel_method");
+    travelMethod.addEventListener("change", () => {
+      this.calculateRoute_();
+    });
     travelChoicesContainer.append(travelMethod);
   }
 
@@ -311,19 +302,17 @@ export default class SimidMapCreative extends BaseSimidCreative {
   }
 
   /**
-   * Displays the route between the starting location and destination
-   * based off of the selected travel mode.
-   * @param {!google.maps.LatLng} start The LatLng coordinates of the start location.
-   * @param {!google.maps.LatLng} end The LatLng coordinates of the end location.
+   * Calculates the route between the user's current location and current
+   * active location based off of the selected travel mode.
    * @private 
    */
-  calculateRoute_(start, end) {
+  calculateRoute_() {
     const directionsService = new google.maps.DirectionsService();
     const selectedMode = document.getElementById("travel_method").value;
     directionsService.route(
       {
-        origin: start,
-        destination: end,
+        origin: this.currentLocation_,
+        destination: this.activeLocation_,
         travelMode: [selectedMode]
       },
       (response, status) => {
