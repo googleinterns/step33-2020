@@ -96,7 +96,8 @@ test('testing button text updates from ad params', () => {
         timestamp: 0,
         type: "SIMID:Player:startCreative",  
     }
-    testMap.onStart(startData, buttonLabel);
+    testMap.onStart(startData);
+    testMap.specifyButtonFeatures_(buttonLabel)
 
     const button = document.getElementById("findNearest");
     expect(button.innerText).toBe('Find Nearest Place');
