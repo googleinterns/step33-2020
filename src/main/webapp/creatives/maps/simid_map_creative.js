@@ -7,12 +7,6 @@ const AdParamKeys = {
   MARKER: 'marker',
 };
 
-const KeyCodes = {
-  LEFT: 37,
-  RIGHT: 39,
-  ENTER: 13,
-};
-
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
 const DEFAULT_BUTTON_LABEL = "Location";
 const DEFAULT_ZOOM = 13;
@@ -101,13 +95,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
   specifyButtonFeatures_(buttonLabel = DEFAULT_BUTTON_LABEL) {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.innerText = FIND_NEAREST_TEMPLATE_TEXT + buttonLabel;
-    findNearest.onclick = () => this.prepareCreative_();
-    let self = this;
-    document.addEventListener('keydown', function(event) {
-      if (event.keyCode == KeyCodes.RIGHT || event.keyCode == KeyCodes.ENTER) {
-        self.prepareCreative_();
-      }
-    });
+    findNearestButton.focus();
+    findNearestButton.onclick = () => this.prepareCreative_();
   }
 
   prepareCreative_() {
@@ -132,23 +121,13 @@ export default class SimidMapCreative extends BaseSimidCreative {
     const returnToAdButton = document.createElement("button");
     returnToAdButton.textContent = "Return To Ad";
     returnToAdButton.id = "returnToAd";
+    returnToAdButton.focus();
     returnToAdButton.onclick = () => this.playAd_(returnToAdButton); 
-    let self = this;
-    document.addEventListener('keydown', function(event) {
-      if (event.keyCode == KeyCodes.LEFT) {
-        self.playAd_(returnToAdButton);
-      }
-    });
 
     const skipAdButton = document.createElement("button");
     skipAdButton.id = "skipAd";
     skipAdButton.textContent = "Skip Ad";
     skipAdButton.onclick = () => this.playContent_();
-    document.addEventListener('keydown', function(event) {
-      if (event.keyCode == KeyCodes.RIGHT) {
-        self.playContent_();
-      }
-    });
 
     const adContainer = document.getElementById('adContainer');
     adContainer.appendChild(returnToAdButton);
