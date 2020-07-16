@@ -341,9 +341,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
       },
       (response, status) => {
         if (status == "OK") {
-          // this.directionsRenderer_.setOptions({ preserveViewport: true });
           this.directionsRenderer_.setDirections(response);
-          // this.directionsRenderer_.setOptions({ preserveViewport: true });
         } else {
           const directionsErrorMessage = {
             message: "ERROR: Failed to load directions: " + status,
