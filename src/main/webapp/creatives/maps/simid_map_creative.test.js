@@ -53,16 +53,21 @@ function createInitData(adParameters){
 
 beforeEach(() => {
     const fakeNearbySearch = jest.fn();
+    const fakeSetMap = jest.fn();
+    const fakeSetDirections = jest.fn();
     window.google = {
         maps: {
+            Marker: class{},
             LatLng: jest.fn(), 
             Map: jest.fn(),
             Marker: jest.fn(),
             Size: jest.fn(),
             Point: jest.fn(),
             InfoWindow: jest.fn(),
-            DirectionsRenderer: jest.fn(() => ({setMap: jest.fn()}, {setDirections: jest.fn()})),
+            DirectionsRenderer: jest.fn(() => ({setMap: fakeSetMap, setDirections: fakeSetDirections})),
             DirectionsService: jest.fn(),
+            DistanceMatrixService: jest.fn(),
+            UnitSystem: jest.fn(),
             Autocomplete: class {},
             places: {
                 PlacesService: jest.fn(() => ({nearbySearch: fakeNearbySearch})),
@@ -79,6 +84,7 @@ beforeEach(() => {
     testMap = new SimidMapCreative();
     document.body.innerHTML = `
     <div id="adContainer"></div>
+    <div id="button_container"></div>
     <button id="findNearest"></button>
     <div id="map"></div>`;
     startData = {
@@ -211,7 +217,7 @@ test('displayDirections function is called when map loads', async () => {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
     await drivePromisesToCompletion();
-    console.log(window.google.maps.DirectionsRenderer.mock.results[0].value);
+    debugger;
     expect(window.google.maps.DirectionsRenderer.mock.results[0].
         value.setMap.mock.instances.length).toBe(1);
 });
@@ -243,8 +249,21 @@ test('Confirm that 4 place markers are placed on the map', async () => {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
     await drivePromisesToCompletion();
-    expect(window.google.maps.Marker.mock.instances.value).toBe(4);
+    expect(window.google.maps.Marker.mock.instances.length).toBe(4);
 });
+
+test('Confirm that travel display is created', async () => {
+    const eventData = createInitData();
+    testMap.onInit(eventData);
+    testMap.onStart(startData);
+    const findNearestButton = document.getElementById('findNearest');
+    findNearestButton.dispatchEvent(new Event('click'));
+    await drivePromisesToCompletion();
+    const button = document.getElementById("button_container");
+    expect(button.childElementCount).toBe(2);
+});
+
+
 
 
 
