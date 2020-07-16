@@ -293,7 +293,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.calculateRoute_();
   }
 
-   /**
+  /**
    * Creates a drop down menu where users can choose between
    * different modes of travel to display directions for.
    * @private 
