@@ -335,7 +335,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   calculateRoute_() {
-    const directionsService = new google.maps.DirectionsService();
+    const dirService = new google.maps.DirectionsService();
     const selectedMode = document.getElementById("travel_method").value;
     dirService.route(
       {
