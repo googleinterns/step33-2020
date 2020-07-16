@@ -1,6 +1,7 @@
 package com.google.sps.servlets;
 
 public class Property {
+  public static final String TIMESTAMP = "timestamp";
   public static final String CORRELATOR = "correlator";
   public static final String FIND_NEAREST_LOCATION = "clicksFindNearestLocation";
   public static final String GRANTS_LOCATION = "grantsLocation";

@@ -12,6 +12,7 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 public class DBUtilities {
 
   public static final String INTERACTION_TABLE = "Interactions";
+  public static final String SUCESS_MESSAGE = "Interaction Logged Successfully";
  
  /**
   * Given the correlator and the property to update, this will update the database to reflect that the user
