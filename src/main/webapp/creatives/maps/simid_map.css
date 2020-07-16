@@ -67,14 +67,31 @@ html, body {
  * scaled to allow button display
  */
 #map {
-    height: 96%;
+    height: 90%;
     width: 100%;
     margin: auto;
-    top: 170px;
+    top: 180px;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
+    zoom: 1.15;
 }
 
 .gm-style-mtc {
-    top: 58px;
+    top: 2px;
+}
+
+div.gm-style-mtc div {
+    padding: 0px 12px;
+}
+
+div.gm-svpc {
+    top: 165px !important;
+}
+
+div.gmnoprint {
+    top: 50px;
+}
+
+div.gmnoprint div {
+    position: inherit;
 }

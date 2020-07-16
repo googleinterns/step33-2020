@@ -306,7 +306,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
       const newOption = this.createTravelOption_(transportType);
       travelMethod.add(newOption);
     });
-    // travelMethod.classList.add("travel_method");
     travelMethod.addEventListener("change", () => {
       this.calculateRoute_();
     });
@@ -342,7 +341,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
       },
       (response, status) => {
         if (status == "OK") {
+          // this.directionsRenderer_.setOptions({ preserveViewport: true });
           this.directionsRenderer_.setDirections(response);
+          // this.directionsRenderer_.setOptions({ preserveViewport: true });
         } else {
           const directionsErrorMessage = {
             message: "ERROR: Failed to load directions: " + status,
