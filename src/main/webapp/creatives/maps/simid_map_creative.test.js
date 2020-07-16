@@ -211,7 +211,7 @@ test('displayDirections function is called when map loads', async () => {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
     await drivePromisesToCompletion();
-    console.log(window.google.maps.Marker.mock.instances);
+    console.log(window.google.maps.DirectionsRenderer.mock.results[0].value);
     expect(window.google.maps.DirectionsRenderer.mock.results[0].
         value.setMap.mock.instances.length).toBe(1);
 });
