@@ -235,8 +235,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
       rankBy: google.maps.places.RankBy.DISTANCE
     };
     const service = new google.maps.places.PlacesService(this.map_);
-    service.nearbySearch(request, this.displayResults_.bind(this));
     this.createTravelChoices_();
+    service.nearbySearch(request, this.displayResults_.bind(this));
   }
 
   /**
@@ -293,20 +293,20 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.calculateRoute_();
   }
 
-  /**
+   /**
    * Creates a drop down menu where users can choose between
    * different modes of travel to display directions for.
    * @private 
    */
   createTravelChoices_() {
-    const travelChoicesContainer = document.getElementById("button_container")
+    const travelChoicesContainer = document.getElementById("adContainer")
     const travelMethod = document.createElement('select');
     travelMethod.id = "travelMethod";
     TRANSPORT_METHODS.forEach((transportType) =>{
       const newOption = this.createTravelOption_(transportType);
       travelMethod.add(newOption);
     });
-    travelMethod.classList.add("travelMethod");
+    // travelMethod.classList.add("travel_method");
     travelMethod.addEventListener("change", () => {
       this.calculateRoute_();
     });

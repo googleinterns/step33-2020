@@ -32,6 +32,14 @@ button:hover {
     visibility: hidden;
 }
 
+#travelMethod {
+    top: 5px;
+    position: absolute;
+    padding: 5px;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 18px;
+}
+
 #returnToAd {
     position: absolute;
     bottom: 65px;
@@ -59,12 +67,15 @@ html, body {
  * scaled to allow button display
  */
 #map {
-    height: 80%;
+    height: 96%;
     width: 100%;
     margin: auto;
-    position: relative;
+    /* position: relative; */
     top: 170px;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-    overflow: inherit !important;
+}
+
+.gm-style-mtc {
+    top: 58px;
 }
