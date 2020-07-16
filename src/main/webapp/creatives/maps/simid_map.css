@@ -70,7 +70,6 @@ html, body {
     height: 96%;
     width: 100%;
     margin: auto;
-    /* position: relative; */
     top: 170px;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);

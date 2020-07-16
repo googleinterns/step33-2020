@@ -62,6 +62,8 @@ beforeEach(() => {
             Point: jest.fn(),
             InfoWindow: jest.fn(),
             DirectionsRenderer: jest.fn(),
+            MapTypeControlStyle: jest.fn(),
+            ControlPosition: jest.fn(),
             Autocomplete: class {},
             places: {
                 PlacesService: jest.fn(() => ({nearbySearch: fakeNearbySearch})),
