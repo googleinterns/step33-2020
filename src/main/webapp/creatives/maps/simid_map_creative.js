@@ -193,11 +193,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
       zoom: DEFAULT_ZOOM,
       center: coordinates
     });
-    new google.maps.Marker({
-      position: coordinates,
-      map: this.map_,
-      title: 'Current Position'
-    });
     this.findNearby_(this.searchQuery_, coordinates);
   }
 
