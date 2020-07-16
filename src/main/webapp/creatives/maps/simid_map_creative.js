@@ -205,7 +205,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.currentLocation_ = coordinates;
     this.map_ = new google.maps.Map(document.getElementById('map'), {
       zoom: DEFAULT_ZOOM,
-      center: coordinates
+      center: coordinates,
+      mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+        position: google.maps.ControlPosition.RIGHT_TOP,
+      },
     });
     new google.maps.Marker({
       position: coordinates,
@@ -297,12 +301,12 @@ export default class SimidMapCreative extends BaseSimidCreative {
   createTravelChoices_() {
     const travelChoicesContainer = document.getElementById("button_container")
     const travelMethod = document.createElement('select');
-    travelMethod.id = "travel_method";
+    travelMethod.id = "travelMethod";
     TRANSPORT_METHODS.forEach((transportType) =>{
       const newOption = this.createTravelOption_(transportType);
       travelMethod.add(newOption);
     });
-    travelMethod.classList.add("travel_method");
+    travelMethod.classList.add("travelMethod");
     travelMethod.addEventListener("change", () => {
       this.calculateRoute_();
     });
@@ -329,7 +333,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    */
   calculateRoute_() {
     const directionsService = new google.maps.DirectionsService();
-    const selectedMode = document.getElementById("travel_method").value;
+    const selectedMode = document.getElementById("travelMethod").value;
     directionsService.route(
       {
         origin: this.currentLocation_,
