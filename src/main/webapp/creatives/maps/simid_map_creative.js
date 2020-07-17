@@ -139,6 +139,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     adContainer.appendChild(skipAdButton);
     this.createTravelDisplay_();
     this.simidMap_.setTravelMethodElement(document.getElementById("travel_method"));
+    this.simidMap_.setTimeDisplayElement(document.getElementById("time_display"));
     console.log(this.simidMap_.travelMethodElement_);
   }
 
