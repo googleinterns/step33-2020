@@ -7,7 +7,8 @@ const MARKER_SIZE = 25;
 export default class SimidMap {
     constructor() {
         /**
-         * The LatLng coordinates representing the closest advertised location.
+         * The LatLng coordinates representing the location most recently
+         * selected by the user, defaulting to the closest location.
          * @private {?google.maps.LatLng}
          */
         this.activeLocation_ = null;
@@ -49,36 +50,65 @@ export default class SimidMap {
         this.timeDisplayElement_ = null;
     }
 
+    /**
+     * Assigns the proper HTML element representing the 
+     * travel method selector to a variable that can be used inside
+     * of the Simid Map class.
+     * @param {?Element} element An HTML element.
+     */
     setTravelMethodElement(element) {
         this.travelMethodElement_ = element;
     }
 
+    /**
+     * Assigns the proper HTML element representing the 
+     * time display div to a variable that can be used inside
+     * of the Simid Map class.
+     * @param {?Element} element An HTML element.
+     */
     setTimeDisplayElement(element) {
         this.timeDisplayElement_ = element;
     }
 
+    /**
+     * Sets the search query to be used in the Maps API
+     * to the value from the creative's adParams.
+     * @param {string} query The string representing the search query.
+     */
     setSearchQuery(query) {
         this.searchQuery_ = query;
     }
 
+    /**
+     * Sets the marker image to be used in the Maps API
+     * to the value from the creative's adParams.
+     * @param {string} markerImage The string url of the chosen marker iaage.
+     */
     setMarkerImage(markerImage) {
         this.markerImage_ = markerImage
     }
 
+    /**
+     * Creates and displays a marker on the map representing a given place.
+     * @param {?google.maps.LatLng} coordinates The LatLng object of the user's current location.
+     */
     setCurrentLocation(coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
         this.currentLocation_ = coordinates;
     }
 
+    /**
+     * Returns the map object within the Simid Map class. 
+     */
     getMap() {
         return this.map_;
     }
 
     /**
      * Loads a map object that currently defaults to a hardcoded location.
-     * @param {!Object} element The div within the main document where the map is to be displayed.
+     * @param {!Object} mapElement The div within the main document where the map is to be displayed.
      */
-    displayMap(element) {
-        this.map_ = new google.maps.Map(element, {
+    displayMap(mapElement) {
+        this.map_ = new google.maps.Map(mapElement, {
             zoom: DEFAULT_ZOOM,
             center: this.currentLocation_
         });
