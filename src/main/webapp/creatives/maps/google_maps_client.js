@@ -4,7 +4,7 @@ const DEFAULT_ZOOM = 13;
 const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 const MARKER_SIZE = 25;
 
-export default class SimidMap {
+export default class GoogleMapsClient {
     constructor() {
         /**
          * The LatLng coordinates representing the location most recently

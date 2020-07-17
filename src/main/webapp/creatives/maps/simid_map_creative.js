@@ -1,6 +1,6 @@
 import BaseSimidCreative from '../base_simid_creative.js';
 import UserActivityLogger from './UserActivityLogger.js';
-import SimidMap from './SimidMap.js';
+import GoogleMapsClient from './google_maps_client.js';
 import {CreativeErrorCode, CreativeMessage} from '../constants.js';
 
 const AdParamKeys = {
@@ -31,7 +31,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * A Simid Map object where all of the Maps API calls are handled
      * @private {!SimidMap}
      */ 
-    this.simidMap_ = new SimidMap();
+    this.googleMapsClient_ = new GoogleMapsClient();
   }
   
   /** @override */
@@ -77,9 +77,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
         message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`});
         return;
     }
-    this.simidMap_.setSearchQuery(query);
-    this.simidMap_.setMarkerImage(markerImage);
-    this.simidMap_.setCurrentLocation(coordinates);
+    this.googleMapsClient_.setSearchQuery(query);
+    this.googleMapsClient_.setMarkerImage(markerImage);
+    this.googleMapsClient_.setCurrentLocation(coordinates);
     this.simidProtocol.resolve(eventData, {});
   }
 
@@ -109,7 +109,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     findNearest.classList.add("hidden");
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
       this.createMapState_();
-      this.simidMap_.displayMap(document.getElementById('map'));
+      this.googleMapsClient_.displayMap(document.getElementById('map'));
       this.addMapListener_();
     }).catch(() => {
         const pauseErrorMessage = {
@@ -140,8 +140,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
     adContainer.appendChild(returnToAdButton);
     adContainer.appendChild(skipAdButton);
     this.createTravelDisplay_();
-    this.simidMap_.setTravelMethodElement(document.getElementById("travel_method"));
-    this.simidMap_.setTimeDisplayElement(document.getElementById("time_display"));
+    this.googleMapsClient_.setTravelMethodElement(document.getElementById("travel_method"));
+    this.googleMapsClient_.setTimeDisplayElement(document.getElementById("time_display"));
   }
 
     /**
@@ -206,7 +206,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   addMapListener_() {
-    const map = this.simidMap_.getMap();
+    const map = this.googleMapsClient_.getMap();
     const eventsArray = ['zoom_changed', 'click', 'drag'];
     eventsArray.forEach(event => map.addListener(event, () => {
       this.newUserSession_.userInteractsWithMap();
