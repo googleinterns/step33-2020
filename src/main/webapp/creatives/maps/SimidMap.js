@@ -39,12 +39,12 @@ export default class SimidMap {
         this.map_ = null;
         /** 
          * The element from the document where the travel method selector lives
-         * @private {?Object}
+         * @private {?Element}
          */  
         this.travelMethodElement_ = null;
         /** 
          * The element from the document where the time display div lives
-         * @private {?Object}
+         * @private {?Element}
          */   
         this.timeDisplayElement_ = null;
     }
@@ -76,7 +76,6 @@ export default class SimidMap {
     /**
      * Loads a map object that currently defaults to a hardcoded location.
      * @param {!Object} element The div within the main document where the map is to be displayed.
-     * @public
      */
     displayMap(element) {
         this.map_ = new google.maps.Map(element, {
@@ -104,7 +103,7 @@ export default class SimidMap {
 
     /**
      * Displays the closest advertisement's locations to a user's current location.
-     * @param {!Object} results An array of Place Results from the search query.
+     * @param {!Array<!Object>} results An array of Place Results from the search query.
      * @param {!google.maps.places.PlacesServiceStatus} status The status returned 
      *  by the PlacesService on the completion of its searches.
      * @private 
@@ -217,22 +216,15 @@ export default class SimidMap {
      */
     getTravelTime_(response, travelStatus) {
         if (travelStatus == 'OK') {
-            let distance = -1;
-            let duration = -1;
             const results = response.rows[0].elements;
-            for (let j = 0; j < results.length; j++) {
-                const element = results[j];
-                distance = element.distance.text;
-                duration = element.duration.text;
-            }
-            this.displayTravelTimes_(duration);
+            this.displayTravelTimes_(results[results.length - 1].duration.text);
         }
     }
 
     /**
      * Adds the travel time to the creative display.
-     * @param {!string} timeString The string object representing travel time.
-     @private
+     * @param {string} timeString The string object representing travel time.
+     * @private
      */
     displayTravelTimes_(timeString) {
         const transportMethod = this.travelMethodElement_.value.toLowerCase();
