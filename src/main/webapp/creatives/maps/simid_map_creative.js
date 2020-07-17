@@ -27,6 +27,10 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private @const {!UserActivityLogger}
      */
     this.newUserSession_ = new UserActivityLogger();
+    /** 
+     * A Simid Map object where all of the Maps API calls are handled
+     * @private {!SimidMap}
+     */ 
     this.simidMap_ = new SimidMap();
   }
   
