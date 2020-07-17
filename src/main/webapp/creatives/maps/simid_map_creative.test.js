@@ -52,7 +52,9 @@ function createInitData(adParameters){
 }
 
 beforeEach(() => {
-    const fakeNearbySearch = jest.fn();
+    const fakeNearbySearch = (request, callback) =>   {
+        callback(null, null);
+    };
     const fakeSetMap = jest.fn();
     const fakeSetDirections = jest.fn();
     window.google = {
@@ -211,13 +213,14 @@ test('nearbySearch function is called when map loads', async () => {
 });
 
 test('displayDirections function is called when map loads', async () => {
-    const eventData = createInitData();
+    const eventData = createInitData('{"buttonLabel":"Location","searchQuery":"Starbucks","marker":"http://maps.google.com/mapfiles/kml/shapes/coffee.png","userCoordinates":{"lat":38.6089456,"lng":-90.4830054}}');
     testMap.onInit(eventData);
     testMap.onStart(startData);
     const findNearestButton = document.getElementById('findNearest');
+    //testMap.searchQuery_ = "Starbucks Coffee";
     findNearestButton.dispatchEvent(new Event('click'));
-    await drivePromisesToCompletion();
     debugger;
+    await drivePromisesToCompletion();
     expect(window.google.maps.DirectionsRenderer.mock.results[0].
         value.setMap.mock.instances.length).toBe(1);
 });

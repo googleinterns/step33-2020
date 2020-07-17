@@ -238,6 +238,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   displayResults_(results, status) {
+    debugger;
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       //Active location is set to the closest location to start.
       this.activeLocation_ = results[0].geometry.location;
@@ -282,6 +283,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   displayDirections_() {
+    debugger;
     this.directionsRenderer_.setMap(this.map_);
     this.calculateRoute_();
     this.calculateTravelTime_();
