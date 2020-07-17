@@ -69,6 +69,10 @@ export default class SimidMap {
         this.currentLocation_ = coordinates;
     }
 
+    getMap() {
+        return this.map_;
+    }
+
     /**
      * Loads a map object that currently defaults to a hardcoded location.
      * @param {!Object} element The div within the main document where the map is to be displayed.
@@ -97,7 +101,6 @@ export default class SimidMap {
         const placeService = new google.maps.places.PlacesService(this.map_);
         placeService.nearbySearch(request, this.displayResults_.bind(this));
     }
-    //After find nearby is called, is 
 
     /**
      * Displays the closest advertisement's locations to a user's current location.
@@ -152,11 +155,11 @@ export default class SimidMap {
      */
     displayDirections_() {
         this.directionsRenderer_.setMap(this.map_);
-        this.calculateRoute();
+        this.calculateRoute_();
         this.calculateTravelTime_();
         //If travel method changes, recalculate directions.
         this.travelMethodElement_.addEventListener("change", () => {
-            this.calculateRoute();
+            this.calculateRoute_();
             this.calculateTravelTime_();
         });
     }
@@ -164,9 +167,9 @@ export default class SimidMap {
     /**
      * Calculates the route between the user's current location and current
      * active location based off of the selected travel mode.
-     * @public
+     * @private
      */
-    calculateRoute() {
+    calculateRoute_() {
         const dirService = new google.maps.DirectionsService();
         const selectedMode = this.travelMethodElement_.value;
         dirService.route(

@@ -161,7 +161,7 @@ test('testing that rejection for JSON parsing errors is working', () => {
     expect(rejectMessageObject.message).toBe("Invalid JSON input for ad parameters");
 });
 
-test('instance of map is instantiated if ad paused', async () => {
+test('Skip & return buttons displayed if ad paused', async () => {
     const eventData = createInitData();
     testMap.onInit(eventData);
     testMap.onStart(startData);
@@ -175,84 +175,6 @@ test('instance of map is instantiated if ad paused', async () => {
     expect(returnButton.textContent).toBe('Return To Ad');
     const skipButton = document.getElementById("skipAd");
     expect(skipButton.textContent).toBe('Skip Ad');
-    expect(window.google.maps.Map.mock.instances.length).toBe(1);
-});
-
-test('LatLng coordinates constructor is called by default when map loads', async () => {
-    const eventData = createInitData();
-    testMap.onInit(eventData);
-    testMap.onStart(startData);
-
-    const findNearestButton = document.getElementById('findNearest');
-    findNearestButton.dispatchEvent(new Event('click'));
-
-    await drivePromisesToCompletion();
-
-    expect(window.google.maps.LatLng.mock.instances.length).toBe(1);
-});
-
-test('PlacesService object is initialized when map loads', async () => {
-    const eventData = createInitData();
-    testMap.onInit(eventData);
-    testMap.onStart(startData);
-    const findNearestButton = document.getElementById('findNearest');
-    findNearestButton.dispatchEvent(new Event('click'));
-    await drivePromisesToCompletion();
-    expect(window.google.maps.places.PlacesService.mock.instances.length).toBe(1);
-});
-
-test('nearbySearch function is called when map loads', async () => {
-    const eventData = createInitData();
-    testMap.onInit(eventData);
-    testMap.onStart(startData);
-    const findNearestButton = document.getElementById('findNearest');
-    findNearestButton.dispatchEvent(new Event('click'));
-    await drivePromisesToCompletion();
-    expect(window.google.maps.places.PlacesService.mock.results[0].
-        value.nearbySearch.mock.instances.length).toBe(1);
-});
-
-test('displayDirections function is called when map loads', async () => {
-    const eventData = createInitData('{"buttonLabel":"Location","searchQuery":"Starbucks","marker":"http://maps.google.com/mapfiles/kml/shapes/coffee.png","userCoordinates":{"lat":38.6089456,"lng":-90.4830054}}');
-    testMap.onInit(eventData);
-    testMap.onStart(startData);
-    const findNearestButton = document.getElementById('findNearest');
-    //testMap.searchQuery_ = "Starbucks Coffee";
-    findNearestButton.dispatchEvent(new Event('click'));
-    debugger;
-    await drivePromisesToCompletion();
-    expect(window.google.maps.DirectionsRenderer.mock.results[0].
-        value.setMap.mock.instances.length).toBe(1);
-});
-
-test('DirectionsService object is initialized when map loads', async () => {
-    const eventData = createInitData();
-    testMap.onInit(eventData);
-    testMap.onStart(startData);
-    const findNearestButton = document.getElementById('findNearest');
-    findNearestButton.dispatchEvent(new Event('click'));
-    await drivePromisesToCompletion();
-    expect(window.google.maps.DirectionsService.mock.instances.length).toBe(1);
-});
-
-test('Starting route is calculated when map loads', async () => {
-    const eventData = createInitData();
-    testMap.onInit(eventData);
-    testMap.onStart(startData);
-    const findNearestButton = document.getElementById('findNearest');
-    findNearestButton.dispatchEvent(new Event('click'));
-    await drivePromisesToCompletion();
-    expect(window.google.maps.DirectionsRenderer.mock.results[0].value.setDirections.mock.instances.length).toBe(1);
-});
-
-test('Confirm that 4 place markers are placed on the map', async () => {
-    const eventData = createInitData();
-    testMap.onInit(eventData);
-    testMap.onStart(startData);
-    const findNearestButton = document.getElementById('findNearest');
-    findNearestButton.dispatchEvent(new Event('click'));
-    await drivePromisesToCompletion();
-    expect(window.google.maps.Marker.mock.instances.length).toBe(4);
 });
 
 test('Confirm that travel display is created', async () => {
@@ -262,10 +184,21 @@ test('Confirm that travel display is created', async () => {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
     await drivePromisesToCompletion();
-    const button = document.getElementById("button_container");
-    expect(button.childElementCount).toBe(2);
+    const travelOptionBox = document.getElementById("time_display");
+    console.log(travelOptionBox);
+    expect(travelOptionBox.value).not.toBe(null);
 });
 
+test('test display map', async () => {
+    const eventData = createInitData();
+    testMap.onInit(eventData);
+    testMap.onStart(startData);
+    const findNearestButton = document.getElementById('findNearest');
+    findNearestButton.dispatchEvent(new Event('click'));
+    await drivePromisesToCompletion(); 
+    const map = document.getElementById("map");
+    expect(map.innerHTML).not.toBe(null);
+});
 
 
 

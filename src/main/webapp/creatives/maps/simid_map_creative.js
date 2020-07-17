@@ -105,11 +105,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
     findNearest.classList.add("hidden");
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
       this.createMapState_();
-      console.log("made it before map display call");
       this.simidMap_.displayMap(document.getElementById('map'));
-      console.log("made it after map display call");
+      this.addMapListener_();
     }).catch(() => {
-      console.log("inside the catch");
         const pauseErrorMessage = {
           message: "WARNING: Request to pause ad failed",
         };
@@ -140,7 +138,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.createTravelDisplay_();
     this.simidMap_.setTravelMethodElement(document.getElementById("travel_method"));
     this.simidMap_.setTimeDisplayElement(document.getElementById("time_display"));
-    console.log(this.simidMap_.travelMethodElement_);
   }
 
     /**
@@ -171,10 +168,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
       TRANSPORT_METHODS.forEach((transportType) => {
           const newOption = this.createTravelOption_(transportType);
           travelMethod.add(newOption);
-      });
-      travelMethod.classList.add("travel_method");
-      travelMethod.addEventListener("change", () => {
-          this.simidMap_.calculateRoute();
       });
       travelChoicesContainer.append(travelMethod);
       travelChoicesContainer.append(timeDisplay);
@@ -209,7 +202,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
    * @private 
    */
   addMapListener_() {
-    const map = document.getElementById("map");
+    const map = this.simidMap_.getMap();
     const eventsArray = ['zoom_changed', 'click', 'drag'];
     eventsArray.forEach(event => map.addListener(event, () => {
       this.newUserSession_.userInteractsWithMap();
