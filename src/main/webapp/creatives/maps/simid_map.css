@@ -32,6 +32,14 @@ button:hover {
     visibility: hidden;
 }
 
+#travelMethod {
+    top: 5px;
+    position: absolute;
+    padding: 5px;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 18px;
+}
+
 #returnToAd {
     position: absolute;
     bottom: 65px;
@@ -59,12 +67,31 @@ html, body {
  * scaled to allow button display
  */
 #map {
-    height: 80%;
+    height: 90%;
     width: 100%;
     margin: auto;
-    position: relative;
-    top: 170px;
+    top: 180px;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-    overflow: inherit !important;
+    zoom: 1.15;
+}
+
+.gm-style-mtc {
+    top: 2px;
+}
+
+div.gm-style-mtc div {
+    padding: 0px 12px;
+}
+
+div.gm-svpc {
+    top: 165px !important;
+}
+
+div.gmnoprint {
+    top: 50px;
+}
+
+div.gmnoprint div {
+    position: inherit;
 }
