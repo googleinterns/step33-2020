@@ -5,7 +5,13 @@ const DEFAULT_ZOOM = 13;
 const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 const MARKER_SIZE = 25;
 
+
 export default class GoogleMapsClient {
+    /**
+     * A GoogleMapsClient object takes in a userSession object, a search query string, the marker image url,
+     * user coordinates, a SimidProtocol object, and a function that determine's the object's behavior in case
+     * of an error.
+     */
     constructor(userSession, query, markerUrl,
          coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG), simidProtocol, onMapsClientComplete) {
         /**
@@ -30,15 +36,20 @@ export default class GoogleMapsClient {
          */
         this.directionsRenderer_ = new google.maps.DirectionsRenderer();
         /**
-         * An instance of a user session
+         * An instance of a user session.
          * @private @const {!UserActivityLogger}
          */
         this.userSession_ = userSession;
         /**
-         * A SimidProtocol object from creative
+         * A SimidProtocol object from creative.
          * @private @const {!SimidProtocol}
          */
         this.simidProtocol = simidProtocol;
+        /** 
+         * The function that determines the class's behavior in case of an API error.
+         * @private @const {?function}
+         */
+        this.onMapsClientComplete_ = onMapsClientComplete;
         /** 
          * A map object from the Google Maps API.
          * @private {?google.maps.Map}
@@ -51,17 +62,15 @@ export default class GoogleMapsClient {
          */
         this.activeLocation_ = null;
         /** 
-         * The element from the document where the travel method selector lives
+         * The element from the document where the travel method selector lives.
          * @private {?Element}
          */  
         this.travelMethodElement_ = null;
         /** 
-         * The element from the document where the time display div lives
+         * The element from the document where the time display div lives.
          * @private {?Element}
          */   
         this.timeDisplayElement_ = null;
-
-        this.onMapsClientComplete_ = onMapsClientComplete;
     }
 
     /**
