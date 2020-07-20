@@ -22,8 +22,8 @@ export default class GoogleMapsClient {
      * @param {!function} onMapsClientComplete A function that determine's the object's behavior in case
      * of an error.
      */
-    constructor(userSession, query, markerUrl, simidProtocol, onMapsClientComplete,
-        coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
+    constructor(userSession, query, markerUrl, simidProtocol, onMapsClientComplete, travelMethod,
+        timeDisplay, coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
         /**
          * The LatLng coordinates representing the user's current location.
          * @private @const {!google.maps.LatLng}
@@ -61,6 +61,16 @@ export default class GoogleMapsClient {
          */
         this.onMapsClientComplete_ = onMapsClientComplete;
         /** 
+         * The element from the document where the travel method selector lives.
+         * @private @const {!Element}
+         */  
+        this.travelMethodElement_ = travelMethod;
+        /** 
+         * The element from the document where the time display div lives.
+         * @private @const {!Element}
+         */   
+        this.timeDisplayElement_ = timeDisplay;
+        /** 
          * A map object from the Google Maps API.
          * @private {?google.maps.Map}
          */    
@@ -71,36 +81,6 @@ export default class GoogleMapsClient {
          * @private {?google.maps.LatLng}
          */
         this.activeLocation_ = null;
-        /** 
-         * The element from the document where the travel method selector lives.
-         * @private {?Element}
-         */  
-        this.travelMethodElement_ = null;
-        /** 
-         * The element from the document where the time display div lives.
-         * @private {?Element}
-         */   
-        this.timeDisplayElement_ = null;
-    }
-
-    /**
-     * Assigns the proper HTML element representing the 
-     * travel method selector to a variable that can be used inside
-     * of the Simid Map class.
-     * @param {?Element} element An HTML element.
-     */
-    setTravelMethodElement(element) {
-        this.travelMethodElement_ = element;
-    }
-
-    /**
-     * Assigns the proper HTML element representing the 
-     * time display div to a variable that can be used inside
-     * of the Simid Map class.
-     * @param {?Element} element An HTML element.
-     */
-    setTimeDisplayElement(element) {
-        this.timeDisplayElement_ = element;
     }
 
     /**
