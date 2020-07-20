@@ -6,7 +6,8 @@ const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 const MARKER_SIZE = 25;
 
 export default class GoogleMapsClient {
-    constructor(userSession, query, markerUrl, coordinates, simidProtocol) {
+    constructor(userSession, query, markerUrl,
+         coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG), simidProtocol, onMapsClientComplete) {
         /**
          * The LatLng coordinates representing the user's current location.
          * @private @const {?google.maps.LatLng}
@@ -59,6 +60,8 @@ export default class GoogleMapsClient {
          * @private {?Element}
          */   
         this.timeDisplayElement_ = null;
+
+        this.onMapsClientComplete_ = onMapsClientComplete;
     }
 
     /**
@@ -79,13 +82,6 @@ export default class GoogleMapsClient {
      */
     setTimeDisplayElement(element) {
         this.timeDisplayElement_ = element;
-    }
-
-    /**
-     * Returns the map object within the Simid Map class. 
-     */
-    getMap() {
-        return this.map_;
     }
 
     /**
@@ -137,7 +133,7 @@ export default class GoogleMapsClient {
                 message: "ERROR: Failed to complete search: " + status,
             };
             this.simidProtocol.sendMessage(CreativeMessage.LOG, statusErrorMessage);
-            //this.playAd_();
+            this.onMapsClientComplete_();
         }
     }
 

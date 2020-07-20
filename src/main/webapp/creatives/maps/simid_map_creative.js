@@ -108,8 +108,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.newUserSession_.userClicksFindNearestLocation();
     findNearest.classList.add("hidden");
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
+      const onMapsClientComplete = () => {this.playAd()};
       this.googleMapsClient_ = new GoogleMapsClient(this.newUserSession_, this.query_,
-         this.markerUrl_, this.coordinates_, this.simidProtocol);
+         this.markerUrl_, this.coordinates_, this.simidProtocol, onMapsClientComplete);
       this.createMapState_();
       this.googleMapsClient_.displayMap(document.getElementById('map'));
     }).catch(() => {
@@ -165,7 +166,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private 
      */
     createTravelDisplay_() {
-      const travelChoicesContainer = document.getElementById("button_container")
+      const travelChoicesContainer = document.getElementById("button_container");
       const travelMethod = document.createElement('select');
       travelMethod.id = "travel_method";
       const timeDisplay = document.createElement("div");
