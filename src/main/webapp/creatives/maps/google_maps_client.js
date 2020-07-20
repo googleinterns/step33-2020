@@ -5,7 +5,7 @@ const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 const MARKER_SIZE = 25;
 
 export default class GoogleMapsClient {
-    constructor(userSession) {
+    constructor(userSession, query, markerUrl, coordinates) {
         /**
          * The LatLng coordinates representing the location most recently
          * selected by the user, defaulting to the closest location.
@@ -16,17 +16,17 @@ export default class GoogleMapsClient {
          * The LatLng coordinates representing the user's current location.
          * @private {?google.maps.LatLng}
          */
-        this.currentLocation_ = null;
+        this.currentLocation_ = coordinates;
         /**
          * The string representing the search query.
          * @private {?string}
          */
-        this.searchQuery_ = null;
+        this.searchQuery_ = query;
         /**
          * The desired marker image's string URL.
          * @private {?string}
          */
-        this.markerImage_ = null;
+        this.markerImage_ = markerUrl;
         /**
          * The DirectionsRenderer object that displays directions from
          * the given request.
@@ -70,32 +70,6 @@ export default class GoogleMapsClient {
      */
     setTimeDisplayElement(element) {
         this.timeDisplayElement_ = element;
-    }
-
-    /**
-     * Sets the search query to be used in the Maps API
-     * to the value from the creative's adParams.
-     * @param {string} query The string representing the search query.
-     */
-    setSearchQuery(query) {
-        this.searchQuery_ = query;
-    }
-
-    /**
-     * Sets the marker image to be used in the Maps API
-     * to the value from the creative's adParams.
-     * @param {string} markerImage The string url of the chosen marker iaage.
-     */
-    setMarkerImage(markerImage) {
-        this.markerImage_ = markerImage
-    }
-
-    /**
-     * Creates and displays a marker on the map representing a given place.
-     * @param {?google.maps.LatLng} coordinates The LatLng object of the user's current location.
-     */
-    setCurrentLocation(coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
-        this.currentLocation_ = coordinates;
     }
 
     /**

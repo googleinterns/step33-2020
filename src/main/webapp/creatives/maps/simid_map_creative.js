@@ -32,6 +32,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private {!SimidMap}
      */ 
     this.googleMapsClient_ = null;
+    this.markerUrl_ = null;
+    this.query_ = null;
+    this.coordinates_ = null;
   }
   
   /** @override */
@@ -63,23 +66,20 @@ export default class SimidMapCreative extends BaseSimidCreative {
         return;
     }
     this.buttonLabel_ = adParams[AdParamKeys.BUTTON_LABEL]; 
-    const query = adParams[AdParamKeys.SEARCH_QUERY];
-    const markerImage = adParams[AdParamKeys.MARKER];
-    const coordinates = adParams[AdParamKeys.COORDINATES];
+    this.query_ = adParams[AdParamKeys.SEARCH_QUERY];
+    this.markerUrl_ = adParams[AdParamKeys.MARKER];
+    this.coordinates_ = adParams[AdParamKeys.COORDINATES];
     const baseUrl = adParams[AdParamKeys.BASE_URL];
 
     if (baseUrl){
       this.newUserSession_.updateBaseUrl(baseUrl);
     }
 
-    if (!query) {
+    if (!this.query_) {
       this.simidProtocol.reject(eventData, {errorCode: CreativeErrorCode.UNSPECIFIED, 
         message: `Required field ${AdParamKeys.SEARCH_QUERY} not found`});
         return;
     }
-    this.googleMapsClient_.setSearchQuery(query);
-    this.googleMapsClient_.setMarkerImage(markerImage);
-    this.googleMapsClient_.setCurrentLocation(coordinates);
     this.simidProtocol.resolve(eventData, {});
   }
 
@@ -108,7 +108,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.newUserSession_.userClicksFindNearestLocation();
     findNearest.classList.add("hidden");
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
-      this.googleMapsClient_ = new GoogleMapsClient(this.newUserSession_);
+      this.googleMapsClient_ = new GoogleMapsClient(this.newUserSession_, this.query_, this.markerUrl_, this.coordinates_);
       this.createMapState_();
       this.googleMapsClient_.displayMap(document.getElementById('map'));
     }).catch(() => {
