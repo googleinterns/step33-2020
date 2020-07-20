@@ -103,11 +103,11 @@ export default class GoogleMapsClient {
      * @param {!Element} mapElement The div within the main document where the map is to be displayed.
      */
     displayMap(mapElement) {
+        console.log("in display map");
         this.map_ = new google.maps.Map(mapElement, {
             zoom: DEFAULT_ZOOM,
             center: this.currentLocation_
         });
-        this.addMapListener_();
         this.findNearby_();
     }
 
@@ -257,12 +257,11 @@ export default class GoogleMapsClient {
         }
 
     /**
-     * Adds map listeners to the map displayed.
-     * @private 
+     * Adds map listeners to the map displayed. 
      */
-    addMapListener_() {
+    addMapListener() {
         const eventsArray = ['zoom_changed', 'click', 'drag'];
-        eventsArray.forEach(event => this.map.addListener(event, () => {
+        eventsArray.forEach(event => this.map_.addListener(event, () => {
         this.userSession_.userInteractsWithMap();
         })); 
     }

@@ -117,6 +117,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
          this.markerUrl_, this.coordinates_, this.simidProtocol, onMapsClientComplete);
       this.createMapState_();
       this.googleMapsClient_.displayMap(document.getElementById('map'));
+      this.googleMapsClient_.addMapListener();
     }).catch(() => {
         const pauseErrorMessage = {
           message: "WARNING: Request to pause ad failed",
