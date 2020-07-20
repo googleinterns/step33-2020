@@ -52,16 +52,24 @@ function createInitData(adParameters){
 }
 
 beforeEach(() => {
-    const fakeNearbySearch = jest.fn();
+    const fakeNearbySearch = (request, callback) =>   {
+        callback(null, null);
+    };
+    const fakeSetMap = jest.fn();
+    const fakeSetDirections = jest.fn();
     window.google = {
         maps: {
+            Marker: class{},
             LatLng: jest.fn(), 
             Map: jest.fn(),
             Marker: jest.fn(),
             Size: jest.fn(),
             Point: jest.fn(),
             InfoWindow: jest.fn(),
-            DirectionsRenderer: jest.fn(),
+            DirectionsRenderer: jest.fn(() => ({setMap: fakeSetMap, setDirections: fakeSetDirections})),
+            DirectionsService: jest.fn(),
+            DistanceMatrixService: jest.fn(),
+            UnitSystem: jest.fn(),
             MapTypeControlStyle: jest.fn(),
             ControlPosition: jest.fn(),
             Autocomplete: class {},
@@ -80,6 +88,7 @@ beforeEach(() => {
     testMap = new SimidMapCreative();
     document.body.innerHTML = `
     <div id="adContainer"></div>
+    <div id="button_container"></div>
     <button id="findNearest"></button>
     <div id="map"></div>`;
     startData = {
@@ -154,7 +163,7 @@ test('testing that rejection for JSON parsing errors is working', () => {
     expect(rejectMessageObject.message).toBe("Invalid JSON input for ad parameters");
 });
 
-test('instance of map is instantiated if ad paused', async () => {
+test('Skip & return buttons displayed if ad paused', async () => {
     const eventData = createInitData();
     testMap.onInit(eventData);
     testMap.onStart(startData);
@@ -168,51 +177,30 @@ test('instance of map is instantiated if ad paused', async () => {
     expect(returnButton.textContent).toBe('Return To Ad');
     const skipButton = document.getElementById("skipAd");
     expect(skipButton.textContent).toBe('Skip Ad');
-    expect(window.google.maps.Map.mock.instances.length).toBe(1);
 });
 
-test('marker is added to map when map loads', async () => {
-    const eventData = createInitData();
-    testMap.onInit(eventData);
-    testMap.onStart(startData);
-
-    const findNearestButton = document.getElementById('findNearest');
-    findNearestButton.dispatchEvent(new Event('click'));
-
-    await drivePromisesToCompletion();
-
-    expect(window.google.maps.Marker.mock.instances.length).toBe(1);
-});
-
-test('LatLng coordinates constructor is called by default when map loads', async () => {
-    const eventData = createInitData();
-    testMap.onInit(eventData);
-    testMap.onStart(startData);
-
-    const findNearestButton = document.getElementById('findNearest');
-    findNearestButton.dispatchEvent(new Event('click'));
-
-    await drivePromisesToCompletion();
-
-    expect(window.google.maps.LatLng.mock.instances.length).toBe(0);
-});
-
-test('PlacesService object is initialized when map loads', async () => {
+test('Confirm that travel display is created', async () => {
     const eventData = createInitData();
     testMap.onInit(eventData);
     testMap.onStart(startData);
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
     await drivePromisesToCompletion();
-    expect(window.google.maps.places.PlacesService.mock.instances.length).toBe(1);
+    const travelOptionBox = document.getElementById("time_display");
+    expect(travelOptionBox.value).not.toBe(null);
 });
 
-test('nearbySearch function is called when map loads', async () => {
+test('test display map', async () => {
     const eventData = createInitData();
     testMap.onInit(eventData);
     testMap.onStart(startData);
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
-    await drivePromisesToCompletion();
-    expect(window.google.maps.places.PlacesService.mock.results[0].value.nearbySearch.mock.instances.length).toBe(1);
+    await drivePromisesToCompletion(); 
+    const map = document.getElementById("map");
+    expect(map.innerHTML).not.toBe(null);
 });
+
+
+
+
