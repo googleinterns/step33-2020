@@ -32,8 +32,20 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private {!SimidMap}
      */ 
     this.googleMapsClient_ = null;
+    /**
+     * The desired marker image's string URL.
+     * @private {?string}
+     */
     this.markerUrl_ = null;
+    /**
+     * The string representing the search query.
+     * @private {?string}
+     */
     this.query_ = null;
+    /**
+     * The LatLng coordinates representing the user's current location.
+     * @private {?google.maps.LatLng}
+     */
     this.coordinates_ = null;
   }
   
