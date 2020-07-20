@@ -108,7 +108,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.newUserSession_.userClicksFindNearestLocation();
     findNearest.classList.add("hidden");
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
-      this.googleMapsClient_ = new GoogleMapsClient(this.newUserSession_, this.query_, this.markerUrl_, this.coordinates_);
+      this.googleMapsClient_ = new GoogleMapsClient(this.newUserSession_, this.query_,
+         this.markerUrl_, this.coordinates_, this.simidProtocol);
       this.createMapState_();
       this.googleMapsClient_.displayMap(document.getElementById('map'));
     }).catch(() => {

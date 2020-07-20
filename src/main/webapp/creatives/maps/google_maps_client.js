@@ -1,3 +1,4 @@
+import {CreativeMessage} from '../constants.js';
 const DEFAULT_MAP_LAT = 37.422004;
 const DEFAULT_MAP_LNG = -122.081402;
 const DEFAULT_ZOOM = 13;
@@ -5,7 +6,7 @@ const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 const MARKER_SIZE = 25;
 
 export default class GoogleMapsClient {
-    constructor(userSession, query, markerUrl, coordinates) {
+    constructor(userSession, query, markerUrl, coordinates, simidProtocol) {
         /**
          * The LatLng coordinates representing the location most recently
          * selected by the user, defaulting to the closest location.
@@ -50,6 +51,8 @@ export default class GoogleMapsClient {
         this.timeDisplayElement_ = null;
 
         this.userSession_ = userSession;
+
+        this.simidProtocol = simidProtocol;
     }
 
     /**
@@ -127,8 +130,8 @@ export default class GoogleMapsClient {
             const statusErrorMessage = {
                 message: "ERROR: Failed to complete search: " + status,
             };
-            //this.simidProtocol.sendMessage(CreativeMessage.LOG, statusErrorMessage);
-            this.playAd_();
+            this.simidProtocol.sendMessage(CreativeMessage.LOG, statusErrorMessage);
+            //this.playAd_();
         }
     }
 
@@ -191,7 +194,7 @@ export default class GoogleMapsClient {
                     const directionsErrorMessage = {
                         message: "ERROR: Failed to load directions: " + status,
                     };
-                    //this.simidProtocol.sendMessage(CreativeMessage.LOG, directionsErrorMessage);
+                    this.simidProtocol.sendMessage(CreativeMessage.LOG, directionsErrorMessage);
                 }
             }
         );
