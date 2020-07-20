@@ -20,7 +20,9 @@ export default class GoogleMapsClient {
      * @param {?google.maps.LatLng} coordinates User coordinates.
      * @param {!SimidProtocol} simidProtocol The SimidProtocol object.
      * @param {!function} onMapsClientComplete A function that determine's the object's behavior in case
-     * of an error.
+     *   of an error.
+     * @param {!Element} travelMethod The HTML element containing the travel method drop down menu.
+     * @param {!Element} timeDisplay The HTML div where the travel time is to be displayed. 
      */
     constructor(userSession, query, markerUrl, simidProtocol, onMapsClientComplete, travelMethod,
         timeDisplay, coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
