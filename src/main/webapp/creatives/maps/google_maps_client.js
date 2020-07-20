@@ -8,24 +8,18 @@ const MARKER_SIZE = 25;
 export default class GoogleMapsClient {
     constructor(userSession, query, markerUrl, coordinates, simidProtocol) {
         /**
-         * The LatLng coordinates representing the location most recently
-         * selected by the user, defaulting to the closest location.
-         * @private {?google.maps.LatLng}
-         */
-        this.activeLocation_ = null;
-        /**
          * The LatLng coordinates representing the user's current location.
-         * @private {?google.maps.LatLng}
+         * @private @const {?google.maps.LatLng}
          */
         this.currentLocation_ = coordinates;
         /**
          * The string representing the search query.
-         * @private {?string}
+         * @private @const {?string}
          */
         this.searchQuery_ = query;
         /**
          * The desired marker image's string URL.
-         * @private {?string}
+         * @private @const {?string}
          */
         this.markerImage_ = markerUrl;
         /**
@@ -34,11 +28,27 @@ export default class GoogleMapsClient {
          * @private @const {!google.maps.DirectionsRenderer}
          */
         this.directionsRenderer_ = new google.maps.DirectionsRenderer();
+        /**
+         * An instance of a user session
+         * @private @const {!UserActivityLogger}
+         */
+        this.userSession_ = userSession;
+        /**
+         * A SimidProtocol object from creative
+         * @private @const {!SimidProtocol}
+         */
+        this.simidProtocol = simidProtocol;
         /** 
          * A map object from the Google Maps API.
          * @private {?google.maps.Map}
          */    
         this.map_ = null;
+        /**
+         * The LatLng coordinates representing the location most recently
+         * selected by the user, defaulting to the closest location.
+         * @private {?google.maps.LatLng}
+         */
+        this.activeLocation_ = null;
         /** 
          * The element from the document where the travel method selector lives
          * @private {?Element}
@@ -49,10 +59,6 @@ export default class GoogleMapsClient {
          * @private {?Element}
          */   
         this.timeDisplayElement_ = null;
-
-        this.userSession_ = userSession;
-
-        this.simidProtocol = simidProtocol;
     }
 
     /**
