@@ -70,6 +70,8 @@ beforeEach(() => {
             DirectionsService: jest.fn(),
             DistanceMatrixService: jest.fn(),
             UnitSystem: jest.fn(),
+            MapTypeControlStyle: jest.fn(),
+            ControlPosition: jest.fn(),
             Autocomplete: class {},
             places: {
                 PlacesService: jest.fn(() => ({nearbySearch: fakeNearbySearch})),
