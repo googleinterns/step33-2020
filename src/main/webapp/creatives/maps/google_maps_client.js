@@ -5,7 +5,7 @@ const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 const MARKER_SIZE = 25;
 
 export default class GoogleMapsClient {
-    constructor() {
+    constructor(userSession) {
         /**
          * The LatLng coordinates representing the location most recently
          * selected by the user, defaulting to the closest location.
@@ -48,6 +48,8 @@ export default class GoogleMapsClient {
          * @private {?Element}
          */   
         this.timeDisplayElement_ = null;
+
+        this.userSession_ = userSession;
     }
 
     /**
@@ -105,13 +107,14 @@ export default class GoogleMapsClient {
 
     /**
      * Loads a map object that currently defaults to a hardcoded location.
-     * @param {!Object} mapElement The div within the main document where the map is to be displayed.
+     * @param {!Element} mapElement The div within the main document where the map is to be displayed.
      */
     displayMap(mapElement) {
         this.map_ = new google.maps.Map(mapElement, {
             zoom: DEFAULT_ZOOM,
             center: this.currentLocation_
         });
+        this.addMapListener_();
         this.findNearby_();
     }
 
@@ -260,4 +263,15 @@ export default class GoogleMapsClient {
         const transportMethod = this.travelMethodElement_.value.toLowerCase();
         this.timeDisplayElement_.innerText = "It will take " + timeString + " to get there by " + transportMethod;
         }
+
+    /**
+     * Adds map listeners to the map displayed.
+     * @private 
+     */
+    addMapListener_() {
+        const eventsArray = ['zoom_changed', 'click', 'drag'];
+        eventsArray.forEach(event => this.map.addListener(event, () => {
+        this.userSession_.userInteractsWithMap();
+        })); 
+    }
 }

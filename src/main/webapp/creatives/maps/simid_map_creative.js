@@ -31,7 +31,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * A Simid Map object where all of the Maps API calls are handled
      * @private {!SimidMap}
      */ 
-    this.googleMapsClient_ = new GoogleMapsClient();
+    this.googleMapsClient_ = null;
   }
   
   /** @override */
@@ -108,9 +108,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.newUserSession_.userClicksFindNearestLocation();
     findNearest.classList.add("hidden");
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
+      this.googleMapsClient_ = new GoogleMapsClient(this.newUserSession_);
       this.createMapState_();
       this.googleMapsClient_.displayMap(document.getElementById('map'));
-      this.addMapListener_();
     }).catch(() => {
         const pauseErrorMessage = {
           message: "WARNING: Request to pause ad failed",
@@ -157,7 +157,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
       return travelOption;
   }
 
-      /**
+    /**
      * Creates a drop down menu where users can choose between
      * different modes of travel to display directions for, and
      * creates area for travel time to be displayed.
@@ -198,19 +198,6 @@ export default class SimidMapCreative extends BaseSimidCreative {
   playContent_() {
     this.newUserSession_.userClicksSkipToContent();
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_SKIP);
-  }
-
-    /**
-   * Adds map listeners to the map displayed.
-   * @param {!Object} map A Google Maps object.
-   * @private 
-   */
-  addMapListener_() {
-    const map = this.googleMapsClient_.getMap();
-    const eventsArray = ['zoom_changed', 'click', 'drag'];
-    eventsArray.forEach(event => map.addListener(event, () => {
-      this.newUserSession_.userInteractsWithMap();
-    })); 
   }
 }
 
