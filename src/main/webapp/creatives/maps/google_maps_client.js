@@ -13,25 +13,30 @@ const MARKER_SIZE = 25;
  */
 export default class GoogleMapsClient {
     /**
-     * A GoogleMapsClient object takes in a userSession object, a search query string, the marker image url,
-     * user coordinates, a SimidProtocol object, and a function that determine's the object's behavior in case
+     * A GoogleMapsClient object handles 
+     * @param {!UserActivityLogger} userSession A User Activity Logger object to track interactions.
+     * @param {!string} query The search query string.
+     * @param {!string} markerUrl The marker image url.
+     * @param {?google.maps.LatLng} coordinates User coordinates.
+     * @param {!SimidProtocol} simidProtocol The SimidProtocol object.
+     * @param {!function} onMapsClientComplete A function that determine's the object's behavior in case
      * of an error.
      */
-    constructor(userSession, query, markerUrl,
-         coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG), simidProtocol, onMapsClientComplete) {
+    constructor(userSession, query, markerUrl, simidProtocol, onMapsClientComplete,
+        coordinates = new google.maps.LatLng(DEFAULT_MAP_LAT, DEFAULT_MAP_LNG)) {
         /**
          * The LatLng coordinates representing the user's current location.
-         * @private @const {?google.maps.LatLng}
+         * @private @const {!google.maps.LatLng}
          */
         this.currentLocation_ = coordinates;
         /**
          * The string representing the search query.
-         * @private @const {?string}
+         * @private @const {string}
          */
         this.searchQuery_ = query;
         /**
          * The desired marker image's string URL.
-         * @private @const {?string}
+         * @private @const {string}
          */
         this.markerImage_ = markerUrl;
         /**
@@ -52,7 +57,7 @@ export default class GoogleMapsClient {
         this.simidProtocol = simidProtocol;
         /** 
          * The function that determines the class's behavior in case of an API error.
-         * @private @const {?function}
+         * @private @const {!function}
          */
         this.onMapsClientComplete_ = onMapsClientComplete;
         /** 
@@ -103,7 +108,6 @@ export default class GoogleMapsClient {
      * @param {!Element} mapElement The div within the main document where the map is to be displayed.
      */
     displayMap(mapElement) {
-        console.log("in display map");
         this.map_ = new google.maps.Map(mapElement, {
             zoom: DEFAULT_ZOOM,
             center: this.currentLocation_

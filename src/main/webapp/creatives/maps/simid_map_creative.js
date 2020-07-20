@@ -114,7 +114,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
     this.simidProtocol.sendMessage(CreativeMessage.REQUEST_PAUSE).then(() => {
       const onMapsClientComplete = () => {this.playAd()};
       this.googleMapsClient_ = new GoogleMapsClient(this.newUserSession_, this.query_,
-         this.markerUrl_, this.coordinates_, this.simidProtocol, onMapsClientComplete);
+         this.markerUrl_, this.simidProtocol, onMapsClientComplete, this.coordinates_);
       this.createMapState_();
       this.googleMapsClient_.displayMap(document.getElementById('map'));
       this.googleMapsClient_.addMapListener();
