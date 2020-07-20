@@ -5,7 +5,12 @@ const DEFAULT_ZOOM = 13;
 const DEFAULT_LOCATION_NUM_DISPLAYED = 4;
 const MARKER_SIZE = 25;
 
-
+/**
+ * This class handles all map related functionality, including
+ * displaying the map, calculating & displaying directions, tracking all
+ * interactions with the map, logging error messages with SimidProtocol,
+ * and handling any errors that result from the Maps API.
+ */
 export default class GoogleMapsClient {
     /**
      * A GoogleMapsClient object takes in a userSession object, a search query string, the marker image url,
@@ -176,8 +181,7 @@ export default class GoogleMapsClient {
     displayDirections_() {
         this.directionsRenderer_.setMap(this.map_);
         this.calculateRoute_();
-        this.calculateTravelTime_();
-        //If travel method changes, recalculate directions.
+        this.calculateTravelTime_()
         this.travelMethodElement_.addEventListener("change", () => {
             this.calculateRoute_();
             this.calculateTravelTime_();
