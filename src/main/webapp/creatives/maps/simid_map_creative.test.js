@@ -186,7 +186,7 @@ test('Confirm that travel display is created', async () => {
     const findNearestButton = document.getElementById('findNearest');
     findNearestButton.dispatchEvent(new Event('click'));
     await drivePromisesToCompletion();
-    const travelOptionBox = document.getElementById("time_display");
+    const travelOptionBox = document.getElementById("timeDisplay");
     expect(travelOptionBox.value).not.toBe(null);
 });
 

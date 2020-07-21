@@ -127,8 +127,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
       const onMapsClientComplete = () => {this.playAd_()};
       this.createMapState_();
       this.googleMapsClient_ = new GoogleMapsClient(this.newUserSession_, this.query_,
-         this.markerUrl_, this.simidProtocol, onMapsClientComplete, document.getElementById("travel_method"),
-          document.getElementById("time_display"), this.coordinates_);
+         this.markerUrl_, this.simidProtocol, onMapsClientComplete, document.getElementById("travelMethod"),
+          document.getElementById("timeDisplay"), this.coordinates_);
       this.googleMapsClient_.displayMap(document.getElementById('map'));
       this.googleMapsClient_.addMapListener();
     }).catch(() => {
@@ -182,11 +182,11 @@ export default class SimidMapCreative extends BaseSimidCreative {
      * @private 
      */
     createTravelDisplay_() {
-      const travelChoicesContainer = document.getElementById("button_container");
+      const travelChoicesContainer = document.getElementById('adContainer');
       const travelMethod = document.createElement('select');
-      travelMethod.id = "travel_method";
+      travelMethod.id = "travelMethod";
       const timeDisplay = document.createElement("div");
-      timeDisplay.id = "time_display";
+      timeDisplay.id = "timeDisplay";
       TRANSPORT_METHODS.forEach((transportType) => {
           const newOption = this.createTravelOption_(transportType);
           travelMethod.add(newOption);
