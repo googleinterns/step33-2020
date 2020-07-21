@@ -239,7 +239,7 @@ export default class GoogleMapsClient {
      */
     displayTravelTimes_(timeString) {
         const transportMethod = this.travelMethodElement_.value.toLowerCase();
-        this.timeDisplayElement_.innerText = "It will take " + timeString + " to get there by " + transportMethod;
+        this.timeDisplayElement_.innerText = "By "+transportMethod+": " + timeString;
         }
 
     /**
