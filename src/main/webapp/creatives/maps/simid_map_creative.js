@@ -87,7 +87,7 @@ export default class SimidMapCreative extends BaseSimidCreative {
       this.newUserSession_.updateBaseUrl(baseUrl);
     }
     
-    if (this.userCoordinates_) {
+    if (this.coordinates_) {
       this.newUserSession_.userGrantsLocationData();
     }
 
