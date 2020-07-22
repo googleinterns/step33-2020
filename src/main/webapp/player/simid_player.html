@@ -46,6 +46,7 @@
     window.switchCreative = (value) => {
       document.getElementById('creative_url').value = '../creatives/' + value;
       // populate ad parameters with some hard coded values
+      document.getElementById('geolocation').style.visibility = 'hidden';
       let adParams = '';
       switch (value) {
         case 'simid_overlay.html':
