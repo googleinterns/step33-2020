@@ -61,6 +61,9 @@
           ];
           adParams = JSON.stringify(adParamsObj);
           break;
+        case 'maps/simid_map.html':
+          document.getElementById('geolocation').style.visibility = 'visible';
+          break;
       }
       document.getElementById('ad_params').value = adParams;
     }
@@ -114,6 +117,7 @@
         <button onclick="switchCreative('survey.html')">survey</button>
         <button onclick="switchCreative('selector.html')">selector</button>
         <button onclick="switchCreative('extender.html')">extender</button>
+        <button onclick="switchCreative('maps/simid_map.html')">map</button>
       </td>
       </tr>
 
@@ -137,7 +141,7 @@
     </table>
     <button onclick="playAd()"> Start ad playback </button>
     <button onclick="initAd()"> Initialize the creative </button>
-    <button onclick="getLocationPermission()"> Allow Location Access </button>
+    <button id="geolocation" style="visibility: hidden;" onclick="getLocationPermission()"> Allow Location Access </button>
   </div>
 
   <div id="player_div" style="position:absolute;">
