@@ -47,15 +47,13 @@
       document.getElementById('creative_url').value = '../creatives/' + value;
       // populate ad parameters with some hard coded values
       document.getElementById('geolocation').style.visibility = 'hidden';
-      if (value == 'maps/simid_map.html') {
-        document.getElementById('geolocation').style.visibility = 'visible';
-      }
       let adParams = '';
+      let adParamsObj = '';
       switch (value) {
         case 'simid_overlay.html':
           break;
         case 'survey.html':
-          let adParamsObj = [
+          adParamsObj = [
             {'question':'Would you like a survey?',
              'answers':['Yes', 'No', 'Not Sure']},
             {'question':'Are you certain?',
@@ -63,6 +61,15 @@
             {'question':'What animals do you like?',
              'answers':['Cats', 'Dogs', 'Other']}
           ];
+          adParams = JSON.stringify(adParamsObj);
+          break;
+        case 'maps/simid_map.html':
+          document.getElementById('geolocation').style.visibility = 'visible';
+          adParamsObj = 
+          {"buttonLabel": "Park",
+           "searchQuery": "nearby park",
+           "marker": "http://maps.google.com/mapfiles/kml/shapes/parks.png"};
+          
           adParams = JSON.stringify(adParamsObj);
           break;
       }
