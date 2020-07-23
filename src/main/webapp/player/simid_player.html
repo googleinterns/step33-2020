@@ -46,12 +46,14 @@
     window.switchCreative = (value) => {
       document.getElementById('creative_url').value = '../creatives/' + value;
       // populate ad parameters with some hard coded values
+      document.getElementById('geolocation').style.visibility = 'hidden';
       let adParams = '';
+      let adParamsObj = '';
       switch (value) {
         case 'simid_overlay.html':
           break;
         case 'survey.html':
-          let adParamsObj = [
+          adParamsObj = [
             {'question':'Would you like a survey?',
              'answers':['Yes', 'No', 'Not Sure']},
             {'question':'Are you certain?',
@@ -59,6 +61,15 @@
             {'question':'What animals do you like?',
              'answers':['Cats', 'Dogs', 'Other']}
           ];
+          adParams = JSON.stringify(adParamsObj);
+          break;
+        case 'maps/simid_map.html':
+          document.getElementById('geolocation').style.visibility = 'visible';
+          adParamsObj = 
+          {"buttonLabel": "Park",
+           "searchQuery": "nearby park",
+           "marker": "http://maps.google.com/mapfiles/kml/shapes/parks.png"};
+          
           adParams = JSON.stringify(adParamsObj);
           break;
       }
@@ -114,6 +125,7 @@
         <button onclick="switchCreative('survey.html')">survey</button>
         <button onclick="switchCreative('selector.html')">selector</button>
         <button onclick="switchCreative('extender.html')">extender</button>
+        <button onclick="switchCreative('maps/simid_map.html')">map</button>
       </td>
       </tr>
 
@@ -137,7 +149,7 @@
     </table>
     <button onclick="playAd()"> Start ad playback </button>
     <button onclick="initAd()"> Initialize the creative </button>
-    <button onclick="getLocationPermission()"> Allow Location Access </button>
+    <button id="geolocation" style="visibility: hidden;" onclick="getLocationPermission()"> Allow Location Access </button>
   </div>
 
   <div id="player_div" style="position:absolute;">
