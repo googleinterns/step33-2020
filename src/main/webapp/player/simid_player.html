@@ -47,6 +47,9 @@
       document.getElementById('creative_url').value = '../creatives/' + value;
       // populate ad parameters with some hard coded values
       document.getElementById('geolocation').style.visibility = 'hidden';
+      if (value == 'maps/simid_map.html') {
+        document.getElementById('geolocation').style.visibility = 'visible';
+      }
       let adParams = '';
       switch (value) {
         case 'simid_overlay.html':
@@ -61,9 +64,6 @@
              'answers':['Cats', 'Dogs', 'Other']}
           ];
           adParams = JSON.stringify(adParamsObj);
-          break;
-        case 'maps/simid_map.html':
-          document.getElementById('geolocation').style.visibility = 'visible';
           break;
       }
       document.getElementById('ad_params').value = adParams;
