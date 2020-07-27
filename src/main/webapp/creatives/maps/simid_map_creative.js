@@ -207,8 +207,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
     returnToAdButton.classList.add("hidden");
     const mapDiv = document.getElementById("map");
     mapDiv.classList.add("hidden");
-    const travelDisplay = document.getElementById("travel_method");
-    const timeDisplay = document.getElementById("time_display");
+    const travelDisplay = document.getElementById("travelMethod");
+    const timeDisplay = document.getElementById("timeDisplay");
     travelDisplay.classList.add("hidden");
     timeDisplay.classList.add("hidden");
   }
