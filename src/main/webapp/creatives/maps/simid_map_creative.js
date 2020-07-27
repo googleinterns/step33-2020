@@ -11,6 +11,8 @@ const AdParamKeys = {
   BASE_URL: 'baseUrl',
 };
 
+const TRAVEL_METHOD = "travelMethod";
+const TIME_DISPLAY = "timeDisplay";
 const FIND_NEAREST_TEMPLATE_TEXT = "Find Nearest ";
 const DEFAULT_BUTTON_LABEL = "Location";
 const TRANSPORT_METHODS = ["Driving", "Walking", "Bicycling", "Transit"];
@@ -127,8 +129,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
       const onMapsClientComplete = () => {this.playAd_()};
       this.createMapState_();
       this.googleMapsClient_ = new GoogleMapsClient(this.newUserSession_, this.query_,
-         this.markerUrl_, this.simidProtocol, onMapsClientComplete, document.getElementById("travelMethod"),
-          document.getElementById("timeDisplay"), this.coordinates_);
+         this.markerUrl_, this.simidProtocol, onMapsClientComplete, document.getElementById(TRAVEL_METHOD),
+          document.getElementById(TIME_DISPLAY), this.coordinates_);
       this.googleMapsClient_.displayMap(document.getElementById('map'));
       this.googleMapsClient_.addMapListener();
     }).catch(() => {
@@ -184,9 +186,9 @@ export default class SimidMapCreative extends BaseSimidCreative {
     createTravelDisplay_() {
       const travelChoicesContainer = document.getElementById('adContainer');
       const travelMethod = document.createElement('select');
-      travelMethod.id = "travelMethod";
+      travelMethod.id = TRAVEL_METHOD;
       const timeDisplay = document.createElement("div");
-      timeDisplay.id = "timeDisplay";
+      timeDisplay.id = TIME_DISPLAY;
       TRANSPORT_METHODS.forEach((transportType) => {
           const newOption = this.createTravelOption_(transportType);
           travelMethod.add(newOption);
@@ -207,8 +209,8 @@ export default class SimidMapCreative extends BaseSimidCreative {
     returnToAdButton.classList.add("hidden");
     const mapDiv = document.getElementById("map");
     mapDiv.classList.add("hidden");
-    const travelDisplay = document.getElementById("travelMethod");
-    const timeDisplay = document.getElementById("timeDisplay");
+    const travelDisplay = document.getElementById(TRAVEL_METHOD);
+    const timeDisplay = document.getElementById(TIME_DISPLAY);
     travelDisplay.classList.add("hidden");
     timeDisplay.classList.add("hidden");
   }
