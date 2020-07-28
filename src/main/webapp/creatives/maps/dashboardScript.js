@@ -1,7 +1,7 @@
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
-const BASE_URL = "http://step-capstone-team33-2020.appspot.com";
+const BASE_URL = "https://step-capstone-team33-2020.appspot.com";
 const TOTAL_INTERACTIONS = "totalInteractions";
 
 /** Fetches interaction data from server and uses it to create a chart. */
